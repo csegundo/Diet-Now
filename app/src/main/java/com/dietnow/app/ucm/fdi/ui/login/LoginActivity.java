@@ -37,7 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // setContentView(binding.getRoot());
+
+        // es otra forma de inciar la vista del login
+        setContentView(R.layout.activity_login);
 
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
