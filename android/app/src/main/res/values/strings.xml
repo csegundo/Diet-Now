@@ -1,0 +1,21 @@
+<resources>
+    <!-- Titulos de las pantallas para poner en el AndroidManifest.xml -->
+    <string name="label_login">Iniciar sesión - DietNow</string>
+    <string name="label_register">Crear cuenta - DietNow</string>
+
+    <!-- Resto de strings -->
+    <string name="app_name">Diet Now</string>
+    <string name="email">Email</string>
+    <string name="email_label">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="password_repear">Repetir contraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="register">Registrarse</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="name">Nombre</string>
+    <string name="lastname">Apellido(s)</string>
+    <string name="age">Edad</string>
+    <string name="genre">Género</string>
+    <string name="genre_male">Masculino</string>
+    <string name="genre_female">Femenino</string>
+</resources>

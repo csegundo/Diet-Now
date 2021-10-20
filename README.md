@@ -1,1 +1,1 @@
-# Diet-Now
+# Diet Now
