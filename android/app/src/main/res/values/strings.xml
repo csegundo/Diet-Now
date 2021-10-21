@@ -18,4 +18,14 @@
     <string name="genre">Género</string>
     <string name="genre_male">Masculino</string>
     <string name="genre_female">Femenino</string>
+    <string name="genre_man">Hombre</string>
+    <string name="genre_woman">Mujer</string>
+    <string name="genre_no_response">Prefiero no responder</string>
+
+    <!-- Arrays de strings -->
+    <string-array name="genres">
+        <item>- Selecciona género -</item>
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
 </resources>
