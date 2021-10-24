@@ -27,5 +27,6 @@
         <item>- Selecciona género -</item>
         <item>Masculino</item>
         <item>Femenino</item>
+        <item>Prefiero no especificar</item>
     </string-array>
 </resources>
