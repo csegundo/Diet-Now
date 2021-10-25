@@ -1,8 +1,13 @@
 package com.dietnow.app.ucm.fdi.model.user;
 
 
+import java.sql.Date;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -16,13 +21,16 @@ public class User {
     private String gender;
     private Date start_date;
     private Double height;
-    //poner su relaccion con la tabla
-    private Double weight;
     private String role;
-    //poner su relación con la tabla
-    private Integer steps;
     private Boolean active;
 
     // quedam las relaciones
 
+    //weight
+    @OneToMany(mappedBy = "userEntity")
+    private List<Weight> weights;
+
+    //Steps
+    @OneToMany(mappedBy = "userEntity")
+    private List<Steps> steps;
 }
