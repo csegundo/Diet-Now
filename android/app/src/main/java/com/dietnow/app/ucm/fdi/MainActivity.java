@@ -35,5 +35,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        login = findViewById(R.id.loginBtn);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Con Intent podemos "redirigir" al usuario a nueva actividad
+                Intent intent = new Intent(MainActivity.this, AdminPageActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
