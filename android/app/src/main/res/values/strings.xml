@@ -2,6 +2,7 @@
     <!-- Titulos de las pantallas para poner en el AndroidManifest.xml -->
     <string name="label_login">Iniciar sesión - DietNow</string>
     <string name="label_register">Crear cuenta - DietNow</string>
+    <string name="label_main_page">Menú prinicpal</string>
 
     <!-- Resto de strings -->
     <string name="app_name">Diet Now</string>
@@ -21,6 +22,8 @@
     <string name="genre_man">Hombre</string>
     <string name="genre_woman">Mujer</string>
     <string name="genre_no_response">Prefiero no responder</string>
+    <string name="register_check_fields">¡Hay algún campo que está vacio!</string>
+    <string name="register_check_paaswords">¡Las contraseñas no coinciden!</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">

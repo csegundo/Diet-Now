@@ -11,21 +11,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DietNow">
 
-
-        <!-- Paginas principales -->
+        <!-- AdminPageActivity -->
         <activity
             android:name=".AdminPageActivity"
-            android:exported="false" />
-            android:label="Menu Principal">
+            android:exported="false"
+            android:label="@string/label_main_page" />
+
+        <!-- UserPageActivity -->
         <activity
             android:name=".UserPageActivity"
-            android:exported="false" /> <!-- UserPageActivity -->
-            android:label="Menu Principal">
+            android:exported="false"
+            android:label="@string/label_main_page" />
+
         <!-- RegisterActivity -->
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:label="@string/label_register" /> <!-- LoginActivity -->
+            android:label="@string/label_register" />
+
+        <!-- LoginActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
