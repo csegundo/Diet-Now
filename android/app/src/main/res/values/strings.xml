@@ -3,6 +3,9 @@
     <string name="label_login">Iniciar sesión - DietNow</string>
     <string name="label_register">Crear cuenta - DietNow</string>
     <string name="label_main_page">Menú prinicpal</string>
+    <string name="label_admin_profile">Admin Profile</string>
+    <string name="label_admin_register">Admin Profile</string>
+
 
     <!-- Resto de strings -->
     <string name="app_name">Diet Now</string>
@@ -24,6 +27,7 @@
     <string name="genre_no_response">Prefiero no responder</string>
     <string name="register_check_fields">¡Hay algún campo que está vacio!</string>
     <string name="register_check_paaswords">¡Las contraseñas no coinciden!</string>
+    <string name="settings">Settings</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">

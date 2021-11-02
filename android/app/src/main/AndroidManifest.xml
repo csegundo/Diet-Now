@@ -17,6 +17,19 @@
             android:exported="false"
             android:label="@string/label_main_page" />
 
+        <!-- UserProfileActivity -->
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false"
+            android:label="@string/label_admin_profile" />
+
+        <!-- Register AdminActivity -->
+        <activity
+            android:name=".registerAdminActivity"
+            android:exported="false"
+            android:label="@string/label_admin_register" />
+
+
         <!-- UserPageActivity -->
         <activity
             android:name=".UserPageActivity"

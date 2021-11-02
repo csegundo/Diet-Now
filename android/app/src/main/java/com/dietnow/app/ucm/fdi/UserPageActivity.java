@@ -33,7 +33,7 @@ public class UserPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Con Intent podemos "redirigir" al usuario a nueva actividad
-                Intent intent = new Intent(UserPageActivity.this, UserPageActivity.class);
+                Intent intent = new Intent(UserPageActivity.this, UserProfileActivity.class);
                 startActivity(intent);
             }
         });
