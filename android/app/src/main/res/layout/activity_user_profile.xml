@@ -48,7 +48,7 @@
         app:layout_constraintVertical_bias="0.613" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/deleteProfile"
         android:layout_width="153dp"
         android:layout_height="51dp"
         android:text="Delete Profile"

@@ -16,7 +16,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private Button settings;
     private Image profileImage;
-    private Button register;
+    private Button delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +24,10 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         // Buscar los componentes de esta actividad por su ID
-        register = findViewById(R.id.settings);
+        settings = findViewById(R.id.settings);
 
         // Acciones de los componentes
-        register.setOnClickListener(new View.OnClickListener() {
+        settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Con Intent podemos "redirigir" al usuario a nueva actividad
@@ -35,5 +35,23 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        delete = findViewById(R.id.deleteProfile);
+
+        // Acciones de los componentes
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Con Intent podemos "redirigir" al usuario a nueva actividad
+                //Intent intent = new Intent(UserProfileActivity.this, RegisterActivity.class);
+                //startActivity(intent);
+            }
+        });
+
+        //falta hacer la lógica de la aplicacion
+
+
+
+
     }
 }
