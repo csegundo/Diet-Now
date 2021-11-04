@@ -13,7 +13,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.model.user.User;
-import com.dietnow.app.ucm.fdi.service.BCrypt;
 import com.dietnow.app.ucm.fdi.service.UserService;
 
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -85,7 +84,19 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                             }
                         }
 
-                        // userService.register();
+                        Integer newUserId = userService.register(
+                                email.getText().toString(),
+                                name.getText().toString(),
+                                lastname.getText().toString(),
+                                passwd.getText().toString(),
+                                uGender,
+                                0.0
+                        );
+
+                        // en funcion del rol redirigir a una vista u otra
+                        Toast.makeText(getApplicationContext(),
+                                "NEW USER: " + newUserId,
+                                Toast.LENGTH_SHORT).show();
                     } else{
                         Toast.makeText(getApplicationContext(),
                                 getResources().getString(R.string.register_check_paaswords),

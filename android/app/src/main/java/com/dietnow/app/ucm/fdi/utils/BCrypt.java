@@ -1,4 +1,4 @@
-package com.dietnow.app.ucm.fdi.service;
+package com.dietnow.app.ucm.fdi.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;

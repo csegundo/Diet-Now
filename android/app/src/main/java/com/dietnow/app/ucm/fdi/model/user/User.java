@@ -45,6 +45,7 @@ public class User {
         this.name = name;
         this.lastname = lastname;
         this.password = password;
+        this.height = height;
         this.gender = !gender.isEmpty() ? gender : UserGender.NO_GENRE.name();
         this.role = role.isEmpty() || role.equals(UserRole.USER.name())
                 ? UserRole.USER.name() : UserRole.ADMIN.name();
