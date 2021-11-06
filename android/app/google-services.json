@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "568229049290",
+    "project_id": "diet-now-f650d",
+    "storage_bucket": "diet-now-f650d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568229049290:android:1ab76351218a24c5769533",
+        "android_client_info": {
+          "package_name": "com.dietnow.app.ucm.fdi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568229049290-5d96qs48b0c5rqar4l66v7e2a6b4ad3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZk9kgfTbHT6LEhCHYOZQa_TCcqmZpZTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568229049290-5d96qs48b0c5rqar4l66v7e2a6b4ad3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
