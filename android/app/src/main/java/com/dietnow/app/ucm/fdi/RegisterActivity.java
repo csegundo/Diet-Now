@@ -1,5 +1,6 @@
 package com.dietnow.app.ucm.fdi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,6 +15,13 @@ import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.dietnow.app.ucm.fdi.service.UserService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.Executor;
 
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -26,22 +34,23 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     private EditText name;
     private EditText lastname;
     private EditText age;
-    private UserService userService;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        userService = new UserService();
+        // incilizar Google Firebase
+        auth         = FirebaseAuth.getInstance();
 
         // inicializar los componentes por ID
-        email = findViewById(R.id.registerEmail);
-        passwd = findViewById(R.id.registerPassword);
+        email        = findViewById(R.id.registerEmail);
+        passwd       = findViewById(R.id.registerPassword);
         passwdRepeat = findViewById(R.id.registerPasswordRepeat);
-        name = findViewById(R.id.registerName);
-        lastname = findViewById(R.id.registerLastname);
-        age = findViewById(R.id.registerAge);
+        name         = findViewById(R.id.registerName);
+        lastname     = findViewById(R.id.registerLastname);
+        age          = findViewById(R.id.registerAge);
 
         // login button action
         login = findViewById(R.id.registerLoginBtn);
@@ -84,7 +93,9 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                             }
                         }
 
-                        Integer newUserId = userService.register(
+                        register(email.getText().toString(), passwd.getText().toString());
+                        /*
+                        Integer newUserId = UserService.getInstance().register(
                                 email.getText().toString(),
                                 name.getText().toString(),
                                 lastname.getText().toString(),
@@ -97,6 +108,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                         Toast.makeText(getApplicationContext(),
                                 "NEW USER: " + newUserId,
                                 Toast.LENGTH_SHORT).show();
+                        */
                     } else{
                         Toast.makeText(getApplicationContext(),
                                 getResources().getString(R.string.register_check_paaswords),
@@ -109,6 +121,36 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                 }
             }
         });
+    }
+
+    // returns user id
+    private void register(String email, String rawPassword){
+        auth.createUserWithEmailAndPassword(email, rawPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    FirebaseUser user = auth.getCurrentUser();
+                    updateUI(user);
+                } else{
+                    updateUI(null);
+                }
+            }
+        });
+    }
+
+    // redirige al login o muestra error de registro
+    private void updateUI(FirebaseUser user){
+        if(user != null){
+            Toast.makeText(getApplicationContext(),
+                    getResources().getString(R.string.register_succesful),
+                    Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+            startActivity(intent);
+        } else{
+            Toast.makeText(getApplicationContext(),
+                    getResources().getString(R.string.register_failed),
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     // estos 2 metodos son de "AdapterView.OnItemSelectedListener" para el selector del genero

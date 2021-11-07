@@ -7,14 +7,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class AdminPageActivity extends AppCompatActivity {
 
     private Button creardieta,perfil,dietasCreadas,dietasPub,crearUser,modUser,deleteUser;
+    private Button logout;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_page);
+
+        // inicializar Google Firebase
+        auth   = FirebaseAuth.getInstance();
+        logout = findViewById(R.id.cerrarSesionTemp);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+            }
+        });
 
         creardieta = findViewById(R.id.adminCrearDietaBtn);
 
