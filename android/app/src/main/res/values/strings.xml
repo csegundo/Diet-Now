@@ -29,7 +29,7 @@
     <string name="register_check_paaswords">¡Las contraseñas no coinciden!</string>
     <string name="settings">Settings</string>
     <string name="welcome">Bienvenido</string>
-    <string name="login_failed">Ha ocurrido un error al iniciar sesión</string>
+    <string name="login_failed">Credenciales incorrectos</string>
     <string name="register_succesful">Cuenta creada correctamente</string>
     <string name="register_failed">Error al crear cuenta</string>
     <string name="password_tooltip">6 caracteres como mínimo</string>

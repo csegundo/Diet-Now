@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * LoginActivity - Establece el inicio de sesion del usuario en la aplicación
@@ -26,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private Button login;
     private Button register;
+
     private FirebaseAuth auth;
+    private DatabaseReference db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         // inicializar Google Firebase
         auth     = FirebaseAuth.getInstance();
+        db       = FirebaseDatabase.getInstance().getReference();
 
         // Buscar los componentes de esta actividad por su ID
         register = findViewById(R.id.loginRegisterBtn);
@@ -62,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // return user rol
     private void login(String email, String rawPassword){
         auth.signInWithEmailAndPassword(email, rawPassword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -82,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         String rol = User.UserRole.ADMIN.name(); // MUY TEMPORAL: VER PERSISTENCIA DE DATOS
 
         if(user != null){
-            String userName = user.getDisplayName();
+            String uuid = user.getUid(), userName = user.getDisplayName();
             Toast.makeText(getApplicationContext(),
                     "¡" + getResources().getString(R.string.welcome) +
                             (userName != null ? ", " + userName : "") + "!",

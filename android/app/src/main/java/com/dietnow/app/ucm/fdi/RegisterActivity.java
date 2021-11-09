@@ -123,7 +123,6 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
-    // returns user id
     private void register(String email, String rawPassword){
         auth.createUserWithEmailAndPassword(email, rawPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
