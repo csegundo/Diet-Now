@@ -8,13 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import com.google.firebase.database.*;
+import java.util.HashMap;
+import java.util.Map;
 
-@Entity
+
+@IgnoreExtraProperties
 public class User {
     public enum UserGender{ MALE, FEMALE, NO_GENRE }
     public enum UserRole{ ADMIN, USER }
 
-    @Id
     private long id;
     private Integer age;
     private String email;
@@ -30,15 +33,9 @@ public class User {
 
     // quedam las relaciones
 
-    //weight
-    @OneToMany(mappedBy = "userEntity")
-    private List<Weight> weights;
-
-    //Steps
-    @OneToMany(mappedBy = "userEntity")
-    private List<Steps> steps;
-
     public User(){}
+
+
 
     public User(String email, String name, String lastname, String password, String gender, Double height, String role){
         this.email = email;
@@ -49,6 +46,55 @@ public class User {
         this.gender = !gender.isEmpty() ? gender : UserGender.NO_GENRE.name();
         this.role = role.isEmpty() || role.equals(UserRole.USER.name())
                 ? UserRole.USER.name() : UserRole.ADMIN.name();
+    }
+
+    public User(String email, String name, String lastname, String password, String gender, Double height, String role,Boolean active){
+        this.email = email;
+        this.name = name;
+        this.lastname = lastname;
+        this.password = password;
+        this.height = height;
+        this.gender = !gender.isEmpty() ? gender : UserGender.NO_GENRE.name();
+        this.role = role.isEmpty() || role.equals(UserRole.USER.name())
+                ? UserRole.USER.name() : UserRole.ADMIN.name();
+        this.active = active;
+    }
+
+    public User(String email, Boolean active){
+        this.email = email;
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
+                ", start_date=" + start_date +
+                ", height=" + height +
+                ", role='" + role + '\'' +
+                ", active=" + active +
+                '}';
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("active", false);
+        result.put("age", age);
+        result.put("email", email);
+        result.put("gender", gender);
+        result.put("lastname", lastname);
+        result.put("name", name);
+        result.put("password",password);
+        result.put("rol", role);
+
+        return result;
     }
 
     public long getId() {

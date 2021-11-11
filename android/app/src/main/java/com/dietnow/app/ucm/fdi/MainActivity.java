@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     // redirige a la home o muestra error de inicio de sesion
     private void updateUI(FirebaseUser user){
-        String rol = User.UserRole.ADMIN.name(); // MUY TEMPORAL: VER PERSISTENCIA DE DATOS
+        String rol = User.UserRole.USER.name(); // MUY TEMPORAL: VER PERSISTENCIA DE DATOS
 
         if(user != null){
             String uuid = user.getUid(), userName = user.getDisplayName();

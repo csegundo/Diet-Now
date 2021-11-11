@@ -5,6 +5,7 @@
     <string name="label_main_page">Menú prinicpal</string>
     <string name="label_admin_profile">Admin Profile</string>
     <string name="label_admin_register">Admin Profile</string>
+    <string name="label_user_profile">User Profile</string>
 
 
     <!-- Resto de strings -->

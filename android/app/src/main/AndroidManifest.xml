@@ -20,13 +20,13 @@
         <activity
             android:name=".UserProfileActivity"
             android:exported="false"
-            android:label="@string/label_admin_profile" />
+            android:label="@string/label_user_profile" />
 
         <!-- Register AdminActivity -->
         <activity
             android:name=".RegisterAdminActivity"
             android:exported="false"
-            android:label="@string/label_admin_register" />
+            android:label="@string/label_user_profile" />
 
 
         <!-- UserPageActivity -->
