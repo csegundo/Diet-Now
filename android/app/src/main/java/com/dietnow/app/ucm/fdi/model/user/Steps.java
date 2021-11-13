@@ -18,8 +18,8 @@ import javax.persistence.ManyToOne;
 public class Steps {
 
     private String id;
-    private long user;
-    private Integer weight;
+    private String user;
+    private long Steps;
     private Date date;
 
     //getters y setters
@@ -32,20 +32,20 @@ public class Steps {
         this.id = id;
     }
 
-    public long getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(long user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public Integer getWeight() {
-        return weight;
+    public long getWeight() {
+        return Steps;
     }
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
+    public void setWeight(long Steps) {
+        this.Steps = Steps;
     }
 
     public Date getDate() {
@@ -61,7 +61,7 @@ public class Steps {
         HashMap<String, Object> result = new HashMap<>();
         result.put("id", id);
         result.put("user", user);
-        result.put("weight", weight);
+        result.put("Steps", Steps);
         result.put("date", date);
         return result;
     }
@@ -71,7 +71,7 @@ public class Steps {
         return "Steps{" +
                 "id=" + id +
                 ", user=" + user +
-                ", weight=" + weight +
+                ", Steps=" + Steps +
                 ", date=" + date +
                 '}';
     }
