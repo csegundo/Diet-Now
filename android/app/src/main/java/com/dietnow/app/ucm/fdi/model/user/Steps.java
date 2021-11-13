@@ -1,31 +1,34 @@
 package com.dietnow.app.ucm.fdi.model.user;
 
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
-@Entity
+@IgnoreExtraProperties
 public class Steps {
-    @Id
-    private long id;
+
+    private String id;
     private long user;
     private Integer weight;
     private Date date;
-    @ManyToOne()
-    @JoinColumn(name="user")
-    private User userEntity;
 
     //getters y setters
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -53,11 +56,23 @@ public class Steps {
         this.date = date;
     }
 
-    public User getUserEntity() {
-        return userEntity;
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("user", user);
+        result.put("weight", weight);
+        result.put("date", date);
+        return result;
     }
 
-    public void setUserEntity(User userEntity) {
-        this.userEntity = userEntity;
+    @Override
+    public String toString() {
+        return "Steps{" +
+                "id=" + id +
+                ", user=" + user +
+                ", weight=" + weight +
+                ", date=" + date +
+                '}';
     }
 }
