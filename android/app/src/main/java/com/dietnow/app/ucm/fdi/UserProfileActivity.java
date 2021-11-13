@@ -69,17 +69,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void updateUser() {
         FirebaseUser userAuth = auth.getCurrentUser();
-        // Create new post at /user-posts/$userid/$postid and at
-
-
-        //Map<String, Object> userValues = user.toMap();
-        //mDatabase.child("users").updateChildren(userValues);
-
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
                 User user = dataSnapshot.child("users").child(userAuth.getUid()).getValue(User.class);
                 user.setActive(false);
                 Map<String, Object> userValues = user.toMap();
@@ -88,14 +81,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
                 Log.w("TAG", "UserPost:onCancelled", databaseError.toException());
             }
         };
         mDatabase.addValueEventListener(postListener);
     }
-
-    //falta hacer la lógica de la aplicacion
-
 
 }

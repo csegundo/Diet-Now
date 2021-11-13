@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 
         // incilizar Google Firebase
         auth         = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance("https://diet-now-f650d-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+        mDatabase    = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
 
         // inicializar los componentes por ID
         email        = findViewById(R.id.registerEmail);
@@ -97,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                             }
                         }
 
-                        User user =UserService.getInstance().register(email.getText().toString(),
+                        User user = UserService.getInstance().register(email.getText().toString(),
                                 name.getText().toString(),
                                 lastname.getText().toString(),
                                 passwd.getText().toString(),
@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                                0.0,
                                 Integer.parseInt(age.getText().toString()));
 
-                        register(user,passwd.getText().toString());
+                        register(user, passwd.getText().toString());
                     } else{
                         Toast.makeText(getApplicationContext(),
                                 getResources().getString(R.string.register_check_paaswords),
@@ -120,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
-    private void register(User user,String rawPassword){
+    private void register(User user, String rawPassword){
         auth.createUserWithEmailAndPassword(user.getEmail(), rawPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

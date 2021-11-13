@@ -29,7 +29,7 @@
     <string name="register_check_fields">¡Hay algún campo que está vacio!</string>
     <string name="register_check_paaswords">¡Las contraseñas no coinciden!</string>
     <string name="settings">Settings</string>
-    <string name="welcome">Bienvenido</string>
+    <string name="welcome">Bienvenido/a</string>
     <string name="login_failed">Credenciales incorrectos</string>
     <string name="register_succesful">Cuenta creada correctamente</string>
     <string name="register_failed">Error al crear cuenta</string>

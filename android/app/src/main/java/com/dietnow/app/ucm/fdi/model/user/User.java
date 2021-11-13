@@ -1,14 +1,5 @@
 package com.dietnow.app.ucm.fdi.model.user;
 
-
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import com.google.firebase.database.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +12,14 @@ public class User {
 
     @Exclude
     private String id;
+
     private Integer age;
     private String email;
     private String name;
     private String lastname;
     private String password;
     private String gender;
-    private Date start_date;
+    private String date;
     private Double height;
 
     private String role;
@@ -39,14 +31,14 @@ public class User {
 
 
 
-    public User(String email, String name, String lastname, String password, String gender, Double height, String role, Integer age, Date date){
+    public User(String email, String name, String lastname, String password, String gender, Double height, String role, Integer age, String date){
         this.email = email;
         this.name = name;
         this.lastname = lastname;
         this.password = password;
         this.height = height;
         this.age = age;
-        this.start_date = date;
+        this.date = date;
         this.gender = !gender.isEmpty() ? gender : UserGender.NO_GENRE.name();
         this.role = role.isEmpty() || role.equals(UserRole.USER.name())
                 ? UserRole.USER.name() : UserRole.ADMIN.name();
@@ -79,7 +71,7 @@ public class User {
                 ", lastname='" + lastname + '\'' +
                 ", password='" + password + '\'' +
                 ", gender='" + gender + '\'' +
-                ", start_date=" + start_date +
+                ", start_date=" + date +
                 ", height=" + height +
                 ", role='" + role + '\'' +
                 ", active=" + active +
@@ -157,12 +149,12 @@ public class User {
         this.gender = gender;
     }
 
-    public Date getStart_date() {
-        return start_date;
+    public String getStart_date() {
+        return date;
     }
 
-    public void setStart_date(Date start_date) {
-        this.start_date = start_date;
+    public void setStart_date(String start_date) {
+        this.date = start_date;
     }
 
     public Double getHeight() {

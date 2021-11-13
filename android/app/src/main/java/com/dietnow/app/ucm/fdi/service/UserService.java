@@ -29,17 +29,13 @@ public class UserService {
     private static UserService instance;
 
     // return user id
-    public User register(String email, String name, String lastname, String password, User.UserGender gender, Double height,Integer age){
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("Y-M-d H:m:s");
-        try{
-            date = dateFormat.parse(dateFormat.format(date));
-        }catch (Exception e ){
-            e.printStackTrace();
-        }
+    public User register(String email, String name, String lastname, String password, User.UserGender gender, Double height, Integer age){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
+        String created = dateFormat.format(new Date());
 
-        User newUser = new User(email, name, lastname, this.encodePassword(password), gender.name(), height, User.UserRole.USER.name(),age,
-                date!=null ? date:new Date());
+        User newUser = new User(email, name, lastname, this.encodePassword(password), gender.name(),
+                height, User.UserRole.USER.name(), age, created);
+
         return newUser;
     }
 

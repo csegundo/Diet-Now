@@ -23,10 +23,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Map;
+
 /**
  * LoginActivity - Establece el inicio de sesion del usuario en la aplicación
  */
 public class MainActivity extends AppCompatActivity {
+
+    public static String FIREBASE_DB_URL = "https://diet-now-f650d-default-rtdb.europe-west1.firebasedatabase.app/";
 
     private EditText email;
     private EditText password;
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         // inicializar Google Firebase
         auth     = FirebaseAuth.getInstance();
-        db       = FirebaseDatabase.getInstance().getReference();
+        db       = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
 
         // Buscar los componentes de esta actividad por su ID
         register = findViewById(R.id.loginRegisterBtn);
@@ -64,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(MainActivity.this, AdminPageActivity.class);
-                // startActivity(intent);
                 login(email.getText().toString(), password.getText().toString());
             }
         });
@@ -76,8 +78,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    FirebaseUser user = auth.getCurrentUser();
-                    updateUI(user);
+                    // FirebaseUser user = auth.getCurrentUser();
+                    // updateUI(user);
+
+                    // sacar el User dado el UID para conocer el rol y redirigir a una vista u otra
+                    FirebaseUser currentUser = auth.getCurrentUser();
+                    ValueEventListener postListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
+                            updateUI(user);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("TAG", "UserPost:onCancelled", databaseError.toException());
+                        }
+                    };
+                    db.addValueEventListener(postListener);
                 } else{
                     updateUI(null);
                 }
@@ -86,14 +104,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // redirige a la home o muestra error de inicio de sesion
-    private void updateUI(FirebaseUser user){
-        String rol = User.UserRole.USER.name(); // MUY TEMPORAL: VER PERSISTENCIA DE DATOS
-
+    private void updateUI(User user){
         if(user != null){
-            String uuid = user.getUid(), userName = user.getDisplayName();
+            String userName = user.getName(), rol = user.getRole();
             Toast.makeText(getApplicationContext(),
                     "¡" + getResources().getString(R.string.welcome) +
-                            (userName != null ? ", " + userName : "") + "!",
+                            (userName != null ? " " + userName : "") + "!",
                     Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, rol.equalsIgnoreCase("admin") ?
                     AdminPageActivity.class : UserPageActivity.class);
