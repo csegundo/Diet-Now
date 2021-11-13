@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -68,15 +69,36 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void updateUser() {
-        FirebaseUser userAuth = auth.getCurrentUser();
+        FirebaseUser user = auth.getCurrentUser();
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child("users").child(userAuth.getUid()).getValue(User.class);
-                user.setActive(false);
-                Map<String, Object> userValues = user.toMap();
-                mDatabase.child("users").child(userAuth.getUid()).updateChildren(userValues);
+                // borrar de auth
+
+                FirebaseUser userAuth = FirebaseAuth.getInstance().getCurrentUser();
+                if (userAuth != null) {
+                    Toast.makeText(getApplicationContext(),
+                            "Usuario borrado correctamente",
+                            Toast.LENGTH_LONG).show();
+
+                    // borrar de la base de datos
+                    User user = dataSnapshot.child("users").child(userAuth.getUid()).getValue(User.class);
+                    user.setActive(false);
+                    Map<String, Object> userValues = user.toMap();
+                    mDatabase.child("users").child(userAuth.getUid()).updateChildren(userValues);
+
+                    //redirige a la página principal
+                    //auth.signOut();
+                    Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
+                    startActivity(intent);
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "El usuario no se ha borrado correctamente",
+                            Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
