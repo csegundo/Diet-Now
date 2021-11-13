@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.Executor;
 
@@ -35,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     private EditText lastname;
     private EditText age;
     private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 
         // incilizar Google Firebase
         auth         = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance("https://diet-now-f650d-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
 
         // inicializar los componentes por ID
         email        = findViewById(R.id.registerEmail);
@@ -84,31 +88,24 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                     if(passwd.getText().toString().equalsIgnoreCase(passwdRepeat.getText().toString())){
                         User.UserGender uGender = User.UserGender.NO_GENRE;
                         if(!genres.getSelectedItem().toString().isEmpty()){
-                            if(genres.getSelectedItem().toString().matches("(masculino|male)")){
+                            if(genres.getSelectedItem().toString().equalsIgnoreCase("masculino")){
                                 uGender = User.UserGender.MALE;
-                            } else if(genres.getSelectedItem().toString().matches("(femenino|female)")){
+                            } else if(genres.getSelectedItem().toString().equalsIgnoreCase("femenino")){
                                 uGender = User.UserGender.FEMALE;
                             } else{
                                 uGender = User.UserGender.NO_GENRE;
                             }
                         }
 
-                        register(email.getText().toString(), passwd.getText().toString());
-                        /*
-                        Integer newUserId = UserService.getInstance().register(
-                                email.getText().toString(),
+                        User user =UserService.getInstance().register(email.getText().toString(),
                                 name.getText().toString(),
                                 lastname.getText().toString(),
                                 passwd.getText().toString(),
                                 uGender,
-                                0.0
-                        );
+                               0.0,
+                                Integer.parseInt(age.getText().toString()));
 
-                        // en funcion del rol redirigir a una vista u otra
-                        Toast.makeText(getApplicationContext(),
-                                "NEW USER: " + newUserId,
-                                Toast.LENGTH_SHORT).show();
-                        */
+                        register(user,passwd.getText().toString());
                     } else{
                         Toast.makeText(getApplicationContext(),
                                 getResources().getString(R.string.register_check_paaswords),
@@ -123,23 +120,24 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
-    private void register(String email, String rawPassword){
-        auth.createUserWithEmailAndPassword(email, rawPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void register(User user,String rawPassword){
+        auth.createUserWithEmailAndPassword(user.getEmail(), rawPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    FirebaseUser user = auth.getCurrentUser();
-                    updateUI(user);
+                    FirebaseUser firebaseUser = auth.getCurrentUser();
+                    mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
+                    updateUI(true);
                 } else{
-                    updateUI(null);
+                    updateUI(false);
                 }
             }
         });
     }
 
     // redirige al login o muestra error de registro
-    private void updateUI(FirebaseUser user){
-        if(user != null){
+    private void updateUI(Boolean success){
+        if(success){
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.register_succesful),
                     Toast.LENGTH_SHORT).show();

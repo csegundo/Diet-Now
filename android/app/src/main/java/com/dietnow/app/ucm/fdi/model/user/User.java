@@ -1,7 +1,8 @@
 package com.dietnow.app.ucm.fdi.model.user;
 
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -18,7 +19,8 @@ public class User {
     public enum UserGender{ MALE, FEMALE, NO_GENRE }
     public enum UserRole{ ADMIN, USER }
 
-    private long id;
+    @Exclude
+    private String id;
     private Integer age;
     private String email;
     private String name;
@@ -37,12 +39,14 @@ public class User {
 
 
 
-    public User(String email, String name, String lastname, String password, String gender, Double height, String role){
+    public User(String email, String name, String lastname, String password, String gender, Double height, String role, Integer age, Date date){
         this.email = email;
         this.name = name;
         this.lastname = lastname;
         this.password = password;
         this.height = height;
+        this.age = age;
+        this.start_date = date;
         this.gender = !gender.isEmpty() ? gender : UserGender.NO_GENRE.name();
         this.role = role.isEmpty() || role.equals(UserRole.USER.name())
                 ? UserRole.USER.name() : UserRole.ADMIN.name();
@@ -97,11 +101,11 @@ public class User {
         return result;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

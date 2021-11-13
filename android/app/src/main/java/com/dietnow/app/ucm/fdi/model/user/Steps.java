@@ -4,7 +4,7 @@ package com.dietnow.app.ucm.fdi.model.user;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 
 @IgnoreExtraProperties
 public class Steps {
-
+    @Exclude
     private String id;
     private String user;
     private long Steps;

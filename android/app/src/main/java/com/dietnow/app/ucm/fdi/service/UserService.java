@@ -13,6 +13,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.Executor;
 
 import javax.persistence.EntityManager;
@@ -27,9 +29,18 @@ public class UserService {
     private static UserService instance;
 
     // return user id
-    public Integer register(String email, String name, String lastname, String password, User.UserGender gender, Double height){
-        User newUser = new User(email, name, lastname, this.encodePassword(password), gender.name(), height, User.UserRole.USER.name());
-        return 2;
+    public User register(String email, String name, String lastname, String password, User.UserGender gender, Double height,Integer age){
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("Y-M-d H:m:s");
+        try{
+            date = dateFormat.parse(dateFormat.format(date));
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+
+        User newUser = new User(email, name, lastname, this.encodePassword(password), gender.name(), height, User.UserRole.USER.name(),age,
+                date!=null ? date:new Date());
+        return newUser;
     }
 
     // Para el register: hashea la password que ha metido el usuario

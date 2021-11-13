@@ -80,22 +80,10 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                System.out.println(dataSnapshot.child("users").toString());
                 User user = dataSnapshot.child("users").child(userAuth.getUid()).getValue(User.class);
-
-                //user.setActive(false);
-                //Map<String, Object> userValues = user.toMap();
-                //mDatabase.child("users").child(userAuth.getUid()).updateChildren(userValues);
-
-
-                /*
-                Log.d("Test",String.valueOf(dataSnapshot.exists()));
-                Log.d("Test",String.valueOf(dataSnapshot.getChildrenCount()));
-                Log.d("Test",String.valueOf(dataSnapshot.child("users").getValue()));
-                */
-
-
-
+                user.setActive(false);
+                Map<String, Object> userValues = user.toMap();
+                mDatabase.child("users").child(userAuth.getUid()).updateChildren(userValues);
             }
 
             @Override
