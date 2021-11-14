@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     "¡" + getResources().getString(R.string.welcome) +
                             (userName != null ? " " + userName : "") + "!",
                     Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(MainActivity.this, rol.equalsIgnoreCase("admin") ?
                     AdminPageActivity.class : UserPageActivity.class);
             startActivity(intent);

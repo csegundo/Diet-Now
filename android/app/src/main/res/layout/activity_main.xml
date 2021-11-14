@@ -10,31 +10,33 @@
         android:id="@+id/loginPassword"
         android:layout_width="280dp"
         android:layout_height="48dp"
+        android:drawableRight="@drawable/ic_lock_black"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:text="123456"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.402"
-        android:drawableRight="@drawable/ic_lock_black" />
+        app:layout_constraintVertical_bias="0.402" />
 
     <EditText
         android:id="@+id/loginEmail"
         android:layout_width="280dp"
         android:layout_height="48dp"
+        android:drawableRight="@drawable/ic_email_black"
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
+        android:text="admin@dietnow.com"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.291"
-        android:drawableRight="@drawable/ic_email_black" />
+        app:layout_constraintVertical_bias="0.291" />
 
     <!--
     Para botones redondeados:

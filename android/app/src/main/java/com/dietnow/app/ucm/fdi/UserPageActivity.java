@@ -23,7 +23,7 @@ public class UserPageActivity extends AppCompatActivity {
         dieta = findViewById(R.id.dietaBtn);
 
         auth   = FirebaseAuth.getInstance();
-        logout = findViewById(R.id.cerrarSesionTemp);
+        logout = findViewById(R.id.cerrarSesionTemp2);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

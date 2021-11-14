@@ -1,5 +1,6 @@
 <resources>
     <!-- Titulos de las pantallas para poner en el AndroidManifest.xml -->
+    <string name="label_all_user">Todos los usuarios</string>
     <string name="label_login">Iniciar sesión - DietNow</string>
     <string name="label_register">Crear cuenta - DietNow</string>
     <string name="label_main_page">Menú prinicpal</string>
@@ -11,6 +12,7 @@
     <!-- Resto de strings -->
     <string name="app_name">Diet Now</string>
     <string name="email">Email</string>
+    <string name="emailAllUser">Email...</string>
     <string name="email_label">Correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="password_repear">Repetir contraseña</string>
