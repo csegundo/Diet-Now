@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.model.user.User;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private Button login;
     private Button register;
+    private ProgressBar progress;
 
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         login    = findViewById(R.id.loginBtn);
         email    = findViewById(R.id.loginEmail);
         password = findViewById(R.id.loginPassword);
+        progress = findViewById(R.id.loginLoader);
 
         // Acciones de los componentes
         register.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progress.setVisibility(View.VISIBLE);
                 login(email.getText().toString(), password.getText().toString());
             }
         });
@@ -111,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                     "¡" + getResources().getString(R.string.welcome) +
                             (userName != null ? " " + userName : "") + "!",
                     Toast.LENGTH_SHORT).show();
+
+            progress.setVisibility(View.INVISIBLE);
 
             Intent intent = new Intent(MainActivity.this, rol.equalsIgnoreCase("admin") ?
                     AdminPageActivity.class : UserPageActivity.class);

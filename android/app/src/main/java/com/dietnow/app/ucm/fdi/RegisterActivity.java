@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     private EditText age;
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         name         = findViewById(R.id.registerName);
         lastname     = findViewById(R.id.registerLastname);
         age          = findViewById(R.id.registerAge);
+        progressBar  = findViewById(R.id.progressBar);
 
         // login button action
         login = findViewById(R.id.registerLoginBtn);
@@ -78,6 +81,8 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+
                 Boolean isValid = !email.getText().toString().isEmpty();
                 isValid = isValid || !passwd.getText().toString().isEmpty();
                 isValid = isValid || !passwdRepeat.getText().toString().isEmpty();
@@ -141,6 +146,9 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.register_succesful),
                     Toast.LENGTH_SHORT).show();
+
+            progressBar.setVisibility(View.INVISIBLE);
+
             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
             startActivity(intent);
         } else{
