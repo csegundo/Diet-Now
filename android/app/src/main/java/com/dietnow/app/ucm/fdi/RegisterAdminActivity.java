@@ -23,6 +23,7 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
     private Button login;
     private Button register;
     private Spinner genres;
+    private Spinner rol;
     private EditText email;
     private EditText passwd;
     private EditText passwdRepeat;
@@ -67,6 +68,13 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
         genres.setAdapter(adapter);
         genres.setOnItemSelectedListener(this);
 
+        rol = findViewById(R.id.registerRol);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(RegisterAdminActivity.this, R.array.roles, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        rol.setAdapter(adapter2);
+        rol.setOnItemSelectedListener(this);
+
+
         // register button action
         register = findViewById(R.id.registerBtn);
         register.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +96,15 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
                                 uGender = User.UserGender.FEMALE;
                             } else{
                                 uGender = User.UserGender.NO_GENRE;
+                            }
+                        }
+
+                        User.UserRole uRole = User.UserRole.USER;
+                        if(!rol.getSelectedItem().toString().isEmpty()){
+                            if(rol.getSelectedItem().toString().matches("(user|usario)")){
+                                uRole = User.UserRole.USER;
+                            } else if(rol.getSelectedItem().toString().matches("(admin|administrador)")) {
+                                uRole = User.UserRole.ADMIN;
                             }
                         }
 
@@ -113,6 +130,8 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String genre = parent.getItemAtPosition(position).toString();
+
+        String role = parent.getItemAtPosition(position).toString();
 
         // ahora solo muestra mensaje, luego quitarlo
         // Toast.makeText(parent.getContext(), "Género: " + genre, Toast.LENGTH_SHORT).show();

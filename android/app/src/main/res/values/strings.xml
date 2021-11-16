@@ -48,4 +48,10 @@
         <item>Femenino</item>
         <item>Prefiero no especificar</item>
     </string-array>
+
+    <string-array name="roles">
+        <item>- Selecciona rol -</item>
+        <item>Admin</item>
+        <item>User</item>
+    </string-array>
 </resources>

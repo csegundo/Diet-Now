@@ -34,7 +34,7 @@
         <activity
             android:name=".RegisterAdminActivity"
             android:exported="false"
-            android:label="@string/label_user_profile" />
+            android:label="@string/label_register" />
 
         <!-- UserPageActivity -->
         <activity
