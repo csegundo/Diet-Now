@@ -70,25 +70,12 @@
         android:id="@+id/adminModUser"
         android:layout_width="300dp"
         android:layout_height="60dp"
+        android:layout_marginTop="480dp"
         android:text="Modificar Usuario"
-        app:layout_constraintBottom_toTopOf="@+id/adminDeleteUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.961" />
-
-    <Button
-        android:id="@+id/adminDeleteUser"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:text="Eliminar Usuario"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.822" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/cerrarSesionTemp"

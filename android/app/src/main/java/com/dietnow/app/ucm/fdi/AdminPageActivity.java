@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminPageActivity extends AppCompatActivity {
 
-    private Button creardieta,perfil,dietasCreadas,dietasPub,crearUser,modUser,deleteUser;
+    private Button creardieta,perfil,dietasCreadas,dietasPub,crearUser,modUser;
     private Button logout;
     private FirebaseAuth auth;
 
@@ -99,17 +99,5 @@ public class AdminPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        deleteUser = findViewById(R.id.adminDeleteUser);
-
-        // Acciones de los componentes
-        deleteUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
-                Intent intent = new Intent(AdminPageActivity.this, AdminPageActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 }
