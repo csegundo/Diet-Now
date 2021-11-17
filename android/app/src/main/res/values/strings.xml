@@ -37,6 +37,7 @@
     <string name="register_failed">Error al crear cuenta</string>
     <string name="password_tooltip">6 caracteres como mínimo</string>
     <string name="years">años</string>
+    <string name="create_account">Crear cuenta</string>
     <string name="change">Cambiar</string>
     <string name="my_stats">Mis estadísticas</string>
     <string name="select_image">Selecciona una imagen</string>

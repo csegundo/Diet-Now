@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 import com.dietnow.app.ucm.fdi.model.user.*;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -38,6 +40,8 @@ public class UserProfileActivity extends AppCompatActivity {
     private Button delete, change;
     private DatabaseReference mDatabase;
     private FirebaseAuth auth;
+    private FirebaseStorage storage;
+    private StorageReference storageRef, imagesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +49,18 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         // inicializar los elementos
-        settings  = findViewById(R.id.settings);
-        name      = findViewById(R.id.profileName);
-        age       = findViewById(R.id.profileAge);
-        image     = (ImageView) findViewById(R.id.profileImage);
-        change    = findViewById(R.id.profileChangeImg);
+        settings   = findViewById(R.id.settings);
+        name       = findViewById(R.id.profileName);
+        age        = findViewById(R.id.profileAge);
+        image      = (ImageView) findViewById(R.id.profileImage);
+        change     = findViewById(R.id.profileChangeImg);
 
         // inicializar Google Firebase
-        auth      = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        auth       = FirebaseAuth.getInstance();
+        mDatabase  = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        storage    = FirebaseStorage.getInstance(); // se crea la instancia
+        storageRef = storage.getReference(); // crear una referencia del almacenamiento
+        imagesRef  = storageRef.child("images"); // referencia exclusivamente para imagenes
 
         // llamada a Firebase para obtener la info del usuario logueado
         FirebaseUser currentUser = auth.getCurrentUser();
