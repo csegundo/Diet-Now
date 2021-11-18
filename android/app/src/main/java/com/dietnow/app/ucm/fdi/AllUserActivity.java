@@ -36,7 +36,8 @@ public class AllUserActivity extends AppCompatActivity {
     private Button button;
     private ListView listView;
     private DataSnapshot userList;
-    private ArrayList<String> list = new ArrayList<>();
+    private ArrayList<User> list = new ArrayList<>();
+    private ArrayList<String> listName = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -50,7 +51,7 @@ public class AllUserActivity extends AppCompatActivity {
         button = findViewById(R.id.btnAdd);
         listView = findViewById(R.id.listView);
         editText = findViewById(R.id.editText);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listName);
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,9 +59,12 @@ public class AllUserActivity extends AppCompatActivity {
                 //La idea es que una vez se hace clic la linea de abajo filtra y solo contiene
                 //a los usuarios cuyos nombres se parezcan a lo introducido
                 List<String> filteredList = Lists.newArrayList(Collections2.filter(
-                        list, Predicates.containsPattern(editText.getText().toString())));
-
+                        listName, Predicates.containsPattern(editText.getText().toString())));
                 editText.setText("");
+                for (String name: filteredList) {
+                    Log.d("",name);
+                }
+
                 adapter.notifyDataSetChanged();
             }
         };
@@ -71,13 +75,25 @@ public class AllUserActivity extends AppCompatActivity {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> names= new ArrayList<>();
+                ArrayList<User> users= new ArrayList<>();
+                ArrayList<String> usernames= new ArrayList<>();
+                Log.d("DB", dataSnapshot.child("users").toString());
                 for(DataSnapshot ds : dataSnapshot.child("users").getChildren()) {
+                    String email = ds.child("email").getValue(String.class);
                     String name = ds.child("name").getValue(String.class);
-                    names.add(name);
-                    Log.d("TAG", name);
+                    String lastname = ds.child("lastname").getValue(String.class);
+                    String password = ds.child("password").getValue(String.class);
+                    String gender = ds.child("gender").getValue(String.class);
+                    Double height = ds.child("height").getValue(Double.class);
+                    String role = ds.child("role").getValue(String.class);
+                    Integer age = ds.child("age").getValue(Integer.class);
+                    String date = ds.child("date").getValue(String.class);
+
+                    User us = new User(email,name,lastname,password,gender,height,role,age,date);
+                    users.add(us);
+                    usernames.add(name);
                 }
-                asignResult(names);
+                asignResult(users,usernames);
                 //En este punto la lista names contiene los nombres de los usuarios registrados pero no se
                 //como sacarla de aqui y mostrarla por pantalla --> es necesario sacarla de aqui y meterla en la linea
             }
@@ -89,8 +105,9 @@ public class AllUserActivity extends AppCompatActivity {
         };
         db.addValueEventListener(postListener);
     }
-    private void asignResult (ArrayList<String> query){
+    private void asignResult (ArrayList<User> query, ArrayList<String> usernames){
         list = query;
+        listName = usernames;
     }
 
 

@@ -19,11 +19,12 @@
         android:layout_height="wrap_content"
         android:text="Add item"
         android:layout_below="@id/editText" />
-    <ListView
-        android:id="@+id/listView"
+    <TextView
+        android:id="@+id/names"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnAdd" />
+        android:layout_below="@id/btnAdd"
+        android:text="Name" />
 </RelativeLayout>
 
     <!-- <?xml version="1.0" encoding="utf-8"?>
