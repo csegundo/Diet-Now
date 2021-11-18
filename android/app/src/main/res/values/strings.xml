@@ -39,8 +39,12 @@
     <string name="years">años</string>
     <string name="create_account">Crear cuenta</string>
     <string name="change">Cambiar</string>
-    <string name="my_stats">Mis estadísticas</string>
     <string name="select_image">Selecciona una imagen</string>
+    <string name="select_image_error">Error al seleccionar una imagen</string>
+    <string name="my_stats">Mis estadísticas</string>
+    <string name="uploading">Subiendo</string>
+    <string name="uploaded_progress">subido</string>
+    <string name="uploaded_final">Imagen actualizada con éxito</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">
