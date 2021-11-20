@@ -53,7 +53,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private Button settings;
     private ImageView image;
     private Uri filePath;
-    private Button delete, change;
+    private Button delete, change, editProfile;
 
     private DatabaseReference db;
     private FirebaseAuth auth;
@@ -71,6 +71,7 @@ public class UserProfileActivity extends AppCompatActivity {
         age        = findViewById(R.id.profileAge);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
+        editProfile= findViewById(R.id.profileEditProfile);
 
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
@@ -139,6 +140,15 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getImageFromPhone();
+            }
+        });
+
+        // editar el perfil del usuario
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+                startActivity(intent);
             }
         });
 

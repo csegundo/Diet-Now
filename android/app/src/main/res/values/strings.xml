@@ -7,7 +7,7 @@
     <string name="label_admin_profile">Admin Profile</string>
     <string name="label_admin_register">Admin Profile</string>
     <string name="label_user_profile">User Profile</string>
-
+    <string name="label_user_edit_profile">Editar perfil</string>
 
     <!-- Resto de strings -->
     <string name="app_name">Diet Now</string>
@@ -22,6 +22,7 @@
     <string name="name">Nombre</string>
     <string name="lastname">Apellido(s)</string>
     <string name="age">Edad</string>
+    <string name="save">Guardar</string>
     <string name="genre">Género</string>
     <string name="genre_male">Masculino</string>
     <string name="genre_female">Femenino</string>
@@ -46,6 +47,10 @@
     <string name="uploaded_progress">subido</string>
     <string name="uploaded_final">Imagen actualizada con éxito</string>
     <string name="all_users">Todos los usuarios</string>
+    <string name="created_at">Fecha de creación</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="password_tip">* La contrasña debe tener al menos 6 caracteres</string>
+    <string name="new_password_tip">* La nueva contraseña reemplazará a la anterior</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">
