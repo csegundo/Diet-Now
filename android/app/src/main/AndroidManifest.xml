@@ -1,58 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dietnow.app.ucm.fdi" >
-
+    package="com.dietnow.app.ucm.fdi">
     <!-- Permiso para acceder a la galeria y documentos -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_dietnow"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DietNow" >
-
+        android:theme="@style/Theme.DietNow">
+        <activity
+            android:name=".UserProfileEditActivity"
+            android:exported="false" />
         <!-- AllUserActivity -->
         <activity
             android:name=".AllUserActivity"
             android:exported="false"
-            android:label="@string/label_all_user" />
-
-        <!-- AdminPageActivity -->
+            android:label="@string/label_all_user" /> <!-- AdminPageActivity -->
         <activity
             android:name=".AdminPageActivity"
             android:exported="false"
-            android:label="@string/label_main_page" />
-
-        <!-- UserProfileActivity -->
+            android:label="@string/label_main_page" /> <!-- UserProfileActivity -->
         <activity
             android:name=".UserProfileActivity"
             android:exported="false"
-            android:label="@string/label_user_profile" />
-
-        <!-- Register AdminActivity -->
+            android:label="@string/label_user_profile" /> <!-- Register AdminActivity -->
         <activity
             android:name=".RegisterAdminActivity"
             android:exported="false"
-            android:label="@string/label_register" />
-
-        <!-- UserPageActivity -->
+            android:label="@string/label_register" /> <!-- UserPageActivity -->
         <activity
             android:name=".UserPageActivity"
             android:exported="false"
-            android:label="@string/label_main_page" />
-
-        <!-- RegisterActivity -->
+            android:label="@string/label_main_page" /> <!-- RegisterActivity -->
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:label="@string/label_register" />
-
-        <!-- LoginActivity -->
+            android:label="@string/label_register" /> <!-- LoginActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/label_login" >
+            android:label="@string/label_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

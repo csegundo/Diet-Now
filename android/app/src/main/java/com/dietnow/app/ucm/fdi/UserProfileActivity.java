@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +38,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * UserProfileActivity - Establece el perfil del usuario en la aplicación
@@ -89,24 +93,31 @@ public class UserProfileActivity extends AppCompatActivity {
                 name.setText(user.getName().trim() + " " + user.getLastname().trim());
                 age.setText(user.getAge() + " " + age.getText().toString());
 
-                // TODO buscar la imagen de perfil del usuario en Fireabse Storage
                 String fileName = "profile_" + currentUser.getUid() + ".jpg";
                 storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
-                        try {
-                            /*InputStream imgStream = new java.net.URL(uri.toString()).openStream();
-                            Bitmap bitmap = BitmapFactory.decodeStream(imgStream);
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                            image.setImageBitmap(bitmap);*/
-                            InputStream is = new java.net.URL(uri.toString()).openStream();
-                            Bitmap bitmap = BitmapFactory.decodeStream(is);
-                            image.setImageBitmap(bitmap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
-                        }
+                        // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                        Executor executor = Executors.newSingleThreadExecutor();
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        executor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    InputStream in = new java.net.URL(uri.toString()).openStream();
+                                    Bitmap bitmap = BitmapFactory.decodeStream(in);
+                                    handler.post(new Runnable() { // making changes in UI
+                                        @Override
+                                        public void run() {
+                                            image.setImageBitmap(bitmap);
+                                        }
+                                    });
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+                                }
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

@@ -19,47 +19,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterAdminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-
     private Button login;
     private Button register;
     private Spinner genres;
     private Spinner rol;
     private EditText email;
     private EditText passwd;
-    private EditText passwdRepeat;
     private EditText name;
     private EditText lastname;
     private EditText age;
-    private UserService userService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_register_user);
 
-        // Buscar los componentes de esta actividad por su ID
-
-
-        userService = new UserService();
-
         // inicializar los componentes por ID
-        email = findViewById(R.id.registerEmail);
-        passwd = findViewById(R.id.registerPassword);
-        passwdRepeat = findViewById(R.id.registerPasswordRepeat);
-        name = findViewById(R.id.registerName);
-        lastname = findViewById(R.id.registerLastname);
-        age = findViewById(R.id.registerAge);
-
-        // login button action
-        login = findViewById(R.id.registerLoginBtn);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterAdminActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        email        = findViewById(R.id.registerEmail);
+        passwd       = findViewById(R.id.registerPassword);
+        name         = findViewById(R.id.registerName);
+        lastname     = findViewById(R.id.registerLastname);
+        age          = findViewById(R.id.registerAge);
 
         // change genre action
         genres = findViewById(R.id.registerGenre);
@@ -82,38 +62,31 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
             public void onClick(View v) {
                 Boolean isValid = !email.getText().toString().isEmpty();
                 isValid = isValid || !passwd.getText().toString().isEmpty();
-                isValid = isValid || !passwdRepeat.getText().toString().isEmpty();
                 isValid = isValid || !name.getText().toString().isEmpty();
                 isValid = isValid || !age.getText().toString().isEmpty();
 
                 if(isValid){
-                    if(passwd.getText().toString().equalsIgnoreCase(passwdRepeat.getText().toString())){
-                        User.UserGender uGender = User.UserGender.NO_GENRE;
-                        if(!genres.getSelectedItem().toString().isEmpty()){
-                            if(genres.getSelectedItem().toString().matches("(masculino|male)")){
-                                uGender = User.UserGender.MALE;
-                            } else if(genres.getSelectedItem().toString().matches("(femenino|female)")){
-                                uGender = User.UserGender.FEMALE;
-                            } else{
-                                uGender = User.UserGender.NO_GENRE;
-                            }
+                    User.UserGender uGender = User.UserGender.NO_GENRE;
+                    if(!genres.getSelectedItem().toString().isEmpty()){
+                        if(genres.getSelectedItem().toString().matches("(masculino|male)")){
+                            uGender = User.UserGender.MALE;
+                        } else if(genres.getSelectedItem().toString().matches("(femenino|female)")){
+                            uGender = User.UserGender.FEMALE;
+                        } else{
+                            uGender = User.UserGender.NO_GENRE;
                         }
-
-                        User.UserRole uRole = User.UserRole.USER;
-                        if(!rol.getSelectedItem().toString().isEmpty()){
-                            if(rol.getSelectedItem().toString().matches("(user|usario)")){
-                                uRole = User.UserRole.USER;
-                            } else if(rol.getSelectedItem().toString().matches("(admin|administrador)")) {
-                                uRole = User.UserRole.ADMIN;
-                            }
-                        }
-
-                        // userService.register();
-                    } else{
-                        Toast.makeText(getApplicationContext(),
-                                getResources().getString(R.string.register_check_paaswords),
-                                Toast.LENGTH_SHORT).show();
                     }
+
+                    User.UserRole uRole = User.UserRole.USER;
+                    if(!rol.getSelectedItem().toString().isEmpty()){
+                        if(rol.getSelectedItem().toString().matches("(user|usario)")){
+                            uRole = User.UserRole.USER;
+                        } else if(rol.getSelectedItem().toString().matches("(admin|administrador)")) {
+                            uRole = User.UserRole.ADMIN;
+                        }
+                    }
+
+                    // UserService.getInstance().register();
                 } else{
                     Toast.makeText(getApplicationContext(),
                             getResources().getString(R.string.register_check_fields),
@@ -121,8 +94,6 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
                 }
             }
         });
-
-
 
     }
 

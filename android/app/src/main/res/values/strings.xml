@@ -45,6 +45,7 @@
     <string name="uploading">Subiendo</string>
     <string name="uploaded_progress">subido</string>
     <string name="uploaded_final">Imagen actualizada con éxito</string>
+    <string name="all_users">Todos los usuarios</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">
