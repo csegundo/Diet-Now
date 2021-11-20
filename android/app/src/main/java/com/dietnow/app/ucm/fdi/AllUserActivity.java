@@ -49,7 +49,7 @@ public class AllUserActivity extends AppCompatActivity {
         db       = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         fillList();
         button = findViewById(R.id.btnAdd);
-        listView = findViewById(R.id.listView);
+        //listView = findViewById(R.id.listView);
         editText = findViewById(R.id.editText);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listName);
         View.OnClickListener onClickListener = new View.OnClickListener() {

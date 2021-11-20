@@ -100,6 +100,9 @@ public class UserProfileActivity extends AppCompatActivity {
                             Bitmap bitmap = BitmapFactory.decodeStream(imgStream);
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                             image.setImageBitmap(bitmap);*/
+                            InputStream is = new java.net.URL(uri.toString()).openStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                            image.setImageBitmap(bitmap);
                         } catch (Exception e) {
                             e.printStackTrace();
                             image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
