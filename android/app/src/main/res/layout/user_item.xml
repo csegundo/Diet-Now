@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="95dp">
+
+
+    <ImageView
+        android:id="@+id/AllUserImage"
+        android:layout_width="93dp"
+        android:layout_height="95dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/AllUserName"
+        android:layout_width="208dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/AllUserEmail"
+
+        android:layout_width="208dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="50dp"
+        android:text="TextView" />
+
+    <ImageButton
+        android:id="@+id/AllUserEditBtn"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginLeft="330dp"
+
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageButton
+        android:id="@+id/AllUserDeleteBtn"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginLeft="330dp"
+        android:layout_marginTop="40dp"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+</androidx.cardview.widget.CardView>

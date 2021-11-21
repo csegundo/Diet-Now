@@ -1,39 +1,71 @@
 package com.dietnow.app.ucm.fdi.adapters;
-import com.dietnow.app.ucm.fdi.model.user.User;
-import android.content.Context;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.dietnow.app.ucm.fdi.R;
+import com.dietnow.app.ucm.fdi.model.user.User;
+
 import java.util.ArrayList;
 
+public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHolder> {
 
+    private ArrayList<User> localDataSet;
 
-import java.util.ArrayList;
+    public AllUsersAdapter(ArrayList<User> dataSet) {
+        localDataSet = dataSet;
+    }
 
+    // Create new views (invoked by the layout manager)
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        // Create a new view, which defines the UI of the list item
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.user_item, viewGroup, false);
 
-public class AllUsersAdapter extends ArrayAdapter<User> {
-
-    public AllUsersAdapter(Context context, ArrayList<User> users) {
-        super(context, 0, users);
+        return new ViewHolder(view);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        User user = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-           //----- convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_all_user, parent, false);
+    public void onBindViewHolder(@NonNull AllUsersAdapter.ViewHolder holder, int position) {
+        holder.name.setText(localDataSet.get(position).getName());
+        holder.email.setText(localDataSet.get(position).getEmail());
+        //holder.image.setImageURI(); TODO
+
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return localDataSet.size();
+    }
+
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView name;
+        private final TextView email;
+        //private final ImageView image;
+        //private final Button edit;
+        //private final Button delete;
+
+
+
+        public ViewHolder(View view) {
+            super(view);
+            // Define click listener for the ViewHolder's View
+            email =  view.findViewById(R.id.AllUserEmail);
+            name =  view.findViewById(R.id.AllUserName);
+            //image =  view.findViewById(R.id.AllUserImage);
+            //edit =  view.findViewById(R.id.AllUserEditBtn);
+            //delete =  view.findViewById(R.id.AllUserDeleteBtn);
         }
-        // Lookup view for data population
-        //----- TextView Name = (TextView) convertView.findViewById(R.id.names);
-
-        // Populate the data into the template view using the data object
-       //----- Name.setText(user.getName());
-
-        // Return the completed view to render on screen
-        return convertView;
     }
 }

@@ -1,4 +1,4 @@
-package com.dietnow.app.ucm.fdi;
+/*package com.dietnow.app.ucm.fdi;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * */
 
 
-public class AllUserActivity extends AppCompatActivity {
+/*public class AllUserActivity extends AppCompatActivity {
     private EditText editText;
     private Button button;
     private ListView listView;
@@ -112,43 +112,100 @@ public class AllUserActivity extends AppCompatActivity {
 
 
 
-}
+}*/
 
 
 
 
-/*package com.dietnow.app.ucm.fdi;
+package com.dietnow.app.ucm.fdi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.dietnow.app.ucm.fdi.adapters.AllUsersAdapter;
+import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+
+import java.util.ArrayList;
+
 
 public class AllUserActivity extends AppCompatActivity {
+
     private ImageButton search;
     private FirebaseAuth auth;
     private TextInputEditText searchText;
-
+    private AllUsersAdapter AllUsersAdapter;
+    private RecyclerView RecyclerView;
+    private DatabaseReference bd;
+    private ArrayList<User> userList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //----------------Variables--------------------
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_user);
 
-        searchText=findViewById(R.id.userSearchText);
-        search=findViewById(R.id.userSearchButton);
+        searchText              = findViewById(R.id.userSearchText);
+        search                  = findViewById(R.id.userSearchButton);
+        RecyclerView            = findViewById(R.id.AllUserRecycler);
+        bd                      = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        userList                = new ArrayList<User> ();
 
-        //prueba
-        TextView tv = new TextView(this);
-        tv.setText("my text");
-        tv.setTextSize(30);
+        RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //----------------Fin Variables----------------
 
+        //----------------Lista de Usuarios--------------------
+        /*for(DataSnapshot d : bd.child("users").get().getResult().getChildren()){
+            String email = d.child("email").getValue().toString();
+            String name = d.child("name").getValue().toString();
+            User us = new User(email, name);
+            userList.add(us);
+        }
+        AllUsersAdapter = new AllUsersAdapter(userList);
+        RecyclerView.setAdapter(AllUsersAdapter);*/
+
+        getUser();
+        //----------------Fin Lista de Usuarios--------------------
     }
-}*/
+    private void getUser(){
+        bd.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String email = ds.child("email").getValue().toString();
+                    String name = ds.child("name").getValue().toString();
+                    User us = new User(email, name);
+                    userList.add(us);
+                }
+                AllUsersAdapter = new AllUsersAdapter(userList);
+                RecyclerView.setAdapter(AllUsersAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+}
 
 
 
