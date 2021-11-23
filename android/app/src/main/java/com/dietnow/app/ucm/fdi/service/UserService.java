@@ -39,6 +39,17 @@ public class UserService {
         return newUser;
     }
 
+    public User registerWithRole(String email, String name, String lastname, String password, User.UserGender gender, User.UserRole role, Double height, Integer age){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
+        String created = dateFormat.format(new Date());
+
+        User newUser = new User(email, name, lastname, this.encodePassword(password), gender.name(),
+                height, role.name(), age, created);
+
+        return newUser;
+    }
+
+
     // Para el register: hashea la password que ha metido el usuario
     private String encodePassword(String rawPassword){
         return BCrypt.hashpw(rawPassword, BCrypt.gensalt());

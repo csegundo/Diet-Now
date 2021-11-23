@@ -149,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 
             progressBar.setVisibility(View.INVISIBLE);
 
-            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+            Intent intent = new Intent(RegisterActivity.this, UserPageActivity.class);
             startActivity(intent);
         } else{
             Toast.makeText(getApplicationContext(),
