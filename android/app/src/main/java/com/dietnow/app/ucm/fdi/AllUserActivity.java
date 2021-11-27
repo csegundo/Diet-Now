@@ -125,11 +125,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.dietnow.app.ucm.fdi.adapters.AllUsersAdapter;
@@ -147,11 +150,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class AllUserActivity extends AppCompatActivity {
+public class AllUserActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
-    private ImageButton search;
+
     private FirebaseAuth auth;
-    private TextInputEditText searchText;
+    private SearchView searchUser;
     private AllUsersAdapter AllUsersAdapter;
     private RecyclerView RecyclerView;
     private DatabaseReference bd;
@@ -162,8 +165,7 @@ public class AllUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_user);
 
-        searchText              = findViewById(R.id.userSearchText);
-        search                  = findViewById(R.id.userSearchButton);
+        searchUser              = findViewById(R.id.searchUser);
         RecyclerView            = findViewById(R.id.AllUserRecycler);
         bd                      = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         userList                = new ArrayList<User> ();
@@ -171,30 +173,26 @@ public class AllUserActivity extends AppCompatActivity {
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //----------------Fin Variables----------------
 
-        //----------------Lista de Usuarios--------------------
-        /*for(DataSnapshot d : bd.child("users").get().getResult().getChildren()){
-            String email = d.child("email").getValue().toString();
-            String name = d.child("name").getValue().toString();
-            User us = new User(email, name);
-            userList.add(us);
-        }
-        AllUsersAdapter = new AllUsersAdapter(userList);
-        RecyclerView.setAdapter(AllUsersAdapter);*/
-
+        //----------------Lista de Usuarios------------------------
         getUser();
         //----------------Fin Lista de Usuarios--------------------
+
+        //--------------------search--------------------------
+        searchUser.setOnQueryTextListener(this);
+        //------------------Fin search------------------------
     }
+
     private void getUser(){
         bd.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    String email = ds.child("email").getValue().toString();
-                    String name = ds.child("name").getValue().toString();
-                    User us = new User(email, name);
-                    userList.add(us);
-                }
-                AllUsersAdapter = new AllUsersAdapter(userList);
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        String email = ds.child("email").getValue().toString();
+                        String name = ds.child("name").getValue().toString();
+                        User us = new User(email, name);
+                        userList.add(us);
+                    }
+                AllUsersAdapter = new AllUsersAdapter(userList,AllUserActivity.this);
                 RecyclerView.setAdapter(AllUsersAdapter);
             }
 
@@ -205,6 +203,16 @@ public class AllUserActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        AllUsersAdapter.filtrado(newText);
+        return false;
+    }
 }
 
 
