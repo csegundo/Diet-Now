@@ -152,7 +152,6 @@ import java.util.ArrayList;
 
 public class AllUserActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
-
     private FirebaseAuth auth;
     private SearchView searchUser;
     private AllUsersAdapter AllUsersAdapter;

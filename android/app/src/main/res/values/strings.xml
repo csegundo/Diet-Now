@@ -51,6 +51,10 @@
     <string name="new_password">Nueva contraseña</string>
     <string name="password_tip">* La contrasña debe tener al menos 6 caracteres</string>
     <string name="new_password_tip">* La nueva contraseña reemplazará a la anterior</string>
+    <string name="delete_alert_title"> AVISO </string>
+    <string name="delete_alert_msg"> ¿Esta seguro de querer eliminar a este usuario? </string>
+    <string name="delete_alert_yes_opt"> Confirmar </string>
+    <string name="delete_alert_no_opt"> Volver </string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">
