@@ -119,18 +119,69 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserProfileEditActivity.class);
-                intent.putExtra("email",holder.email.getText());
+                final String[] editID = new String[1];
+                Query query = db.child("users").orderByChild("email").equalTo(holder.email.getText().toString());
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String parseEditID = snapshot.getValue().toString();
+                            editID[0] = parseEditID.substring(1,parseEditID.indexOf("="));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+
+                intent.putExtra("uid", editID[0]);
                 context.startActivity(intent);
             }
         });
-        final Object[] res = new Object[1];
+        final String[] parseImgID = new String[1];
         DatabaseReference db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         Query query = db.child("users").orderByChild("email").equalTo(holder.email.getText().toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    res[0] =snapshot.getValue();
+                    String rawimg = snapshot.getValue().toString();
+                    parseImgID[0] = rawimg.substring(1,rawimg.indexOf("="));
+
+                    String fileName = "profile_" + parseImgID[0] + ".jpg";
+                    StorageReference storage = FirebaseStorage.getInstance().getReference();
+                    storage.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                            Executor executor = Executors.newSingleThreadExecutor();
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            executor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        InputStream in = new java.net.URL(uri.toString()).openStream();
+                                        Bitmap bitmap = BitmapFactory.decodeStream(in);
+                                        handler.post(new Runnable() { // making changes in UI
+                                            @Override
+                                            public void run() {
+                                                holder.image.setImageBitmap(bitmap);
+                                            }
+                                        });
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        holder.image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+                                    }
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            holder.image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+                        }
+                    });
                 }
             }
 
@@ -140,39 +191,7 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
             }
         });
         //Set<String> keys = res[0].keySet();
-        String fileName = "profile_" /*+ res[0].*/ + ".jpg";
-        StorageReference storage = FirebaseStorage.getInstance().getReference();
-         storage.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
-                Executor executor = Executors.newSingleThreadExecutor();
-                Handler handler = new Handler(Looper.getMainLooper());
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            InputStream in = new java.net.URL(uri.toString()).openStream();
-                            Bitmap bitmap = BitmapFactory.decodeStream(in);
-                            handler.post(new Runnable() { // making changes in UI
-                                @Override
-                                public void run() {
-                                    holder.image.setImageBitmap(bitmap);
-                                }
-                            });
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            holder.image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
-                        }
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                holder.image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
-            }
-        });
+
 
     }
     private void showDeleteAlert(AllUsersAdapter.ViewHolder holder){
@@ -190,7 +209,11 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
-                                    snapshot.getRef().removeValue();
+                                    String parseid = snapshot.getValue().toString();
+                                    parseid = parseid.substring(1,parseid.indexOf("="));
+                                    DatabaseReference s = snapshot.getRef().child(parseid);
+                                    s.removeValue();
+                                    //falta borrar en el auth
                                 }
                             }
 

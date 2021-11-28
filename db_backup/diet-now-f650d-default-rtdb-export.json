@@ -1,0 +1,100 @@
+{
+  "users" : {
+    "279geSmmXpb1fJCnSk6s5X3VJnD2" : {
+      "active" : true,
+      "age" : 44,
+      "email" : "b@b.com",
+      "gender" : "MALE",
+      "height" : 0,
+      "lastname" : "b",
+      "name" : "b",
+      "password" : "$2a$10$aYGgnstnXjW5G.BAWeO2Au.itzLy8F1NPsJK7JTfK7xEegcwsJ7l2",
+      "role" : "USER",
+      "start_date" : "2021-11-28 12:6:6"
+    },
+    "3w0UicSzWkM0XF4kjSSD1Sppv9A3" : {
+      "active" : true,
+      "age" : 22,
+      "email" : "david@dietnow.com",
+      "gender" : "MALE",
+      "height" : 0,
+      "lastname" : "fernandez",
+      "name" : "david",
+      "password" : "$2a$10$eNWMsnGDOLUantMTzhrPHO2ycbPiPQgcpTEhklLIeA/E5nJVsykN.",
+      "role" : "ADMIN",
+      "start_date" : "2021-11-28 12:1:42"
+    },
+    "67xdv6ga6dVI1VSy28aM8ls6UqH2" : {
+      "active" : true,
+      "age" : 23,
+      "email" : "vitali@dietnow.com",
+      "gender" : "NO_GENRE",
+      "height" : 0,
+      "lastname" : "savchenko",
+      "name" : "vitali",
+      "password" : "$2a$10$hWIoPgOI6dkli4Nn3OUHNuQin0iEy2Iizeeiq1n1ZX8SiQAxKJL8O",
+      "role" : "ADMIN",
+      "start_date" : "2021-11-28 12:3:13"
+    },
+    "6ZKTIE5R7paBJJHL3DJhgEelL9C2" : {
+      "active" : true,
+      "age" : 22,
+      "email" : "juan@dietnow.com",
+      "gender" : "FEMALE",
+      "height" : 0,
+      "lastname" : "s",
+      "name" : "juan",
+      "password" : "$2a$10$MpNjKKsMVXu0Zh1Er5qx0e/ldRqgG.Tj7X66wdfORS7n436zzvgG.",
+      "role" : "USER",
+      "start_date" : "2021-11-28 11:58:3"
+    },
+    "DKFHhqD4joUnnQdduIWcizL2kbS2" : {
+      "active" : true,
+      "age" : 55,
+      "email" : "admin@dietnow.com",
+      "gender" : "MALE",
+      "height" : 0,
+      "lastname" : "prueba",
+      "name" : "admin",
+      "password" : "$2a$10$Uv4H5iiz9YIQ4U8LnZg.vO7Y5GdmXKfecJxf2KGLio4cW5naU4eTa",
+      "role" : "ADMIN",
+      "start_date" : "2021-11-28 12:4:43"
+    },
+    "T8JkB4g5SoWWixr8tJoUjumsdmz2" : {
+      "active" : true,
+      "age" : 25,
+      "email" : "victor@dietnow.com",
+      "gender" : "MALE",
+      "height" : 0,
+      "lastname" : "Velasco",
+      "name" : "Victor",
+      "password" : "$2a$10$.yXLoGriKr2nwo/eunmsyuLUZbhNAY.22BdhGCdvKz0cBc7H.rkei",
+      "role" : "ADMIN",
+      "start_date" : "2021-11-28 11:51:56"
+    },
+    "TENd8RMe32Xlhfu9LlHdiGz6Nvh2" : {
+      "active" : true,
+      "age" : 22,
+      "email" : "a@a.com",
+      "gender" : "FEMALE",
+      "height" : 0,
+      "lastname" : "a",
+      "name" : "a",
+      "password" : "$2a$10$08j4M6baTeduEDC9OdPQA.V8y2b2T4nMZaJIMtm32GdtNPDGXyOTe",
+      "role" : "USER",
+      "start_date" : "2021-11-28 12:5:47"
+    },
+    "lWOySaXTRsR3E9bpp97VDMwo9933" : {
+      "active" : true,
+      "age" : 23,
+      "email" : "carlos@dietnow.com",
+      "gender" : "MALE",
+      "height" : 0,
+      "lastname" : "segundo",
+      "name" : "carlos",
+      "password" : "$2a$10$foEeKpK6O.hllyqASHXP7.Q.7SLT5dce7zz7Aj2AnieubNMs9nWgG",
+      "role" : "ADMIN",
+      "start_date" : "2021-11-28 12:1:9"
+    }
+  }
+}
