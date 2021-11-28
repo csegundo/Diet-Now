@@ -127,6 +127,8 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                         if (snapshot.exists()) {
                             String parseEditID = snapshot.getValue().toString();
                             editID[0] = parseEditID.substring(1,parseEditID.indexOf("="));
+                            intent.putExtra("uid", editID[0]);
+                            context.startActivity(intent);
                         }
                     }
 
@@ -134,9 +136,6 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-
-                intent.putExtra("uid", editID[0]);
-                context.startActivity(intent);
             }
         });
         final String[] parseImgID = new String[1];
@@ -190,9 +189,6 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
 
             }
         });
-        //Set<String> keys = res[0].keySet();
-
-
     }
     private void showDeleteAlert(AllUsersAdapter.ViewHolder holder){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
