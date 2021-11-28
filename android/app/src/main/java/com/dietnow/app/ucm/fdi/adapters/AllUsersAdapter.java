@@ -138,6 +138,7 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                 });
             }
         });
+
         final String[] parseImgID = new String[1];
         DatabaseReference db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         Query query = db.child("users").orderByChild("email").equalTo(holder.email.getText().toString());

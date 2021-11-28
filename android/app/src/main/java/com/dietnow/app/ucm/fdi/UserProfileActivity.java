@@ -54,7 +54,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private ImageView image;
     private Uri filePath;
     private Button delete, change, editProfile;
-
+    private String uid;
     private DatabaseReference db;
     private FirebaseAuth auth;
     private FirebaseStorage storage;
@@ -90,7 +90,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
-
+                uid= currentUser.getUid();
                 name.setText(user.getName().trim() + " " + user.getLastname().trim());
                 age.setText(user.getAge() + " " + age.getText().toString());
 
@@ -147,7 +147,9 @@ public class UserProfileActivity extends AppCompatActivity {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+                intent.putExtra("uid",uid);
                 startActivity(intent);
             }
         });

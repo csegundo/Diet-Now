@@ -187,9 +187,12 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         String email = ds.child("email").getValue().toString();
+                        Boolean active = ds.child("active").getValue(Boolean.class);
                         String name = ds.child("name").getValue().toString();
                         User us = new User(email, name);
-                        userList.add(us);
+                        if(active == true) {
+                            userList.add(us);
+                        }
                     }
                 AllUsersAdapter = new AllUsersAdapter(userList,AllUserActivity.this);
                 RecyclerView.setAdapter(AllUsersAdapter);
