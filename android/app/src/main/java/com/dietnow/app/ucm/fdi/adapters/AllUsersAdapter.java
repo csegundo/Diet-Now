@@ -41,13 +41,16 @@ import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -57,14 +60,15 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
     private ArrayList<User> localDataSet;
     private ArrayList<User> allUser;
     private Context context;
-    private DatabaseReference bd;
+    private DatabaseReference db;
     private FirebaseAuth auth;
 
     public AllUsersAdapter(ArrayList<User> dataSet,Context context) {
         localDataSet = dataSet;
         allUser =new ArrayList<>();
         allUser.addAll(localDataSet);
-        context=context;
+        this.context=context;
+        db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
     }
 
     // Create new views (invoked by the layout manager)
@@ -115,17 +119,18 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserProfileEditActivity.class);
+                intent.putExtra("email",holder.email.getText());
                 context.startActivity(intent);
             }
         });
-        final String[] id = {""};
+        final Object[] res = new Object[1];
         DatabaseReference db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         Query query = db.child("users").orderByChild("email").equalTo(holder.email.getText().toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    id[0] =snapshot.getValue().toString();
+                    res[0] =snapshot.getValue();
                 }
             }
 
@@ -134,7 +139,8 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
 
             }
         });
-        String fileName = "profile_" + id[0] + ".jpg";
+        //Set<String> keys = res[0].keySet();
+        String fileName = "profile_" /*+ res[0].*/ + ".jpg";
         StorageReference storage = FirebaseStorage.getInstance().getReference();
          storage.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -177,8 +183,22 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        //String email = findViewById(R.id.AllUserEmail);
-                        //borrar al usuario
+                        String email = holder.email.toString();
+
+                        Query query = db.child("users").orderByChild("email").equalTo(holder.email.getText().toString());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    snapshot.getRef().removeValue();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                     }
                 })

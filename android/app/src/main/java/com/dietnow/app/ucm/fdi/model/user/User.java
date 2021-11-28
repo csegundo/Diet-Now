@@ -34,7 +34,7 @@ public class User {
         this.name = name;
     }
 
-    public User(String email, String name, String lastname, String password, String gender, Double height, String role, Integer age, String date){
+    public User(String email, String name, String lastname, String password, String gender, Double height, String role, Integer age, String date, Boolean active){
         this.email = email;
         this.name = name;
         this.lastname = lastname;
@@ -45,6 +45,7 @@ public class User {
         this.gender = !gender.isEmpty() ? gender : UserGender.NO_GENRE.name();
         this.role = role.isEmpty() || role.equals(UserRole.USER.name())
                 ? UserRole.USER.name() : UserRole.ADMIN.name();
+        this.active=active;
     }
 
     public User(String email, String name, String lastname, String password, String gender, Double height, String role,Boolean active){

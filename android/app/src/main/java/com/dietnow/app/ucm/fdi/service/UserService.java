@@ -34,7 +34,7 @@ public class UserService {
         String created = dateFormat.format(new Date());
 
         User newUser = new User(email, name, lastname, this.encodePassword(password), gender.name(),
-                height, User.UserRole.USER.name(), age, created);
+                height, User.UserRole.USER.name(), age, created, true);
 
         return newUser;
     }
@@ -44,7 +44,7 @@ public class UserService {
         String created = dateFormat.format(new Date());
 
         User newUser = new User(email, name, lastname, this.encodePassword(password), gender.name(),
-                height, role.name(), age, created);
+                height, role.name(), age, created, true);
 
         return newUser;
     }
