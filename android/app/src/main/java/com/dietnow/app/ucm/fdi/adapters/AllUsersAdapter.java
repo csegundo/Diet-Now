@@ -5,7 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +22,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,16 +38,24 @@ import com.dietnow.app.ucm.fdi.AllUserActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHolder> {
 
     private ArrayList<User> localDataSet;
     private ArrayList<User> allUser;
-    private Context mcon;
+    private Context context;
     private DatabaseReference bd;
     private FirebaseAuth auth;
 
@@ -45,7 +63,7 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
         localDataSet = dataSet;
         allUser =new ArrayList<>();
         allUser.addAll(localDataSet);
-        mcon=context;
+        context=context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -84,27 +102,74 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
     public void onBindViewHolder(@NonNull AllUsersAdapter.ViewHolder holder, int position) {
         holder.name.setText(localDataSet.get(position).getName());
         holder.email.setText(localDataSet.get(position).getEmail());
-        //holder.image.setImageURI(); TODO
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mcon, AdminPageActivity.class);
-                showDeleteAlert(mcon,intent);
+                showDeleteAlert(holder);
 
             }
+
         });
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mcon, AdminPageActivity.class);
-                mcon.startActivity(intent);
+                Intent intent = new Intent(context, AdminPageActivity.class);
+                context.startActivity(intent);
+            }
+        });
+        final String[] id = {""};
+        DatabaseReference db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        Query query = db.child("users").orderByChild("email").equalTo(holder.email.getText().toString());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    id[0] =snapshot.getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        String fileName = "profile_" + id[0] + ".jpg";
+        StorageReference storage = FirebaseStorage.getInstance().getReference();
+         storage.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                Executor executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            InputStream in = new java.net.URL(uri.toString()).openStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(in);
+                            handler.post(new Runnable() { // making changes in UI
+                                @Override
+                                public void run() {
+                                    holder.image.setImageBitmap(bitmap);
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            holder.image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                holder.image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
             }
         });
 
-
     }
-    private void showDeleteAlert(Context mcon, Intent intent){
-        AlertDialog.Builder builder = new AlertDialog.Builder(mcon);
+    private void showDeleteAlert(AllUsersAdapter.ViewHolder holder){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.delete_alert_title);
         builder.setMessage(R.string.delete_alert_msg)
                 .setPositiveButton(R.string.delete_alert_yes_opt, new DialogInterface.OnClickListener() {
@@ -135,20 +200,18 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
 
         private final TextView name;
         private final TextView email;
-        //private final ImageView image;
+        private final ImageView image;
         private final ImageButton edit;
         private final ImageButton delete;
-
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             email =  view.findViewById(R.id.AllUserEmail);
             name =  view.findViewById(R.id.AllUserName);
-            //image =  view.findViewById(R.id.AllUserImage);
+            image =  view.findViewById(R.id.AllUserImage);
             edit =  view.findViewById(R.id.AllUserEditBtn);
             delete =  view.findViewById(R.id.AllUserDeleteBtn);
-
         }
     }
 }
