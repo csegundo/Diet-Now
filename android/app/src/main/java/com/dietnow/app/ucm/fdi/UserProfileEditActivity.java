@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.dietnow.app.ucm.fdi.service.UserService;
+import com.dietnow.app.ucm.fdi.utils.BCrypt;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +45,7 @@ import java.util.concurrent.Executors;
  * Tambien sirve para que un usuario edite su propio perfil
  */
 public class UserProfileEditActivity extends AppCompatActivity {
+
     private ImageView imageUser;
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -53,12 +56,13 @@ public class UserProfileEditActivity extends AppCompatActivity {
     // almacena los datos del usuario para saber si ha cambiado alguno y guardar solo lo que ha cambiado
     private HashMap<String, String> data;
     private StorageReference storageRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_edit);
 
-        //parametros intent
+        // parametros intent
         parametros  = getIntent().getExtras();
 
         // incilizar Google Firebase
@@ -95,6 +99,7 @@ public class UserProfileEditActivity extends AppCompatActivity {
                 data.put("lastname", user.getLastname());
                 data.put("email", user.getEmail());
                 data.put("age", String.valueOf(user.getAge()));
+                data.put("password", user.getPassword());
 
                 storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
                 String fileName = "profile_" + uidParams + ".jpg";
@@ -141,11 +146,48 @@ public class UserProfileEditActivity extends AppCompatActivity {
         // Guardar los campos
         save.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { //TODO
+            public void onClick(View v) {
+                String actualUserId = parametros.get("uid").toString();
+
                 for (String key : data.keySet()){
-                    Log.d("DATA KEY", key + " - " + data.get(key));
                     // si data.{key} ha cambiado con el valor que hay en la vista ->
-                    // llamar a Firebase para editar el campo {key} de currentUser.getUid()
+                    // llamar a Firebase para editar el campo {key} del usuario en cuestion
+                    switch (key){
+                        case "name":
+                            if(!name.getText().toString().equalsIgnoreCase(data.get(key))){
+                                db.child("users").child(actualUserId).child("name")
+                                        .setValue(name.getText().toString());
+                            }
+                            break;
+                        case "lastname":
+                            if(!lastname.getText().toString().equalsIgnoreCase(data.get(key))){
+                                db.child("users").child(actualUserId).child("lastname")
+                                        .setValue(lastname.getText().toString());
+                            }
+                            break;
+                        case "email":
+                            // TODO se deberia cambiar tambien en Firebase Auth ???
+                            if(!email.getText().toString().equalsIgnoreCase(data.get(key))){
+                                db.child("users").child(actualUserId).child("email")
+                                        .setValue(email.getText().toString());
+                            }
+                            break;
+                        case "age":
+                            if(!age.getText().toString().equalsIgnoreCase(data.get(key))){
+                                db.child("users").child(actualUserId).child("age")
+                                        .setValue(Integer.valueOf(age.getText().toString()));
+                            }
+                            break;
+                        case "password":
+                            // TODO igual que el email
+                            String rawPassword = password.getText().toString();
+                            if(!rawPassword.isEmpty() && !BCrypt.checkpw(rawPassword, data.get(key))){
+                                db.child("users").child(actualUserId).child("password")
+                                        .setValue(BCrypt.hashpw(rawPassword, BCrypt.gensalt()));
+                            }
+                            break;
+                        default: break;
+                    }
                 }
             }
         });
