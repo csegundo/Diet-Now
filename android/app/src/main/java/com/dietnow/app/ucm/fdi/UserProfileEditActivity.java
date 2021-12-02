@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dietnow.app.ucm.fdi.model.user.User;
-import com.dietnow.app.ucm.fdi.service.UserService;
 import com.dietnow.app.ucm.fdi.utils.BCrypt;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -65,7 +63,7 @@ public class UserProfileEditActivity extends AppCompatActivity {
         // parametros intent
         parametros  = getIntent().getExtras();
 
-        // incilizar Google Firebase
+        // incializar Google Firebase
         auth        = FirebaseAuth.getInstance();
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
 
