@@ -4,16 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.dietnow.app.ucm.fdi.apis.DietNowService;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AdminPageActivity extends AppCompatActivity {
 
     private Button creardieta,perfil,dietasCreadas,dietasPub,crearUser,modUser;
     private Button logout;
+    private Button test;
     private FirebaseAuth auth;
 
     @Override
@@ -97,6 +111,43 @@ public class AdminPageActivity extends AppCompatActivity {
                 // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(AdminPageActivity.this, AllUserActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        test = findViewById(R.id.buttonTestuser);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser currentUser = auth.getCurrentUser();
+                HashMap<String, String> params = new HashMap<>();
+                params.put("sender", currentUser.getUid());
+                params.put("email", "test@ucm.es");
+                params.put("password", "123456");
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://10.0.2.2:8080/") // https://developer.android.com/studio/run/emulator-networking#networkaddresses
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                DietNowService api = retrofit.create(DietNowService.class);
+                Call<String> request = api.createFirebaseuser(params);
+                request.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Log.d("REQUEST RESPONSE", response.body().toString());
+                            response.body();
+                        } else{
+                            Log.d("REQUEST RESPONSE ERROR", "failed");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("RESPONSE FAILED", t.toString());
+                        t.printStackTrace();
+                    }
+                });
             }
         });
     }

@@ -10,7 +10,9 @@
         android:icon="@mipmap/ic_dietnow"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DietNow">
+        android:theme="@style/Theme.DietNow"
+        android:usesCleartextTraffic="true">
+
         <!-- UserProfileEditActivity -->
         <activity
             android:name=".UserProfileEditActivity"

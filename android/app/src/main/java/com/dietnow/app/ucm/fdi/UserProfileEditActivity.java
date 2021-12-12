@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dietnow.app.ucm.fdi.apis.DietNowService;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.dietnow.app.ucm.fdi.utils.BCrypt;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,6 +36,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import retrofit2.Retrofit;
 
 /**
  * Desde la vista ADMIN de todos los usuarios, en la tabla hay acciones sobre los usuarios como
