@@ -18,5 +18,5 @@ import retrofit2.http.Path;
  */
 public interface DietNowService {
     @POST("dietnow/api/user/create")
-    Call<String> createFirebaseuser(@Body HashMap<String, String> params);
+    Call<Boolean> createFirebaseuser(@Body HashMap<String, String> params);
 }

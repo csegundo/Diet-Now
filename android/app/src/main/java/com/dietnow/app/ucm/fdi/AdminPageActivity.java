@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.apis.DietNowService;
+import com.dietnow.app.ucm.fdi.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -120,34 +121,42 @@ public class AdminPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseUser currentUser = auth.getCurrentUser();
                 HashMap<String, String> params = new HashMap<>();
-                params.put("sender", currentUser.getUid());
-                params.put("email", "test@ucm.es");
-                params.put("password", "123456");
+                String hashCode = Utils.hashRequestString(currentUser.getUid());
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8080/") // https://developer.android.com/studio/run/emulator-networking#networkaddresses
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                if(!hashCode.isEmpty()){
+                    params.put("sender", currentUser.getUid());
+                    params.put("email", "test@ucm.es");
+                    params.put("password", "123456");
+                    params.put("code", hashCode);
 
-                DietNowService api = retrofit.create(DietNowService.class);
-                Call<String> request = api.createFirebaseuser(params);
-                request.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.isSuccessful()){
-                            Log.d("REQUEST RESPONSE", response.body().toString());
-                            response.body();
-                        } else{
-                            Log.d("REQUEST RESPONSE ERROR", "failed");
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://10.0.2.2:8080/") // https://developer.android.com/studio/run/emulator-networking#networkaddresses
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    DietNowService api = retrofit.create(DietNowService.class);
+                    Call<Boolean> request = api.createFirebaseuser(params); // prepara la peticion
+                    request.enqueue(new Callback<Boolean>() { // la ejecuta async (para sync: execute())
+                        @Override
+                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                            if(response.isSuccessful()){
+                                Log.d("REQUEST RESPONSE", response.body().toString());
+                                Boolean userCreated = response.body();
+                            } else{
+                                Log.d("REQUEST RESPONSE ERROR", "failed");
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.d("RESPONSE FAILED", t.toString());
-                        t.printStackTrace();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+                            Log.d("RESPONSE FAILED", t.toString());
+                            t.printStackTrace();
+                        }
+                    });
+                } else{
+                    // TOAST FALLO
+                }
+
             }
         });
     }

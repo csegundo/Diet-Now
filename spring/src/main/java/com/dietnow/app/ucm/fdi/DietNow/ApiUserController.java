@@ -2,15 +2,19 @@ package com.dietnow.app.ucm.fdi.DietNow;
 
 import java.util.HashMap;
 
-import org.springframework.stereotype.Controller;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.UserRecord.CreateRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/dietnow/api/user")
 public class ApiUserController {
     
@@ -21,21 +25,24 @@ public class ApiUserController {
         return "User ID: " + uid;
     }
 
-    @PostMapping(value={"/create","/create/"})
-    public String createFirebaseuser(@RequestBody HashMap<String, String> params){
+    @PostMapping("/create")
+    public Boolean createFirebaseuser(@RequestBody HashMap<String, String> params){
         try {
-            // params = params.substring(1, params.length() - 2);
-            // String[] _params = params.split(",");
+            Boolean checked = Utils.checkSHAcode(params.get("sender"), params.get("code"));
 
-            // CreateRequest request = new CreateRequest()
-            //     .setEmail(params.get("email"))
-            //     .setPassword(params.get("password"));
+            if(!checked){
+                return false;
+            }
+
+            CreateRequest request = new CreateRequest()
+                .setEmail(params.get("email"))
+                .setPassword(params.get("password"));
         
-            // UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            return "1";
+            UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return "0";
+            return false;
         }
     }
 }
