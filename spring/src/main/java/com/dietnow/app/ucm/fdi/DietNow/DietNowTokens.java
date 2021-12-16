@@ -4,8 +4,8 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Utils {
-    public static Boolean checkSHAcode(String uid, String hash){
+public class DietNowTokens {
+    public static Boolean checkTokens(String uid, String hash){
         try {
             // clave secreta conocida servidor-sevidor
             String secret = "NvW?ZsUKky#5z$^X2HkLWZ6H%jN5!h69";
@@ -26,6 +26,7 @@ public class Utils {
                 hexString.append(Integer.toHexString(0xFF & digest[i]));
             }
 
+            System.out.println("DIET NOW TOKEN: " + hexString.toString());
             return hexString.toString().equalsIgnoreCase(hash);
         } catch (Exception e) {
             e.printStackTrace();

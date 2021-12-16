@@ -28,7 +28,7 @@ public class ApiUserController {
     @PostMapping("/create")
     public Boolean createFirebaseuser(@RequestBody HashMap<String, String> params){
         try {
-            Boolean checked = Utils.checkSHAcode(params.get("sender"), params.get("code"));
+            Boolean checked = DietNowTokens.checkTokens(params.get("sender"), params.get("code"));
 
             if(!checked){
                 return false;

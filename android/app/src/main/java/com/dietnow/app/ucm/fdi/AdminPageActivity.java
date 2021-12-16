@@ -7,16 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.apis.DietNowService;
-import com.dietnow.app.ucm.fdi.utils.Utils;
+import com.dietnow.app.ucm.fdi.utils.DietNowTokens;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -121,7 +118,7 @@ public class AdminPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseUser currentUser = auth.getCurrentUser();
                 HashMap<String, String> params = new HashMap<>();
-                String hashCode = Utils.hashRequestString(currentUser.getUid());
+                String hashCode = DietNowTokens.generateToken(currentUser.getUid());
 
                 if(!hashCode.isEmpty()){
                     params.put("sender", currentUser.getUid());

@@ -1,11 +1,13 @@
 package com.dietnow.app.ucm.fdi.utils;
 
+import android.util.Log;
+
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Utils {
-    public static String hashRequestString(String uid){
+public class DietNowTokens {
+    public static String generateToken(String uid){
         try {
             // clave secreta conocida servidor-sevidor
             String secret = "NvW?ZsUKky#5z$^X2HkLWZ6H%jN5!h69";
@@ -26,6 +28,7 @@ public class Utils {
                 hexString.append(Integer.toHexString(0xFF & digest[i]));
             }
 
+            Log.d("DIET NOW TOKEN: ", hexString.toString());
             return hexString.toString();
         } catch (Exception e) {
             e.printStackTrace();
