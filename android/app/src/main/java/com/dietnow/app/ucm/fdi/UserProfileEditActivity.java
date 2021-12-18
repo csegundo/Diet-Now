@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.dietnow.app.ucm.fdi.apis.DietNowService;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.dietnow.app.ucm.fdi.utils.BCrypt;
+import com.dietnow.app.ucm.fdi.utils.DietNowTokens;
+import com.dietnow.app.ucm.fdi.utils.RetrofitResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +39,11 @@ import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Desde la vista ADMIN de todos los usuarios, en la tabla hay acciones sobre los usuarios como
@@ -57,11 +63,18 @@ public class UserProfileEditActivity extends AppCompatActivity {
     // almacena los datos del usuario para saber si ha cambiado alguno y guardar solo lo que ha cambiado
     private HashMap<String, String> data;
     private StorageReference storageRef;
+    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_edit);
+
+        // inicializar Retrofit
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         // parametros intent
         parametros  = getIntent().getExtras();
@@ -167,10 +180,8 @@ public class UserProfileEditActivity extends AppCompatActivity {
                             }
                             break;
                         case "email":
-                            // TODO se deberia cambiar tambien en Firebase Auth ???
                             if(!email.getText().toString().equalsIgnoreCase(data.get(key))){
-                                db.child("users").child(actualUserId).child("email")
-                                        .setValue(email.getText().toString());
+                                updateAdminFields("email", email.getText().toString(), actualUserId);
                             }
                             break;
                         case "age":
@@ -180,11 +191,9 @@ public class UserProfileEditActivity extends AppCompatActivity {
                             }
                             break;
                         case "password":
-                            // TODO igual que el email
                             String rawPassword = password.getText().toString();
                             if(!rawPassword.isEmpty() && !BCrypt.checkpw(rawPassword, data.get(key))){
-                                db.child("users").child(actualUserId).child("password")
-                                        .setValue(BCrypt.hashpw(rawPassword, BCrypt.gensalt()));
+                                updateAdminFields("password", password.getText().toString(), actualUserId);
                             }
                             break;
                         default: break;
@@ -192,5 +201,52 @@ public class UserProfileEditActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     *
+     * @param fieldKey email/password
+     * @param fieldValue valor del email o contaseña
+     * @param uid ID del usuario que se va a editar
+     */
+    private void updateAdminFields(String fieldKey, String fieldValue, String uid){
+        FirebaseUser currentUser = auth.getCurrentUser();
+        HashMap<String, String> params = new HashMap<>();
+        String hashCode = DietNowTokens.generateToken(currentUser.getUid());
+
+        if(!hashCode.isEmpty()){
+            params.put("sender", currentUser.getUid());
+            params.put(fieldKey, fieldValue);
+            params.put("code", hashCode);
+            params.put("uid", uid);
+
+            DietNowService api = retrofit.create(DietNowService.class);
+            Call<RetrofitResponse> request;
+            if(fieldKey.equalsIgnoreCase("email")){
+                request = api.editFirebaseuserEmail(params);
+            } else{
+                request = api.editFirebaseuserPassword(params);
+            }
+            request.enqueue(new Callback<RetrofitResponse>() {
+                @Override
+                public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                    if(response.isSuccessful()){
+                        if(fieldKey.equalsIgnoreCase("email")){
+                            db.child("users").child(uid).child("email")
+                                    .setValue(fieldValue);
+                        } else{
+                            db.child("users").child(uid).child("password")
+                                    .setValue(BCrypt.hashpw(fieldValue, BCrypt.gensalt()));
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                    Log.d("FAILED", "FAILED HTTP REQUEST");
+                    t.printStackTrace();
+                }
+            });
+        }
     }
 }

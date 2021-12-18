@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
+import com.google.firebase.auth.UserRecord.UpdateRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +27,12 @@ public class ApiUserController {
     }
 
     @PostMapping("/create")
-    public Boolean createFirebaseuser(@RequestBody HashMap<String, String> params){
+    public String createFirebaseuser(@RequestBody HashMap<String, String> params){
         try {
             Boolean checked = DietNowTokens.checkTokens(params.get("sender"), params.get("code"));
 
             if(!checked){
-                return false;
+                return GenerateResponse.generateJSON(false, "Message:Fallo al autenticar la petición");
             }
 
             CreateRequest request = new CreateRequest()
@@ -39,10 +40,52 @@ public class ApiUserController {
                 .setPassword(params.get("password"));
         
             UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            return true;
+            return GenerateResponse.generateJSON(true, userRecord.getUid());
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return GenerateResponse.generateJSON(false, "Message:Se ha producido un error");
+        }
+    }
+
+    @PostMapping("/edit/email")
+    public String editUserEmail(@RequestBody HashMap<String, String> params){
+        try {
+            Boolean checked = DietNowTokens.checkTokens(params.get("sender"), params.get("code"));
+
+            if(!checked){
+                return GenerateResponse.generateJSON(false, "Message:Fallo al autenticar la petición");
+            }
+
+            UpdateRequest request = new UpdateRequest(params.get("uid"))
+                .setEmail(params.get("email"));
+
+            UserRecord userRecord = FirebaseAuth.getInstance().updateUser(request);
+
+            return GenerateResponse.generateJSON(true, userRecord.getUid());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return GenerateResponse.generateJSON(false, "Message:Se ha producido un error");
+        }
+    }
+
+    @PostMapping("/edit/password")
+    public String editUserPassword(@RequestBody HashMap<String, String> params){
+        try {
+            Boolean checked = DietNowTokens.checkTokens(params.get("sender"), params.get("code"));
+
+            if(!checked){
+                return GenerateResponse.generateJSON(false, "Message:Fallo al autenticar la petición");
+            }
+
+            UpdateRequest request = new UpdateRequest(params.get("uid"))
+                .setPassword(params.get("password"));
+                
+            UserRecord userRecord = FirebaseAuth.getInstance().updateUser(request);
+
+            return GenerateResponse.generateJSON(true, userRecord.getUid());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return GenerateResponse.generateJSON(false, "Message:Se ha producido un error");
         }
     }
 }

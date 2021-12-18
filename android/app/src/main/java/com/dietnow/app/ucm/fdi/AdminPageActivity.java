@@ -112,7 +112,7 @@ public class AdminPageActivity extends AppCompatActivity {
             }
         });
 
-        test = findViewById(R.id.buttonTestuser);
+        /*test = findViewById(R.id.buttonTestuser);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +155,6 @@ public class AdminPageActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
     }
 }

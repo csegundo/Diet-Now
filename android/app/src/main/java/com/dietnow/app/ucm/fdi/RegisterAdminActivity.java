@@ -14,8 +14,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.dietnow.app.ucm.fdi.apis.DietNowService;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.dietnow.app.ucm.fdi.service.UserService;
+import com.dietnow.app.ucm.fdi.utils.DietNowTokens;
+import com.dietnow.app.ucm.fdi.utils.RetrofitResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -25,9 +28,18 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.GsonBuilder;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterAdminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -40,6 +52,7 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
     private EditText name;
     private EditText lastname;
     private EditText age;
+    private ProgressBar progressBar;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth auth,authAsync;
@@ -59,6 +72,7 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
         name         = findViewById(R.id.registerName);
         lastname     = findViewById(R.id.registerLastname);
         age          = findViewById(R.id.registerAge);
+        progressBar  = findViewById(R.id.progressBarAdmin);
 
         // change genre action
         genres = findViewById(R.id.registerGenre);
@@ -79,6 +93,7 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 Boolean isValid = !email.getText().toString().isEmpty();
                 isValid = isValid || !passwd.getText().toString().isEmpty();
                 isValid = isValid || !name.getText().toString().isEmpty();
@@ -114,9 +129,7 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
                             0.0,
                             Integer.parseInt(age.getText().toString()));
 
-
                     register(user, passwd.getText().toString());
-
                 } else{
                     Toast.makeText(getApplicationContext(),
                             getResources().getString(R.string.register_check_fields),
@@ -129,31 +142,79 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
 
 
     private void register(User user, String rawPassword) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        HashMap<String, String> params = new HashMap<>();
+        String hashCode = DietNowTokens.generateToken(currentUser.getUid());
 
-        
+        if(!hashCode.isEmpty()){
+            params.put("sender", currentUser.getUid());
+            params.put("email", user.getEmail());
+            params.put("password", rawPassword);
+            params.put("code", hashCode);
 
+            /*
+            * TODO Seguir siempre este formato: Spring debe devolver un JSON con los campos:
+            *   - success
+            *   - message
+            * https://stackoverflow.com/questions/40973633/retrofit-2-get-json-from-response-body
+            * https://www.jsonschema2pojo.org/
+            * */
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:8080/") // https://developer.android.com/studio/run/emulator-networking#networkaddresses
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            DietNowService api = retrofit.create(DietNowService.class);
+            Call<RetrofitResponse> request = api.createFirebaseuser(params); // prepara la peticion
+            request.enqueue(new Callback<RetrofitResponse>() { // la ejecuta async (para sync: execute())
+                @Override
+                public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                    if(response.isSuccessful()){
+                        String uidCreated = response.body().getMessage();
+                        if(!uidCreated.startsWith("Message:")){
+                            mDatabase.child("users").child(uidCreated).setValue(user);
+                            updateUI(true, null);
+                        } else{
+                            uidCreated = uidCreated.replace("Message:", "");
+                            updateUI(false, uidCreated);
+                        }
+                    } else{
+                        updateUI(false, response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                    Log.d("FAILED", "FAILED HTTP REQUEST");
+                    updateUI(false, null);
+                    t.printStackTrace();
+                }
+            });
+        } else{
+            updateUI(false, null);
+        }
     }
 
 
     // redirige al login o muestra error de registro
-    private void updateUI(Boolean success){
+    private void updateUI(Boolean success, String errorMessage){
+        progressBar.setVisibility(View.INVISIBLE);
+
         if(success){
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.register_succesful),
                     Toast.LENGTH_SHORT).show();
 
-            //progressBar.setVisibility(View.INVISIBLE);
-
             Intent intent = new Intent(RegisterAdminActivity.this, MainActivity.class);
             startActivity(intent);
         } else{
             Toast.makeText(getApplicationContext(),
-                    getResources().getString(R.string.register_failed),
+                    errorMessage != null ? errorMessage : getResources().getString(R.string.register_failed),
                     Toast.LENGTH_LONG).show();
         }
     }
 
-    //Para el selector de genero
+    // Para el selector de genero
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String genre = parent.getItemAtPosition(position).toString();

@@ -24,8 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.concurrent.Executor;
-
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Button login;
@@ -57,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         name         = findViewById(R.id.registerName);
         lastname     = findViewById(R.id.registerLastname);
         age          = findViewById(R.id.registerAge);
-        progressBar  = findViewById(R.id.progressBar);
+        progressBar  = findViewById(R.id.progressBarAdmin);
 
         // login button action
         login = findViewById(R.id.registerLoginBtn);

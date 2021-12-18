@@ -1,5 +1,7 @@
 package com.dietnow.app.ucm.fdi.apis;
 
+import com.dietnow.app.ucm.fdi.utils.RetrofitResponse;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,5 +20,9 @@ import retrofit2.http.Path;
  */
 public interface DietNowService {
     @POST("dietnow/api/user/create")
-    Call<Boolean> createFirebaseuser(@Body HashMap<String, String> params);
+    Call<RetrofitResponse> createFirebaseuser(@Body HashMap<String, String> params);
+    @POST("dietnow/api/user/edit/email")
+    Call<RetrofitResponse> editFirebaseuserEmail(@Body HashMap<String, String> params);
+    @POST("dietnow/api/user/edit/password")
+    Call<RetrofitResponse> editFirebaseuserPassword(@Body HashMap<String, String> params);
 }
