@@ -14,9 +14,14 @@
         android:theme="@style/Theme.DietNow"
         android:usesCleartextTraffic="true">
         <activity
+<<<<<<< Updated upstream
             android:name=".MyDietsActivity"
             android:exported="false"
             android:label="@string/label_MyDiets"/><!-- MyDietsActivity -->
+=======
+            android:name=".activity_camera"
+            android:exported="false" />
+>>>>>>> Stashed changes
         <activity
             android:name=".CreateDiet"
             android:exported="false" /> <!-- UserProfileEditActivity -->
