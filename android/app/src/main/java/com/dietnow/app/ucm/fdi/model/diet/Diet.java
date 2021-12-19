@@ -1,13 +1,38 @@
 package com.dietnow.app.ucm.fdi.model.diet;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@IgnoreExtraProperties
 public class Diet {
-    private String id, descripcion, titulo;
-    private int visitas,like,dislike,kcal;
+    @Exclude
+    private String id;
+    private String descripcion, titulo;
+    private int visitas,like,dislike;
+    private double kcal;
     private boolean active,publicado;
 
     public Diet(String descripcion, String titulo) { //para mis dietas creadas
         this.descripcion = descripcion;
         this.titulo = titulo;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("descripcion", descripcion);
+        result.put("active", active);
+        result.put("visitas", visitas);
+        result.put("like", like);
+        result.put("dislike", dislike);
+        result.put("titulo", titulo);
+        result.put("publicado", publicado);
+        result.put("kcal", kcal);
+
+        return result;
     }
 
     public String getId() {
@@ -58,11 +83,11 @@ public class Diet {
         this.dislike = dislike;
     }
 
-    public int getKcal() {
+    public double getKcal() {
         return kcal;
     }
 
-    public void setKcal(int kcal) {
+    public void setKcal(double kcal) {
         this.kcal = kcal;
     }
 
