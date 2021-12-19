@@ -8,49 +8,38 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dietnow.app.ucm.fdi.UserProfileEditActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.dietnow.app.ucm.fdi.AdminPageActivity;
-import com.dietnow.app.ucm.fdi.AllUserActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -248,10 +237,10 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            email =  view.findViewById(R.id.AllUserEmail);
-            name =  view.findViewById(R.id.AllUserName);
+            email =  view.findViewById(R.id.dietDesc);
+            name =  view.findViewById(R.id.DietTitulo);
             image =  view.findViewById(R.id.AllUserImage);
-            edit =  view.findViewById(R.id.AllUserEditBtn);
+            edit =  view.findViewById(R.id.myDietShowBtn);
             delete =  view.findViewById(R.id.AllUserDeleteBtn);
         }
     }

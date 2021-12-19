@@ -13,7 +13,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/AllUserName"
+        android:id="@+id/DietTitulo"
         android:layout_width="208dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
@@ -21,7 +21,7 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/AllUserEmail"
+        android:id="@+id/dietDesc"
 
         android:layout_width="208dp"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:text="TextView" />
 
     <ImageButton
-        android:id="@+id/AllUserEditBtn"
+        android:id="@+id/myDietShowBtn"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_marginLeft="330dp"

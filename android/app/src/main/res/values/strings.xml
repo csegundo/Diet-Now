@@ -8,6 +8,7 @@
     <string name="label_admin_register">Admin Profile</string>
     <string name="label_user_profile">User Profile</string>
     <string name="label_user_edit_profile">Editar perfil</string>
+    <string name="label_MyDiets">Mis Dietas</string>
 
     <!-- Resto de strings -->
     <string name="app_name">Diet Now</string>

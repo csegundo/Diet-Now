@@ -14,9 +14,12 @@
         android:theme="@style/Theme.DietNow"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".CreateDiet"
+            android:name=".MyDietsActivity"
             android:exported="false" />
-        <!-- UserProfileEditActivity -->
+            android:label="@string/label_MyDiets"<!-- MyDietsActivity -->
+        <activity
+            android:name=".CreateDiet"
+            android:exported="false" /> <!-- UserProfileEditActivity -->
         <activity
             android:name=".UserProfileEditActivity"
             android:exported="false"
