@@ -15,8 +15,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MyDietsActivity"
-            android:exported="false" />
-            android:label="@string/label_MyDiets"<!-- MyDietsActivity -->
+            android:exported="false"
+            android:label="@string/label_MyDiets"/><!-- MyDietsActivity -->
         <activity
             android:name=".CreateDiet"
             android:exported="false" /> <!-- UserProfileEditActivity -->

@@ -5,7 +5,7 @@
     <string name="label_register">Crear cuenta - DietNow</string>
     <string name="label_main_page">Menú prinicpal</string>
     <string name="label_admin_profile">Admin Profile</string>
-    <string name="label_admin_register">Admin Profile</string>
+    <string name="label_admin_register">Admin Register</string>
     <string name="label_user_profile">User Profile</string>
     <string name="label_user_edit_profile">Editar perfil</string>
     <string name="label_MyDiets">Mis Dietas</string>
@@ -21,6 +21,7 @@
     <string name="register">Registrarse</string>
     <string name="username">Nombre de usuario</string>
     <string name="name">Nombre</string>
+    <string name="description">Descripción</string>
     <string name="lastname">Apellido(s)</string>
     <string name="age">Edad</string>
     <string name="save">Guardar</string>
@@ -56,6 +57,13 @@
     <string name="delete_alert_msg"> ¿Esta seguro de querer eliminar a este usuario? </string>
     <string name="delete_alert_yes_opt"> Confirmar </string>
     <string name="delete_alert_no_opt"> Volver </string>
+    <string name="creation_date">Fecha de creación</string>
+    <string name="rating">Valoración</string>
+    <string name="statistics">Estadísticas</string>
+    <string name="likes">Likes</string>
+    <string name="dislikes">Dislikes</string>
+    <string name="views">Visitas</string>
+    <string name="food">Alimentos</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">
