@@ -9,6 +9,8 @@
     <string name="label_user_profile">User Profile</string>
     <string name="label_user_edit_profile">Editar perfil</string>
     <string name="label_MyDiets">Mis Dietas</string>
+    <string name="label_camera_scan_product">Escanear producto</string>
+    <string name="label_create_diet">Crear dieta</string>
 
     <!-- Resto de strings -->
     <string name="app_name">Diet Now</string>
@@ -64,6 +66,9 @@
     <string name="dislikes">Dislikes</string>
     <string name="views">Visitas</string>
     <string name="food">Alimentos</string>
+    <string name="create_diet">Crear dieta</string>
+    <string name="create_diet_error">Error al crear dieta</string>
+    <string name="create_diet_success">Dieta creada correctamente</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">

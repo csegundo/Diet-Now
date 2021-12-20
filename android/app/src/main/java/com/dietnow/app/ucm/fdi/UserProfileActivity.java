@@ -182,7 +182,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 return;
             }
             try{
-                // TODO proceso explicativo https://www.youtube.com/watch?v=ZmgncLHk_s4
+                // proceso explicativo https://www.youtube.com/watch?v=ZmgncLHk_s4
                 filePath = data.getData();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 image.setImageBitmap(bitmap); // actualizar la imagen directamente a la vista

@@ -14,45 +14,45 @@
         android:theme="@style/Theme.DietNow"
         android:usesCleartextTraffic="true">
         <activity
-<<<<<<< Updated upstream
+            android:name=".CreateDietActivity"
+            android:exported="false"
+            android:label="@string/label_create_diet"/>
+        <activity
+            android:name=".CameraActivity"
+            android:exported="false"
+            android:label="@string/label_camera_scan_product"/>
+        <activity
             android:name=".MyDietsActivity"
             android:exported="false"
-            android:label="@string/label_MyDiets"/><!-- MyDietsActivity -->
-=======
-            android:name=".activity_camera"
-            android:exported="false" />
->>>>>>> Stashed changes
-        <activity
-            android:name=".CreateDiet"
-            android:exported="false" /> <!-- UserProfileEditActivity -->
+            android:label="@string/label_MyDiets"/>
         <activity
             android:name=".UserProfileEditActivity"
             android:exported="false"
-            android:label="@string/label_user_edit_profile" /> <!-- AllUserActivity -->
+            android:label="@string/label_user_edit_profile" />
         <activity
             android:name=".AllUserActivity"
             android:exported="false"
-            android:label="@string/label_all_user" /> <!-- AdminPageActivity -->
+            android:label="@string/label_all_user" />
         <activity
             android:name=".AdminPageActivity"
             android:exported="false"
-            android:label="@string/label_main_page" /> <!-- UserProfileActivity -->
+            android:label="@string/label_main_page" />
         <activity
             android:name=".UserProfileActivity"
             android:exported="false"
-            android:label="@string/label_user_profile" /> <!-- Register AdminActivity -->
+            android:label="@string/label_user_profile" />
         <activity
             android:name=".RegisterAdminActivity"
             android:exported="false"
-            android:label="@string/label_register" /> <!-- UserPageActivity -->
+            android:label="@string/label_register" />
         <activity
             android:name=".UserPageActivity"
             android:exported="false"
-            android:label="@string/label_main_page" /> <!-- RegisterActivity -->
+            android:label="@string/label_main_page" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:label="@string/label_register" /> <!-- LoginActivity -->
+            android:label="@string/label_register" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

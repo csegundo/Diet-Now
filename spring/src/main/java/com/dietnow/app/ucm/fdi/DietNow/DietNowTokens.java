@@ -5,11 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DietNowTokens {
+    private static final String DIET_NOW_TOKEN_SECRET = "NvW?ZsUKky#5z$^X2HkLWZ6H%jN5!h69";
+
     public static Boolean checkTokens(String uid, String hash){
         try {
             // clave secreta conocida servidor-sevidor
-            String secret = "NvW?ZsUKky#5z$^X2HkLWZ6H%jN5!h69";
-            String sha256 = secret + new SimpleDateFormat("y-M-d").format(new Date()) + uid; // string que vamos a cifrar
+            String sha256 = DietNowTokens.DIET_NOW_TOKEN_SECRET + new SimpleDateFormat("y-M-d").format(new Date()) + uid; // string que vamos a cifrar
 
             // crear el objeto MessageDigest para comporbar el cifrado
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");

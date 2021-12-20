@@ -59,7 +59,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyDietsActivity.this, UserPageActivity.class);//TODO añadir clase de añadir
+                Intent intent = new Intent(MyDietsActivity.this, CreateDietActivity.class);
                 startActivity(intent);
             }
         });

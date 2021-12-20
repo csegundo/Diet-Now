@@ -23,7 +23,7 @@ import com.google.zxing.Result;
 
 
 
-public class activity_camera extends AppCompatActivity {
+public class CameraActivity extends AppCompatActivity {
     private CodeScanner mCodeScanner;
     private int CAMERA_REQUEST_CODE = 101;
 
@@ -40,7 +40,7 @@ public class activity_camera extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity_camera.this, result.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CameraActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

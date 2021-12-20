@@ -54,12 +54,12 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
         }
         else{
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                List<Diet> collection =allDiet.stream().filter(i -> i.getTitulo().toLowerCase().contains(filtro.toLowerCase())).collect(Collectors.toList());
+                List<Diet> collection =allDiet.stream().filter(i -> i.getTitle().toLowerCase().contains(filtro.toLowerCase())).collect(Collectors.toList());
                 localDataSet.addAll(collection);
             }
             else{
                 for (Diet u: allDiet) {
-                    if(u.getTitulo().toLowerCase().contains(filtro.toLowerCase())){
+                    if(u.getTitle().toLowerCase().contains(filtro.toLowerCase())){
                         localDataSet.add(u);
                     }
                 }
@@ -69,8 +69,8 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
     }
     @Override
     public void onBindViewHolder(@NonNull MyDietsAdapter.ViewHolder holder, int position) {
-        holder.titulo.setText(localDataSet.get(position).getTitulo());
-        holder.descripcion.setText(localDataSet.get(position).getDescripcion());
+        holder.titulo.setText(localDataSet.get(position).getTitle());
+        holder.descripcion.setText(localDataSet.get(position).getDescription());
         holder.verDieta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
