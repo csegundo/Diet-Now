@@ -70,9 +70,9 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    String titulo = ds.child("titulo").getValue().toString();
+                    String titulo = ds.child("title").getValue().toString();
                     Boolean active = ds.child("active").getValue(Boolean.class);
-                    String descripcion = ds.child("descripcion").getValue().toString();
+                    String descripcion = ds.child("description").getValue().toString();
                     Diet us = new Diet(titulo, descripcion);
                     if(active == true) { //TODO comprobar si es el mismo usuario
                         dietList.add(us);

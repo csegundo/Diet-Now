@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -92,16 +93,18 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
 
         private final TextView titulo;
         private final TextView descripcion;
-        private final Button verDieta;
+        private final ImageButton verDieta;
 
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
+
             titulo =  view.findViewById(R.id.dietDesc);
             descripcion =  view.findViewById(R.id.DietTitulo);
+            verDieta = view.findViewById(R.id.myDietShowBtn);
 
-            verDieta =  view.findViewById(R.id.myDietShowBtn);
+
 
         }
     }
