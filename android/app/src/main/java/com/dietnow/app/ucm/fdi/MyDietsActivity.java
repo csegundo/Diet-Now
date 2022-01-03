@@ -74,6 +74,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
                     Boolean active = ds.child("active").getValue(Boolean.class);
                     String descripcion = ds.child("description").getValue().toString();
                     Diet us = new Diet(titulo, descripcion);
+                    us.setId(ds.child("id").getValue().toString());
                     if(active == true) { //TODO comprobar si es el mismo usuario
                         dietList.add(us);
                     }

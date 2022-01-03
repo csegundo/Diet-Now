@@ -14,17 +14,20 @@
         android:theme="@style/Theme.DietNow"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ViewDietActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateDietActivity"
             android:exported="false"
-            android:label="@string/label_create_diet"/>
+            android:label="@string/label_create_diet" />
         <activity
             android:name=".CameraActivity"
             android:exported="false"
-            android:label="@string/label_camera_scan_product"/>
+            android:label="@string/label_camera_scan_product" />
         <activity
             android:name=".MyDietsActivity"
             android:exported="false"
-            android:label="@string/label_MyDiets"/>
+            android:label="@string/label_MyDiets" />
         <activity
             android:name=".UserProfileEditActivity"
             android:exported="false"

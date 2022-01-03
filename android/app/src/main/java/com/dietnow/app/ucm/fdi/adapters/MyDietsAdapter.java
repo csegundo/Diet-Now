@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.UserProfileEditActivity;
+import com.dietnow.app.ucm.fdi.ViewDietActivity;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -83,15 +84,13 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
         holder.verDieta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UserProfileEditActivity.class);//TODO a la clase de ver
+                Intent intent = new Intent(context, ViewDietActivity.class);
                 intent.putExtra("did", holder.id.getText().toString());
                 context.startActivity(intent);
             }
-
         });
-        // TODO falta boton ded modificar dieta
 
-
+        // TODO falta boton de modificar dieta
     }
 
     @Override
