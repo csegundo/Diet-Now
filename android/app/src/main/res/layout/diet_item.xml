@@ -6,6 +6,15 @@
     android:layout_height="95dp">
 
     <TextView
+        android:id="@+id/dietId"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="id"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/DietTitulo"
         android:layout_width="300dp"
         android:layout_height="wrap_content"

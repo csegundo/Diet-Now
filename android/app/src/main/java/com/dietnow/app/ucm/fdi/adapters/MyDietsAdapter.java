@@ -1,6 +1,7 @@
 package com.dietnow.app.ucm.fdi.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.R;
+import com.dietnow.app.ucm.fdi.UserProfileEditActivity;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +49,7 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
     public MyDietsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.user_item, viewGroup, false);
+                .inflate(R.layout.diet_item, viewGroup, false);
 
         return new MyDietsAdapter.ViewHolder(view);
     }
@@ -72,14 +79,17 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
     public void onBindViewHolder(@NonNull MyDietsAdapter.ViewHolder holder, int position) {
         holder.titulo.setText(localDataSet.get(position).getTitle());
         holder.descripcion.setText(localDataSet.get(position).getDescription());
+        holder.id.setText(localDataSet.get(position).getId());
         holder.verDieta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                Intent intent = new Intent(context, UserProfileEditActivity.class);//TODO a la clase de ver
+                intent.putExtra("did", holder.id.getText().toString());
+                context.startActivity(intent);
             }
 
         });
+        // TODO falta boton ded modificar dieta
 
 
     }
@@ -93,7 +103,8 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
 
         private final TextView titulo;
         private final TextView descripcion;
-        private final ImageButton verDieta;
+        private final MaterialButton verDieta;
+        private final TextView id;
 
 
         public ViewHolder(View view) {
@@ -103,6 +114,8 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
             titulo =  view.findViewById(R.id.dietDesc);
             descripcion =  view.findViewById(R.id.DietTitulo);
             verDieta = view.findViewById(R.id.myDietShowBtn);
+            id =  view.findViewById(R.id.dietId);
+
 
 
 

@@ -28,7 +28,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
 
     private FirebaseAuth auth;
     private SearchView searchDiet;
-    private com.dietnow.app.ucm.fdi.adapters.MyDietsAdapter MyDietsAdapter;
+    private MyDietsAdapter MyDietsAdapter;
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
     private DatabaseReference bd;
     private ArrayList<Diet> dietList;
@@ -78,8 +78,8 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
                         dietList.add(us);
                     }
                 }
-                com.dietnow.app.ucm.fdi.adapters.MyDietsAdapter Adapter = new MyDietsAdapter(dietList,MyDietsActivity.this);
-                RecyclerView.setAdapter(Adapter);
+                MyDietsAdapter = new MyDietsAdapter(dietList,MyDietsActivity.this);
+                RecyclerView.setAdapter(MyDietsAdapter);
             }
 
             @Override

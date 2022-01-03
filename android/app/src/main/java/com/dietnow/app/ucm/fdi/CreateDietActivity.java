@@ -69,28 +69,18 @@ public class CreateDietActivity extends AppCompatActivity {
 
     // guardar la dieta en dieta y usuarios (dentro del callback para que si falla no haya que borrar la dieta)
     private void uploadDietToFirebase(Diet toCreate){
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseUser currentUser = auth.getCurrentUser();
-                String autoId = db.child("diets").push().getKey();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        String autoId = db.child("diets").push().getKey();
 
-                // guardar la dieta
-                toCreate.setId(autoId);
-                toCreate.setUser(currentUser.getUid());
-                Log.d("NEW DIET", toCreate.toString());
-                db.child("diets").child(autoId).setValue(toCreate);
+        // guardar la dieta
+        toCreate.setId(autoId);
+        toCreate.setUser(currentUser.getUid());
+        Log.d("NEW DIET", toCreate.toString());
+        db.child("diets").child(autoId).setValue(toCreate);
 
-                // guardar la dieta en el usuario
-                // TODO firebase acepta arrays ???
-                // User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                updateUI(false);
-            }
-        });
+        // guardar la dieta en el usuario
+        // TODO firebase acepta arrays ???
+        // User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
     }
 
     private void updateUI(Boolean success){
