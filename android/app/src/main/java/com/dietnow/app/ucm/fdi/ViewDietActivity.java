@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,17 +52,45 @@ public class ViewDietActivity extends AppCompatActivity {
 
     // Dado el ID de la dieta obtiene toda la info y asigna el valor a cada componente
     private void initializeComponentsWithData(String dietId){
+
+
+        ///CON ESTO FUNCIONA TBN
+        /*
+        db.child("diets").child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                }
+            }
+        });
+        */
+
+
+
+        //SIMPLEMENTE LE HE AÑADIDO EL FOR , DE LA MANERA QUE TENIAS NO SE PQ NO IBA LA VD
         db.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("DIETS DB", snapshot.toString());
-                Log.d("DIETA --------------->", snapshot.child("diets").child(dietId).getValue().toString());
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    if(postSnapshot.getKey().toString().equalsIgnoreCase(dietId))
+                    Log.d("Info de la snapshot",postSnapshot.getValue().toString());
+                }
+                //System.out.println("Este es el id de la dieta :"+ dietId);
+                //Log.d("DIETS DB", snapshot.child("diets").toString());
+                //Log.d("DIETA --------------->", snapshot.child("diets").child(dietId).getValue().toString());
+                //Log.d("DIETA --------------->", snapshot.child("diets").child(dietId).getValue().toString());
                 /*
                 // LA KEY ESTA BIEN PERO EL VALUE ES null Y NO LA DIETA WTF
                 Diet diet = snapshot.child("diets").child(dietId).getValue(Diet.class);
                 name.setText(diet.getTitle());
                 description.setText(diet.getDescription());
+                //
                 */
+
             }
 
             @Override
@@ -68,5 +98,8 @@ public class ViewDietActivity extends AppCompatActivity {
                 Log.w("GET DIET", "ViewDietActivity:onCancelled", error.toException());
             }
         });
+
+
+
     }
 }
