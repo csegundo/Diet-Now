@@ -1,7 +1,10 @@
 package com.dietnow.app.ucm.fdi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,10 @@ import android.widget.Toast;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.dietnow.app.ucm.fdi.service.DietService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +34,8 @@ public class CreateDietActivity extends AppCompatActivity {
     private EditText title, description;
     private Button create;
     private ProgressBar progress;
+    private String actualDiet;
+    private FloatingActionButton addFood;
 
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -35,6 +44,12 @@ public class CreateDietActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_diet);
+
+        // parametros intent (crear o editar dieta)
+        actualDiet = null;
+        if(getIntent().getExtras() != null){
+            actualDiet = getIntent().getExtras().getString("did");
+        }
 
         // Inicializar componentes de Firebase
         auth        = FirebaseAuth.getInstance();
@@ -45,6 +60,9 @@ public class CreateDietActivity extends AppCompatActivity {
         create      = findViewById(R.id.createDietBtn);
         progress    = findViewById(R.id.createDietProgress);
         description = findViewById(R.id.createDietDescription);
+        addFood     = findViewById(R.id.addFood);
+
+        isEditOrCreateDiet(actualDiet);
 
         // Acciones de los componentes
         create.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +76,24 @@ public class CreateDietActivity extends AppCompatActivity {
                     0, 0, 0,
                     0.0, true, false
                 );
-                uploadDietToFirebase(toCreate);
+                uploadDietToFirebase(toCreate, actualDiet);
+            }
+        });
+
+        addFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateDietActivity.this);
+                builder.setTitle(R.string.add_food_message)
+                    .setItems(R.array.add_food_options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(CreateDietActivity.this,
+                                    which == 0 ? CameraActivity.class : AddManualFood.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton(R.string.delete_alert_no_opt, null).show();
             }
         });
     }
@@ -67,10 +102,29 @@ public class CreateDietActivity extends AppCompatActivity {
      * Metodos/funciones auxiliares de ayuda
      */
 
+    // Recibe el ID de la dieta o null en funcion de si está creando dieta o la esta editando
+    private void isEditOrCreateDiet(String dietId){
+        if(dietId != null){
+            db.child("diets").child(dietId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Diet actual = snapshot.getValue(Diet.class);
+                    title.setText(actual.getTitle());
+                    description.setText(actual.getDescription());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
     // guardar la dieta en dieta y usuarios (dentro del callback para que si falla no haya que borrar la dieta)
-    private void uploadDietToFirebase(Diet toCreate){
+    private void uploadDietToFirebase(Diet toCreate, String dietId){
         FirebaseUser currentUser = auth.getCurrentUser();
-        String autoId = db.child("diets").push().getKey();
+        String autoId = dietId != null ? dietId : db.child("diets").push().getKey();
 
         // guardar la dieta
         toCreate.setId(autoId);

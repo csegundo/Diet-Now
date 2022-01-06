@@ -11,6 +11,7 @@
     <string name="label_MyDiets">Mis Dietas</string>
     <string name="label_camera_scan_product">Escanear producto</string>
     <string name="label_create_diet">Crear dieta</string>
+    <string name="label_add_food">Añadir alimento</string>
 
     <!-- Resto de strings -->
     <string name="app_name">Diet Now</string>
@@ -66,9 +67,20 @@
     <string name="dislikes">Dislikes</string>
     <string name="views">Visitas</string>
     <string name="food">Alimentos</string>
+    <string name="delete">Eliminar</string>
+    <string name="remove">Borrar</string>
+    <string name="view">Ver</string>
+    <string name="edit">Editar</string>
+    <string name="add_food">Añadir alimento</string>
+    <string name="add_food_message">¿Cómo deseas añadir el alimento? Escoge una de las dos opciones</string>
+    <string name="delete_diet">Eliminar dieta</string>
+    <string name="delete_diet_message">¿Seguro que deseas eliminar esta dieta? Esta acción es irreversible y luego no se podrá recuperar</string>
+    <string name="actions">Acciones</string>
     <string name="create_diet">Crear dieta</string>
     <string name="create_diet_error">Error al crear dieta</string>
     <string name="create_diet_success">Dieta creada correctamente</string>
+    <string name="add_manual_food">Añadir producto por código de barras de forma manual</string>
+    <string name="add">Añadir</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">
@@ -82,5 +94,10 @@
         <item>- Selecciona rol -</item>
         <item>Admin</item>
         <item>User</item>
+    </string-array>
+
+    <string-array name="add_food_options">
+        <item>Desde la cámara</item>
+        <item>Manualmente</item>
     </string-array>
 </resources>
