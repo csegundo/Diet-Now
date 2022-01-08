@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.dietnow.app.ucm.fdi.apis.OpenFoodFactsService;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,17 +17,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class GetProductInfo {
 
-    private GetProductInfo instance;
+    private static GetProductInfo instance;
     private Retrofit retrofit;
 
     public GetProductInfo(){
         retrofit = new Retrofit.Builder()
-            .baseUrl("https://world.openfoodfacts.org/api/v0/product/")
+            .baseUrl("https://world.openfoodfacts.org/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     }
 
-    public GetProductInfo getInstance(){
+    public static GetProductInfo getInstance(){
         if(instance == null){
             instance = new GetProductInfo();
         }
@@ -38,19 +39,36 @@ public class GetProductInfo {
 
         if(!barcode.isEmpty()){
             OpenFoodFactsService api = retrofit.create(OpenFoodFactsService.class);
-            Call<RetrofitResponse> request = api.getProductInfo(barcode);
+            Call<Gson> request = api.getProductInfo(barcode);
             try{
-                /*
                 // TODO llamada a la API de los alimentos
                 // Info sacada de: https://howtodoinjava.com/retrofit2/retrofit-sync-async-calls/
 
                 // Basado en el ejemplo anterior -> ver que devuelve la api y crear una clase personalizada para la respuesta como
                 // hicimos con el modulo de usuarios --> basicamente es cambiar la clase RetrofitResponse por otra XXXX adaptada a
                 // la respuesta de la llamada a la API
-                Response<RetrofitResponse> response = request.execute();
-                RetrofitResponse apiResponse = response.body();
+                /*
+                Response<Gson> response = request.execute();
+                Gson apiResponse = response.body();
+                */
 
-                // Convertir la respuesta en la clase Aliment
+                // TEST: async
+                /*
+                request.enqueue(new Callback<Gson>() {
+                    @Override
+                    public void onResponse(Call<Gson> call, Response<Gson> response) {
+                        Log.d("onResponse", String.valueOf(response.isSuccessful()));
+                        Log.d("onResponse", response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Gson> call, Throwable t) {
+                        Log.d("onFailure", call.toString());
+                        Log.d("---------------------", "");
+                        t.printStackTrace();
+                        Log.d("---------------------", "");
+                    }
+                });
                 */
             } catch (Exception e){
                 e.printStackTrace();

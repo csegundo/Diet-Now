@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.dietnow.app.ucm.fdi.model.diet.Aliment;
+import com.dietnow.app.ucm.fdi.utils.GetProductInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,7 +40,11 @@ public class AddManualFood extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String bc = barcode.getText().toString();
+                if(!bc.isEmpty()){
+                    Aliment aliment = GetProductInfo.getInstance().getInfo(bc);
+                    // meter alimento en la dieta o donde corresponda
+                }
             }
         });
     }

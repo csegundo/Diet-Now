@@ -25,6 +25,7 @@
         android:ems="10"
         android:hint="80012306327"
         android:inputType="textPersonName"
+        android:text="737628064502"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
