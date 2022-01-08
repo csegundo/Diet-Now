@@ -1,0 +1,24 @@
+{
+  "name": "dietnow",
+  "version": "1.0.0",
+  "description": "Nodejs server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csegundo/Diet-Now.git"
+  },
+  "author": "DietNow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/csegundo/Diet-Now/issues"
+  },
+  "homepage": "https://github.com/csegundo/Diet-Now#readme",
+  "dependencies": {
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  }
+}
