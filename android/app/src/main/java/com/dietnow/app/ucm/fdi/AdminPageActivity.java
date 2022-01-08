@@ -85,7 +85,7 @@ public class AdminPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Con Intent podemos "redirigir" al usuario a nueva actividad
-                Intent intent = new Intent(AdminPageActivity.this, RegisterAdminActivity.class);
+                Intent intent = new Intent(AdminPageActivity.this, AllPublishedDiets.class);
                 startActivity(intent);
             }
         });

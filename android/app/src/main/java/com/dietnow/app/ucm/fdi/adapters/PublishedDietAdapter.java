@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHolder>{
+public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdapter.ViewHolder>{
     private ArrayList<Diet> localDataSet;
     private ArrayList<Diet> allDiet;
     private Context context;
     private DatabaseReference db;
     private FirebaseAuth auth;
 
-    public MyDietsAdapter(ArrayList<Diet> dataSet, Context context) {
+    public PublishedDietAdapter(ArrayList<Diet> dataSet, Context context) {
         localDataSet = dataSet;
         allDiet =new ArrayList<>();
         allDiet.addAll(localDataSet);
@@ -47,12 +47,12 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyDietsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public PublishedDietAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.diet_item, viewGroup, false);
+                .inflate(R.layout.published_diet_item, viewGroup, false);
 
-        return new MyDietsAdapter.ViewHolder(view);
+        return new PublishedDietAdapter.ViewHolder(view);
     }
 
     public void filtrado(String filtro){
@@ -77,10 +77,12 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
         notifyDataSetChanged();
     }
     @Override
-    public void onBindViewHolder(@NonNull MyDietsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.titulo.setText(localDataSet.get(position).getTitle());
         holder.descripcion.setText(localDataSet.get(position).getDescription());
         holder.id.setText(localDataSet.get(position).getId());
+        holder.visit.setText( String.valueOf(localDataSet.get(position).getVisits()));
+        holder.likes.setText( String.valueOf(localDataSet.get(position).getLikes()));
         holder.verDieta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,16 +106,20 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
         private final TextView descripcion;
         private final MaterialButton verDieta;
         private final TextView id;
-
+        private final TextView visit;
+        private final TextView likes;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            titulo =  view.findViewById(R.id.DietTitulo);
-            descripcion =  view.findViewById(R.id.dietDesc);
-            verDieta = view.findViewById(R.id.myDietShowBtn);
-            id =  view.findViewById(R.id.dietId);
+            titulo =  view.findViewById(R.id.PDietTitulo);
+            descripcion =  view.findViewById(R.id.PDietDesc);
+            verDieta = view.findViewById(R.id.PDietShowBtn);
+            id =  view.findViewById(R.id.PDietId);
+            visit =  view.findViewById(R.id.pNVisitDiet);
+            likes =  view.findViewById(R.id.pNlikesDiet);
+
 
 
 

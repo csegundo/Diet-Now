@@ -14,9 +14,12 @@
         android:theme="@style/Theme.DietNow"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".AddManualFood"
-            android:label="@string/label_add_food"
+            android:name=".AllPublishedDiets"
             android:exported="false" />
+        <activity
+            android:name=".AddManualFood"
+            android:exported="false"
+            android:label="@string/label_add_food" />
         <activity
             android:name=".ViewDietActivity"
             android:exported="false" />

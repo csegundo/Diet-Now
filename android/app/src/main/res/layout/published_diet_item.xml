@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="95dp">
+
+    <TextView
+        android:id="@+id/PDietId"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="id"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/PDietTitulo"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Titulo" />
+
+    <TextView
+        android:id="@+id/PDietDesc"
+
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="35dp"
+        android:text="Descripcion"
+        android:inputType="textMultiLine"
+        />
+
+    <Button
+        android:id="@+id/PDietShowBtn"
+        android:layout_width="110dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="290dp"
+        android:layout_marginTop="5dp"
+        android:text="Ver Dieta"
+        android:textSize="10dp"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <TextView
+        android:id="@+id/pNlikesDiet"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="275dp"
+        android:layout_marginTop="65dp"
+        android:textDirection="rtl"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/PlikeDiet"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="315dp"
+        android:layout_marginTop="65dp"
+        app:srcCompat="@drawable/ic_like_24" />
+
+
+    <TextView
+        android:id="@+id/pNVisitDiet"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="340dp"
+        android:layout_marginTop="65dp"
+        android:textDirection="rtl"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/PvisitDiet"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="380dp"
+        android:layout_marginTop="65dp"
+        android:background="#7C7373"
+        app:srcCompat="@drawable/ic_view" />
+
+
+</androidx.cardview.widget.CardView>

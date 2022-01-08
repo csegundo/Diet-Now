@@ -2,18 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/myDietLayout"
+    android:id="@+id/publishedDietLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   >
+    >
 
 
     <SearchView
-        android:id="@+id/searchMyDiet"
+        android:id="@+id/searchPublishedDiet"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/MyDietsRecycler"
+        app:layout_constraintBottom_toTopOf="@+id/PublishedDietRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/MyDietsRecycler"
+        android:id="@+id/PublishedDietRecycler"
         android:layout_width="411dp"
         android:layout_height="match_parent"
         android:layout_marginTop="61dp"
@@ -35,20 +35,6 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newDietBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
-        android:layout_margin="16dp"
-        android:contentDescription="Añadir Dieta"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:maxImageSize="40dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

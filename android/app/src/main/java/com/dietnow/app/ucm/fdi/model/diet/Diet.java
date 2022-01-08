@@ -25,6 +25,14 @@ public class Diet {
         this.title = titulo;
     }
 
+    public Diet(String description, String title, int visits, int likes) {
+
+        this.description = description;
+        this.title = title;
+        this.visits = visits;
+        this.likes = likes;
+    }
+
     public Diet(String name, String description, int visits, int likes, int dislikes,
                 double kcal, boolean active, boolean published, String created){
         this.title = name;

@@ -10,13 +10,8 @@
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_register.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_user_page.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_user_profile.xml" value="0.20520833333333333" />
-<<<<<<< Updated upstream
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/drawable/ic_baseline_thumb_down_24.xml" value="0.3828125" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/drawable/ic_like_24.xml" value="0.3828125" />
-=======
-        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_camera.xml" value="0.2957427536231884" />
-        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_user_page.xml" value="0.2957427536231884" />
->>>>>>> Stashed changes
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_admin_page.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_admin_register_user.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_all_user.xml" value="0.36666666666666664" />
@@ -36,18 +31,22 @@
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/drawable/ic_person_black.xml" value="0.3828125" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_admin_page.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_admin_register_user.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_all_published_diets.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_all_user.xml" value="0.25" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_main.xml" value="0.276268115942029" />
+        <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_my_diets.xml" value="0.2838541666666667" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_register.xml" value="0.276268115942029" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_user_page.xml" value="0.25" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_user_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_user_profile_edit.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/diet_item.xml" value="0.19114583333333332" />
+        <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/published_diet_item.xml" value="0.5" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/user_item.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3828125" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
