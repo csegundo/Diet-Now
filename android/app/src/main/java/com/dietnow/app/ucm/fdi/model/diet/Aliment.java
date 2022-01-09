@@ -18,6 +18,7 @@ public class Aliment {
         this.name = name;
         this.grams = grams;
         this.kcal = kcal;
+        active = true;
     }
 
     @Exclude

@@ -19,6 +19,7 @@ public class AddManualFood extends AppCompatActivity {
 
     private Button add;
     private EditText barcode;
+    private String actualDiet;
 
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -35,6 +36,7 @@ public class AddManualFood extends AppCompatActivity {
         // Inicializar los componentes de la vista
         add         = findViewById(R.id.btnAddFood);
         barcode     = findViewById(R.id.barcodeFood);
+        actualDiet = getIntent().getExtras().getString("did");
 
         // Acciones de los componentes
         add.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +44,7 @@ public class AddManualFood extends AppCompatActivity {
             public void onClick(View v) {
                 String bc = barcode.getText().toString();
                 if(!bc.isEmpty()){
-                    Aliment aliment = GetProductInfo.getInstance().getInfo(bc);
+                    GetProductInfo.getInstance().getInfo(bc,actualDiet);
                     // meter alimento en la dieta o donde corresponda
                 }
             }

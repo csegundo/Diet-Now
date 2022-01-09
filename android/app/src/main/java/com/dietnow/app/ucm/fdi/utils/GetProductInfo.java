@@ -2,8 +2,12 @@ package com.dietnow.app.ucm.fdi.utils;
 
 import android.util.Log;
 
+import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.apis.OpenFoodFactsService;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
+import com.google.common.util.concurrent.AbstractListeningExecutorService;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -18,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class GetProductInfo {
 
     private static GetProductInfo instance;
+    private DatabaseReference db;
     private Retrofit retrofit;
 
     public GetProductInfo(){
@@ -25,6 +30,8 @@ public class GetProductInfo {
             .baseUrl("http://10.0.2.2:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+        db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
     }
 
     public static GetProductInfo getInstance(){
@@ -34,26 +41,40 @@ public class GetProductInfo {
         return instance;
     }
 
-    public Aliment getInfo(String barcode){
-        Aliment product = null;
+    public void getInfo(String barcode,String dietId){
 
         if(!barcode.isEmpty()){
             OpenFoodFactsService api = retrofit.create(OpenFoodFactsService.class);
             Call<ProductResponse> request = api.getProductInfo(barcode);
             try{
-                // TODO llamada a la API de los alimentos
-                // Info sacada de: https://howtodoinjava.com/retrofit2/retrofit-sync-async-calls/
 
-                // Basado en el ejemplo anterior -> ver que devuelve la api y crear una clase personalizada para la respuesta como
-                // hicimos con el modulo de usuarios --> basicamente es cambiar la clase RetrofitResponse por otra XXXX adaptada a
-                // la respuesta de la llamada a la API
-                Response<ProductResponse> response = request.execute();
-                ProductResponse apiResponse = response.body();
+                request.enqueue(new Callback<ProductResponse>() { // la ejecuta async (para sync: execute())
+                    @Override
+                    public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                        if(response.isSuccessful()){
+                            ProductResponse apiResponse = response.body();
+                            Aliment aliment = new Aliment(apiResponse.getName(),apiResponse.getGrams(),apiResponse.getKcal());
+                            Log.d("SUCCES", apiResponse.toString());
+                            db.child("diets").child(dietId).child("aliment").setValue(aliment);
+
+                        } else {
+                            Log.d("FAILED", response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductResponse> call, Throwable t) {
+                        Log.d("FAILED", "FAILED HTTP REQUEST");
+
+                        t.printStackTrace();
+                    }
+                });
+
             } catch (Exception e){
                 e.printStackTrace();
             }
         }
 
-        return product;
+
     }
 }

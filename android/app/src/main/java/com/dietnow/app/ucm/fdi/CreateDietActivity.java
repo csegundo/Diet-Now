@@ -51,6 +51,7 @@ public class CreateDietActivity extends AppCompatActivity {
             actualDiet = getIntent().getExtras().getString("did");
         }
 
+
         // Inicializar componentes de Firebase
         auth        = FirebaseAuth.getInstance();
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
@@ -62,6 +63,9 @@ public class CreateDietActivity extends AppCompatActivity {
         description = findViewById(R.id.createDietDescription);
         addFood     = findViewById(R.id.addFood);
 
+        if(actualDiet == null){
+            addFood.setVisibility(View.GONE);
+        }
         isEditOrCreateDiet(actualDiet);
 
         // Acciones de los componentes
@@ -90,6 +94,7 @@ public class CreateDietActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(CreateDietActivity.this,
                                     which == 0 ? CameraActivity.class : AddManualFood.class);
+                            intent.putExtra("did",actualDiet);
                             startActivity(intent);
                         }
                     })
