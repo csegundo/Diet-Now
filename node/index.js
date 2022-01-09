@@ -20,7 +20,9 @@ http.createServer(function(request, response){
             switch(pathname){
                 case '/dietnow/api/product/':
                     const { barcode } = qs.parse(query);
-                    response.end(JSON.stringify(dietnow.getProductByBarcode(barcode)));
+                    dietnow.getProductByBarcode(barcode, function(product){
+                        response.end(JSON.stringify(product));
+                    });
                     break;
                 default:
                     response.end(`{"error": "${http.STATUS_CODES[404]}"}`);

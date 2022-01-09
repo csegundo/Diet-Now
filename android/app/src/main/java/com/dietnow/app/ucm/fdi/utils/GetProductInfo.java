@@ -22,7 +22,7 @@ public class GetProductInfo {
 
     public GetProductInfo(){
         retrofit = new Retrofit.Builder()
-            .baseUrl("https://world.openfoodfacts.org/")
+            .baseUrl("http://10.0.2.2:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     }
@@ -39,7 +39,7 @@ public class GetProductInfo {
 
         if(!barcode.isEmpty()){
             OpenFoodFactsService api = retrofit.create(OpenFoodFactsService.class);
-            Call<Gson> request = api.getProductInfo(barcode);
+            Call<ProductResponse> request = api.getProductInfo(barcode);
             try{
                 // TODO llamada a la API de los alimentos
                 // Info sacada de: https://howtodoinjava.com/retrofit2/retrofit-sync-async-calls/
@@ -47,29 +47,8 @@ public class GetProductInfo {
                 // Basado en el ejemplo anterior -> ver que devuelve la api y crear una clase personalizada para la respuesta como
                 // hicimos con el modulo de usuarios --> basicamente es cambiar la clase RetrofitResponse por otra XXXX adaptada a
                 // la respuesta de la llamada a la API
-                /*
-                Response<Gson> response = request.execute();
-                Gson apiResponse = response.body();
-                */
-
-                // TEST: async
-                /*
-                request.enqueue(new Callback<Gson>() {
-                    @Override
-                    public void onResponse(Call<Gson> call, Response<Gson> response) {
-                        Log.d("onResponse", String.valueOf(response.isSuccessful()));
-                        Log.d("onResponse", response.body().toString());
-                    }
-
-                    @Override
-                    public void onFailure(Call<Gson> call, Throwable t) {
-                        Log.d("onFailure", call.toString());
-                        Log.d("---------------------", "");
-                        t.printStackTrace();
-                        Log.d("---------------------", "");
-                    }
-                });
-                */
+                Response<ProductResponse> response = request.execute();
+                ProductResponse apiResponse = response.body();
             } catch (Exception e){
                 e.printStackTrace();
             }

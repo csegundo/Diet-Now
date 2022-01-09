@@ -1,14 +1,23 @@
 "use strict"
 
-const OFF = require('./OpenFoodFacts');
+const openfoodfacts = require('./OpenFoodFacts');
 
 module.exports = {
-    getProductByBarcode : function(barcode = ''){
+    getProductByBarcode : function(barcode = '', callback){
         if(barcode){
-            let openfoodfacts = new OFF();
-            let product = {}, response = openfoodfacts.getProduct(barcode);
-            console.log('response', response);
-            return response;
+            openfoodfacts.getProduct(barcode, function(response){
+                if(callback && typeof callback === 'function'){
+                    response = JSON.parse(response);
+                    // DATOS POR CADA 100g
+                    let product = {
+                        'generic_name' : response.product.generic_name || 'Product',
+                        'active' : true,
+                        'kcal' : response.product.nutriments['energy-kcal'] || 0,
+                        'grams' : 100
+                    };
+                    callback(product);
+                }
+            });
         }
 
         return { "error" : "Empty barcode" };

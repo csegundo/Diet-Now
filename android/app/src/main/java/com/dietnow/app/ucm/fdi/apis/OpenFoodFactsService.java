@@ -1,11 +1,10 @@
 package com.dietnow.app.ucm.fdi.apis;
 
-import com.dietnow.app.ucm.fdi.utils.RetrofitResponse;
-import com.google.gson.Gson;
+import com.dietnow.app.ucm.fdi.utils.ProductResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Usando Retrofit llamamos a la API de buscar la informacion nutricional de un alimento
@@ -14,6 +13,6 @@ import retrofit2.http.Path;
  * Reference: https://es.openfoodfacts.org/data
  */
 public interface OpenFoodFactsService {
-    @GET("api/v0/product/{barcode}.json")
-    Call<Gson> getProductInfo(@Path("barcode") String barcode);
+    @GET("dietnow/api/product/")
+    Call<ProductResponse> getProductInfo(@Query("barcode") String barcode);
 }
