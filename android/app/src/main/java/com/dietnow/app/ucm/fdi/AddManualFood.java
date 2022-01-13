@@ -2,6 +2,7 @@ package com.dietnow.app.ucm.fdi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,22 +22,15 @@ public class AddManualFood extends AppCompatActivity {
     private EditText barcode;
     private String actualDiet;
 
-    private FirebaseAuth auth;
-    private DatabaseReference db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_manual_food);
 
-        // Inicializar componentes de Firebase
-        auth        = FirebaseAuth.getInstance();
-        db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
-
         // Inicializar los componentes de la vista
         add         = findViewById(R.id.btnAddFood);
         barcode     = findViewById(R.id.barcodeFood);
-        actualDiet = getIntent().getExtras().getString("did");
+        actualDiet  = getIntent().getExtras().getString("did");
 
         // Acciones de los componentes
         add.setOnClickListener(new View.OnClickListener() {
@@ -44,8 +38,11 @@ public class AddManualFood extends AppCompatActivity {
             public void onClick(View v) {
                 String bc = barcode.getText().toString();
                 if(!bc.isEmpty()){
-                    GetProductInfo.getInstance().getInfo(bc,actualDiet);
-                    // meter alimento en la dieta o donde corresponda
+                    GetProductInfo.getInstance().getInfo(bc, actualDiet);
+                    // Redirigir a la edición de la dieta
+                    Intent intent = new Intent(AddManualFood.this, CreateDietActivity.class);
+                    intent.putExtra("did", actualDiet);
+                    startActivity(intent);
                 }
             }
         });

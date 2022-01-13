@@ -26,7 +26,6 @@ public class Diet {
     }
 
     public Diet(String description, String title, int visits, int likes) {
-
         this.description = description;
         this.title = title;
         this.visits = visits;

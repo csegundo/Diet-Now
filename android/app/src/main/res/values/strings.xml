@@ -10,7 +10,7 @@
     <string name="label_user_edit_profile">Editar perfil</string>
     <string name="label_MyDiets">Mis Dietas</string>
     <string name="label_camera_scan_product">Escanear producto</string>
-    <string name="label_create_diet">Crear dieta</string>
+    <string name="label_create_diet">Dieta</string>
     <string name="label_add_food">Añadir alimento</string>
 
     <!-- Resto de strings -->

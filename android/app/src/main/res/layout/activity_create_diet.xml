@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/createDietTitle" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/dietAlimentsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

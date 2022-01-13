@@ -12,7 +12,7 @@ public class Aliment {
     private String id;
     private String name;
     private boolean active;
-    private double grams,kcal;
+    private double grams, kcal;
 
     public Aliment(String name, double grams, double kcal) {
         this.name = name;

@@ -80,7 +80,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
                     String user = ds.child("user").getValue().toString();
                     Diet us = new Diet(descripcion,titulo);
                     us.setId(ds.child("id").getValue().toString());
-                    if( active &&user.equals(CurrentUser)) {
+                    if(active && user.equals(CurrentUser)) {
                         dietList.add(us);
                     }
                 }

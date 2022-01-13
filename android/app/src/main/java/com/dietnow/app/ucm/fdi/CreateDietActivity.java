@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
@@ -36,6 +37,7 @@ public class CreateDietActivity extends AppCompatActivity {
     private ProgressBar progress;
     private String actualDiet;
     private FloatingActionButton addFood;
+    private TextView alimentsLabel;
 
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -51,7 +53,6 @@ public class CreateDietActivity extends AppCompatActivity {
             actualDiet = getIntent().getExtras().getString("did");
         }
 
-
         // Inicializar componentes de Firebase
         auth        = FirebaseAuth.getInstance();
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
@@ -62,9 +63,11 @@ public class CreateDietActivity extends AppCompatActivity {
         progress    = findViewById(R.id.createDietProgress);
         description = findViewById(R.id.createDietDescription);
         addFood     = findViewById(R.id.addFood);
+        alimentsLabel = findViewById(R.id.dietAlimentsLabel);
 
         if(actualDiet == null){
             addFood.setVisibility(View.GONE);
+            alimentsLabel.setVisibility(View.GONE);
         }
         isEditOrCreateDiet(actualDiet);
 
@@ -116,6 +119,25 @@ public class CreateDietActivity extends AppCompatActivity {
                     Diet actual = snapshot.getValue(Diet.class);
                     title.setText(actual.getTitle());
                     description.setText(actual.getDescription());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            db.child("diets").child(dietId).child("aliments").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot ds : snapshot.getChildren()){
+                        Log.d("Diet:" + actualDiet + "; Aliment", ds.toString());
+                        /**
+                         * En ds.getKey() tenemos el barcode del alimento
+                         * En ds.getValue(Aliment.class) tenemos la info del alimento para ponerlo en la tabla
+                         *
+                         * NOTE: a cada fila de la tabla hay que meterle el barcode para poder eliminarlo
+                         * */
+                    }
                 }
 
                 @Override
