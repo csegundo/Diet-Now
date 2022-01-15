@@ -237,8 +237,8 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            email =  view.findViewById(R.id.dietDesc);
-            name =  view.findViewById(R.id.DietTitulo);
+            email =  view.findViewById(R.id.AlimentKal);
+            name =  view.findViewById(R.id.AlimentName);
             image =  view.findViewById(R.id.AllUserImage);
             edit =  view.findViewById(R.id.myDietShowBtn);
             delete =  view.findViewById(R.id.AllUserDeleteBtn);

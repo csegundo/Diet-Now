@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,17 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.R;
-import com.dietnow.app.ucm.fdi.UserProfileEditActivity;
 import com.dietnow.app.ucm.fdi.ViewDietActivity;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,10 +103,10 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
             super(view);
             // Define click listener for the ViewHolder's View
 
-            titulo =  view.findViewById(R.id.DietTitulo);
-            descripcion =  view.findViewById(R.id.dietDesc);
+            titulo =  view.findViewById(R.id.AlimentName);
+            descripcion =  view.findViewById(R.id.AlimentKal);
             verDieta = view.findViewById(R.id.myDietShowBtn);
-            id =  view.findViewById(R.id.dietId);
+            id =  view.findViewById(R.id.barcodeAliment);
 
 
 

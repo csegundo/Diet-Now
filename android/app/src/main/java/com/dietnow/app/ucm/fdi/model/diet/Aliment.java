@@ -21,6 +21,8 @@ public class Aliment {
         active = true;
     }
 
+    public Aliment(){};
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

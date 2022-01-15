@@ -2,6 +2,8 @@ package com.dietnow.app.ucm.fdi;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dietnow.app.ucm.fdi.adapters.AlimentsAdapter;
+import com.dietnow.app.ucm.fdi.adapters.AllUsersAdapter;
+import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.dietnow.app.ucm.fdi.service.DietService;
@@ -30,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class CreateDietActivity extends AppCompatActivity {
 
     private EditText title, description;
@@ -41,6 +48,12 @@ public class CreateDietActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private DatabaseReference db;
+
+    //adapters
+    private AlimentsAdapter AlimentsAdapter;
+    private RecyclerView RecyclerView;
+    private ArrayList<Aliment> alimentList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +69,7 @@ public class CreateDietActivity extends AppCompatActivity {
         // Inicializar componentes de Firebase
         auth        = FirebaseAuth.getInstance();
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        alimentList                = new ArrayList<Aliment> ();
 
         // Inicializar los componentes de la vista
         title       = findViewById(R.id.createDietTitle);
@@ -64,6 +78,11 @@ public class CreateDietActivity extends AppCompatActivity {
         description = findViewById(R.id.createDietDescription);
         addFood     = findViewById(R.id.addFood);
         alimentsLabel = findViewById(R.id.dietAlimentsLabel);
+        RecyclerView    = findViewById(R.id.AllAlimentsRecycler);
+
+        RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
 
         if(actualDiet == null){
             addFood.setVisibility(View.GONE);
@@ -106,6 +125,7 @@ public class CreateDietActivity extends AppCompatActivity {
         });
     }
 
+
     /**
      * Metodos/funciones auxiliares de ayuda
      */
@@ -113,6 +133,8 @@ public class CreateDietActivity extends AppCompatActivity {
     // Recibe el ID de la dieta o null en funcion de si está creando dieta o la esta editando
     private void isEditOrCreateDiet(String dietId){
         if(dietId != null){
+
+
             db.child("diets").child(dietId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -130,14 +152,21 @@ public class CreateDietActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot ds : snapshot.getChildren()){
-                        Log.d("Diet:" + actualDiet + "; Aliment", ds.toString());
                         /**
                          * En ds.getKey() tenemos el barcode del alimento
                          * En ds.getValue(Aliment.class) tenemos la info del alimento para ponerlo en la tabla
                          *
                          * NOTE: a cada fila de la tabla hay que meterle el barcode para poder eliminarlo
                          * */
+                        //Log.d("Diet:" + actualDiet + "; Aliment", ds.toString());
+                        Aliment aliment = ds.getValue(Aliment.class);
+                        aliment.setId(ds.getKey());
+                        if(aliment.isActive() ){
+                            alimentList.add(aliment);
+                        }
                     }
+                    AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
+                    RecyclerView.setAdapter(AlimentsAdapter);
                 }
 
                 @Override
