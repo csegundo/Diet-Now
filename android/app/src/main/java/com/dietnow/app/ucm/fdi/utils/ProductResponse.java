@@ -20,6 +20,31 @@ public class ProductResponse {
     @Expose
     private double kcal;
 
+    @SerializedName("fat")
+    @Expose
+    private double fat;
+
+    @SerializedName("saturatedFat")
+    @Expose
+    private double saturatedFat;
+
+    @SerializedName("carbs")
+    @Expose
+    private double carbs;
+
+    @SerializedName("sugar")
+    @Expose
+    private double sugar;
+
+    @SerializedName("proteins")
+    @Expose
+    private double proteins;
+
+    @SerializedName("salt")
+    @Expose
+    private double salt;
+
+
 
     public String getName() {
         return name;
@@ -53,6 +78,30 @@ public class ProductResponse {
         this.kcal = kcal;
     }
 
+    public double getFat() { return fat; }
+
+    public void setFat(double fat) { this.fat = fat; }
+
+    public double getSaturatedFat() { return saturatedFat; }
+
+    public void setSaturatedFat(double saturatedFat) { this.saturatedFat = saturatedFat; }
+
+    public double getCarbs() { return carbs; }
+
+    public void setCarbs(double carbs) { this.carbs = carbs; }
+
+    public double getSugar() { return sugar; }
+
+    public void setSugar(double sugar) { this.sugar = sugar; }
+
+    public double getProteins() { return proteins; }
+
+    public void setProteins(double proteins) { this.proteins = proteins; }
+
+    public double getSalt() { return salt; }
+
+    public void setSalt(double salt) { this.salt = salt; }
+
     @Override
     public String toString() {
         return "ProductResponse{" +
@@ -60,6 +109,20 @@ public class ProductResponse {
                 ", active=" + active +
                 ", grams=" + grams +
                 ", kcal=" + kcal +
+                '}';
+    }
+    public String toStringAll() {
+        return "ProductResponse{" +
+                "name='" + name + '\'' +
+                ", active=" + active +
+                ", grams=" + grams +
+                ", kcal=" + kcal +
+                ", fat=" + fat +
+                ", saturatedFat=" + saturatedFat +
+                ", carbs=" + carbs +
+                ", sugar=" + sugar +
+                ", proteins=" + proteins +
+                ", salt=" + salt +
                 '}';
     }
 }

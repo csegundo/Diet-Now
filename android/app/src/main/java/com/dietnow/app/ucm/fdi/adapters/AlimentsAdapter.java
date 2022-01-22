@@ -1,6 +1,9 @@
 package com.dietnow.app.ucm.fdi.adapters;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dietnow.app.ucm.fdi.AddManualFood;
+import com.dietnow.app.ucm.fdi.CameraActivity;
+import com.dietnow.app.ucm.fdi.CreateDietActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.MyDietsActivity;
 import com.dietnow.app.ucm.fdi.R;
@@ -58,7 +64,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.id.setText(localDataSet.get(position).getId());
         holder.titulo.setText(localDataSet.get(position).getName());
         holder.kcal.setText(String.valueOf(localDataSet.get(position).getKcal()));
@@ -80,6 +86,41 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
                 });
             }
         });
+        holder.fullInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = localDataSet.get(position).getId();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.food_details)
+                        //.setMessage("Informacion detallada aqui igual una tabla o algo yo que se")
+                        .setMessage(
+                                "Por cada 100g de " + "Pulpitos en aceite de oliva" + ": \n" +
+                                "Valor energético:    " + "133" + " kcal \n" +
+                                        "Grasas:    " + "5" + "g \n" +
+                                        "   de las cuales saturadas:    " + "1" + "g \n" +
+                                        "Hidratos de cabrono:    " + "1" + "g \n" +
+                                        "   de los cuales azúcares:    " + "0" + "g \n" +
+                                        "Proteinas:    " + "21" + "g \n" +
+                                        "Sal:    " + "1,5" + "g \n"
+                        )
+                        .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+
+                /*
+                * PROBLEMOS:
+                * 1.- linea 92, la informacion nutricional no se inserta en bbdd por lo cual el getID no sirve (dejarlo asi o meter todos los campos en aliment
+                *       desde el principio y fuera?)
+                * 2.- no se muy bien cual es la llamada a la pagina de openfoodfacts donde se especifica los campos concretos a coger
+                * Campos que se van a mostrar (a parte de los que ya tenemos)
+                * Los que tenemos: String name, double grams, double kcal
+                *
+                * double fat, double saturatedFat, double carbs, double sugar, double proteins, double salt
+                * fat_100g, saturated-fat_100g, carbohydrates_100g, sugars_100g, proteins_100g, salt_100g
+                *                                                                                           -Vitali
+                * */
+            }
+        });
+
     }
 
     @Override
@@ -94,6 +135,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
         private final TextView grams;
         private final TextView id;
         private final ImageButton delete;
+        private final ImageButton fullInfo;
 
 
         public ViewHolder(View view) {
@@ -105,6 +147,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
             kcal =  view.findViewById(R.id.AlimentKal);
             id =  view.findViewById(R.id.barcodeAliment); // de la vista aliment_item_test
             delete =  view.findViewById(R.id.deleteAlimentBtn);
+            fullInfo =  view.findViewById(R.id.viewAlimentDetails);
 
         }
     }

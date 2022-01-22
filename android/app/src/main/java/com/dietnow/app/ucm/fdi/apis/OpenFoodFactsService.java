@@ -15,4 +15,5 @@ import retrofit2.http.Query;
 public interface OpenFoodFactsService {
     @GET("dietnow/api/product/")
     Call<ProductResponse> getProductInfo(@Query("barcode") String barcode);
+    Call<ProductResponse> getAllProductInfo(@Query("barcode") String barcode);
 }

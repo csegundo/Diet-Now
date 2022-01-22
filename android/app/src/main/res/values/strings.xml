@@ -81,6 +81,7 @@
     <string name="create_diet_success">Dieta creada correctamente</string>
     <string name="add_manual_food">Añadir producto por código de barras de forma manual</string>
     <string name="add">Añadir</string>
+    <string name="food_details">Información nutricional</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">
