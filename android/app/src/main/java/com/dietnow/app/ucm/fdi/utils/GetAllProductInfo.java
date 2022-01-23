@@ -1,19 +1,13 @@
 package com.dietnow.app.ucm.fdi.utils;
 
-import android.content.Intent;
+import android.os.StrictMode;
 import android.util.Log;
 
-import com.dietnow.app.ucm.fdi.AddManualFood;
-import com.dietnow.app.ucm.fdi.CameraActivity;
-import com.dietnow.app.ucm.fdi.CreateDietActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.apis.OpenFoodFactsService;
-import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.model.diet.NutritionalInfo;
-import com.google.common.util.concurrent.AbstractListeningExecutorService;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,36 +39,26 @@ public class GetAllProductInfo {
         return instance;
     }
 
-    public void getInfo(String barcode, String dietId){
+    public NutritionalInfo getInfo(String barcode){
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
         if(!barcode.isEmpty()){
             OpenFoodFactsService api = retrofit.create(OpenFoodFactsService.class);
-            Call<ProductResponse> request = api.getProductInfo(barcode);
+            Call<ProductResponse> request = api.getAllProductInfo(barcode);
             try{
-                request.enqueue(new Callback<ProductResponse>() { // la ejecuta async (para sync: execute())
-                    @Override
-                    public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                        if(response.isSuccessful()){
-                            ProductResponse apiResponse = response.body();
-                            Log.d("SUCCES", apiResponse.toStringAll());
-                            NutritionalInfo aliment = new NutritionalInfo(apiResponse.getName(), apiResponse.getGrams(), apiResponse.getKcal(), apiResponse.getFat(),
-                                    apiResponse.getSaturatedFat(), apiResponse.getCarbs(), apiResponse.getSugar(), apiResponse.getProteins(), apiResponse.getSalt());
 
-                            // Guardar codigo de barras en el array de la dieta
-                            //.child("diets").child(dietId).child("aliments").child(barcode).setValue(aliment);
-                        } else {
-                            Log.d("FAILED", response.message());
-                        }
-                    }
+                Response<ProductResponse> apiResponse = request.execute();
+                return new NutritionalInfo(apiResponse.body().getName(), apiResponse.body().getGrams(), apiResponse.body().getKcal(), apiResponse.body().getFat(),
+                        apiResponse.body().getSaturatedFat(), apiResponse.body().getCarbs(), apiResponse.body().getSugar(), apiResponse.body().getProteins(), apiResponse.body().getSalt());
 
-                    @Override
-                    public void onFailure(Call<ProductResponse> call, Throwable t) {
-                        Log.d("FAILED", "FAILED HTTP REQUEST");
-                        t.printStackTrace();
-                    }
-                });
             } catch (Exception e){
                 e.printStackTrace();
+                Log.d("TAG", e.getMessage() );
             }
         }
+        return null;
     }
 }

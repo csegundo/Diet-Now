@@ -51,6 +51,22 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dietAliment"
+        android:layout_width="411dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="210dp"
+        android:layout_marginBottom="110dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="1.0">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <Button
         android:id="@+id/btnEditDiet"
         android:layout_width="135dp"

@@ -17,10 +17,15 @@ http.createServer(function(request, response){
             response.end(`{"error": "${http.STATUS_CODES[405]}"}`);
         }
         else{
+            const { barcode } = qs.parse(query);
             switch(pathname){
                 case '/dietnow/api/product/':
-                    const { barcode } = qs.parse(query);
                     dietnow.getProductByBarcode(barcode, function(product){
+                        response.end(JSON.stringify(product));
+                    });
+                    break;
+                case '/dietnow/api/nutritionalInfo/':
+                    dietnow.getAllProductByBarcode(barcode, function(product){
                         response.end(JSON.stringify(product));
                     });
                     break;

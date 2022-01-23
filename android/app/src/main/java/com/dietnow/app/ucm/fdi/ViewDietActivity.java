@@ -2,6 +2,7 @@ package com.dietnow.app.ucm.fdi;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
+import com.dietnow.app.ucm.fdi.adapters.AlimentsAdapter;
+import com.dietnow.app.ucm.fdi.adapters.AllUsersAdapter;
+import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,12 +30,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewDietActivity extends AppCompatActivity {
 
     private TextView name, description;
     private String actualDiet;
+    private androidx.recyclerview.widget.RecyclerView RecyclerView;
     private Button edit, delete;
-
+    private AlimentViewOnlyAdapter alimentsAdapter;
+    private ArrayList<Aliment> alimentList;
     private FirebaseAuth auth;
     private DatabaseReference db;
 
@@ -50,10 +60,14 @@ public class ViewDietActivity extends AppCompatActivity {
         // Atributos de la vista
         name        = findViewById(R.id.viewDietName);
         description = findViewById(R.id.viewDietDescription);
+        RecyclerView  = findViewById(R.id.dietAliment);
         edit        = findViewById(R.id.btnEditDiet);
         delete      = findViewById(R.id.btnDeleteDiet);
+        alimentList = new ArrayList<Aliment>();
 
         initializeComponentsWithData(this.actualDiet);
+        RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        getAliment();
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +83,28 @@ public class ViewDietActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDeleteModalAndConfirm(actualDiet);
+            }
+        });
+    }
+
+    private void getAliment(){
+        db.child("diets").child(actualDiet).child("aliments").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Aliment aliment = ds.getValue(Aliment.class);
+                    aliment.setId(ds.getKey());
+                    if(aliment.isActive() ){
+                        alimentList.add(aliment);
+                    }
+                }
+                alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
+                RecyclerView.setAdapter(alimentsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

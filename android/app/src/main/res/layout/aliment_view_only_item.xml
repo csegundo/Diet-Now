@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RemoveAlimentOnly"
+    android:layout_width="match_parent"
+    android:layout_height="95dp">
+
+    <TextView
+        android:id="@+id/barcodeAlimentOnly"
+        android:layout_width="match_parent"
+        android:layout_height="29dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="id"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/AlimentNameOnly"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:text="Titulo" />
+
+
+    <TextView
+        android:id="@+id/AlimentGramsOnly"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"
+        android:text="Grams" />
+
+    <TextView
+        android:id="@+id/AlimentKalOnly"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="65dp"
+        android:text="kcal" />
+
+
+    <ImageButton
+        android:id="@+id/viewOnlyAlimentDetails"
+        android:layout_width="52dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="320dp"
+        android:layout_marginTop="27dp"
+        app:srcCompat="@drawable/ic_view" />
+
+
+</androidx.cardview.widget.CardView>
