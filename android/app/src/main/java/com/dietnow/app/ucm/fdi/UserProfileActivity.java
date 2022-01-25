@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,7 +55,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private Button settings;
     private ImageView image;
     private Uri filePath;
-    private Button delete, change, editProfile;
+    private Button change;
     private String uid;
     private DatabaseReference db;
     private FirebaseAuth auth;
@@ -71,7 +73,6 @@ public class UserProfileActivity extends AppCompatActivity {
         age        = findViewById(R.id.profileAge);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
-        editProfile= findViewById(R.id.profileEditProfile);
 
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
@@ -143,31 +144,24 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        // editar el perfil del usuario
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
-                intent.putExtra("uid",uid);
-                startActivity(intent);
-            }
-        });
-
         // Acciones del perfil
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });
-
-        // Borrar perfil del usuario
-        delete = findViewById(R.id.deleteProfile);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateUser();
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
+                builder.setTitle(R.string.profile_settings)
+                    .setItems(R.array.profile_settings_options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case 0: logout(); break;
+                                case 1: editProfile(); break;
+                                case 2: deleteProfile(); break;
+                                default: break;
+                            }
+                        }
+                    })
+                    .setNegativeButton(R.string.delete_alert_no_opt, null).show();
             }
         });
     }
@@ -248,7 +242,7 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
-    private void updateUser() {
+    private void deleteProfile() {
         FirebaseUser user = auth.getCurrentUser();
 
         ValueEventListener postListener = new ValueEventListener() {
@@ -289,4 +283,15 @@ public class UserProfileActivity extends AppCompatActivity {
         db.addValueEventListener(postListener);
     }
 
+    private void logout(){
+        auth.signOut();
+        Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void editProfile(){
+        Intent intent = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+        intent.putExtra("uid", uid);
+        startActivity(intent);
+    }
 }

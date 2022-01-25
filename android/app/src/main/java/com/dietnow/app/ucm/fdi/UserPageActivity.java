@@ -12,8 +12,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class UserPageActivity extends AppCompatActivity {
 
     private Button dieta, perfil, dietasCreadas, dietasPub;
-    private Button camara;
-    private Button logout;
     private FirebaseAuth auth;
 
     @Override
@@ -24,15 +22,6 @@ public class UserPageActivity extends AppCompatActivity {
         dieta = findViewById(R.id.dietaBtn);
 
         auth   = FirebaseAuth.getInstance();
-        logout = findViewById(R.id.cerrarSesionTemp2);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                auth.signOut();
-                Intent intent = new Intent(UserPageActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // Acciones de los componentes
         dieta.setOnClickListener(new View.OnClickListener() {
@@ -73,20 +62,6 @@ public class UserPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(UserPageActivity.this, AllPublishedDiets.class);
-                startActivity(intent);
-            }
-        });
-
-
-        /* temp */
-        camara = findViewById(R.id.camara);
-
-        // Acciones de los componentes
-        camara.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
-                Intent intent = new Intent(UserPageActivity.this, CameraActivity.class);
                 startActivity(intent);
             }
         });

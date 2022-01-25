@@ -60,30 +60,6 @@
         app:layout_constraintVertical_bias="0.063" />
 
     <Button
-        android:id="@+id/deleteProfile"
-        android:layout_width="153dp"
-        android:layout_height="51dp"
-        android:text="Delete Profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.937"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.094" />
-
-    <Button
-        android:id="@+id/profileEditProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.942"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168" />
-
-    <Button
         android:id="@+id/profileChangeImg"
         android:layout_width="124dp"
         android:layout_height="39dp"

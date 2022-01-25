@@ -16,7 +16,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'com.google.firebase:firebase-admin:8.1.0'
-	classpath 'com.google.gms:google-services:4.3.10'
+	// classpath 'com.google.gms:google-services:4.3.10'
 }
 
 test {

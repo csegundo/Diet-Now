@@ -25,7 +25,6 @@ public class AdminPageActivity extends AppCompatActivity {
 
     private Button creardieta,perfil,dietasCreadas,dietasPub,crearUser,modUser;
     private Button logout;
-    private Button test;
     private FirebaseAuth auth;
 
     @Override
@@ -111,50 +110,5 @@ public class AdminPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        /*test = findViewById(R.id.buttonTestuser);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseUser currentUser = auth.getCurrentUser();
-                HashMap<String, String> params = new HashMap<>();
-                String hashCode = DietNowTokens.generateToken(currentUser.getUid());
-
-                if(!hashCode.isEmpty()){
-                    params.put("sender", currentUser.getUid());
-                    params.put("email", "test@ucm.es");
-                    params.put("password", "123456");
-                    params.put("code", hashCode);
-
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://10.0.2.2:8080/") // https://developer.android.com/studio/run/emulator-networking#networkaddresses
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-
-                    DietNowService api = retrofit.create(DietNowService.class);
-                    Call<Boolean> request = api.createFirebaseuser(params); // prepara la peticion
-                    request.enqueue(new Callback<Boolean>() { // la ejecuta async (para sync: execute())
-                        @Override
-                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                            if(response.isSuccessful()){
-                                Log.d("REQUEST RESPONSE", response.body().toString());
-                                Boolean userCreated = response.body();
-                            } else{
-                                Log.d("REQUEST RESPONSE ERROR", "failed");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Boolean> call, Throwable t) {
-                            Log.d("RESPONSE FAILED", t.toString());
-                            t.printStackTrace();
-                        }
-                    });
-                } else{
-                    // TOAST FALLO
-                }
-
-            }
-        });*/
     }
 }
