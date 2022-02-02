@@ -23,6 +23,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Line;
+import com.anychart.data.Mapping;
+import com.anychart.data.Set;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.MarkerType;
+import com.anychart.enums.TooltipPositionMode;
+import com.anychart.graphics.vector.Stroke;
+//import com.anychart.sample.R;
+import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
+import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +54,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -61,6 +78,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseStorage storage;
     private StorageReference storageRef, imagesRef;
+    private AnyChartView steps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +91,7 @@ public class UserProfileActivity extends AppCompatActivity {
         age        = findViewById(R.id.profileAge);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
+        steps      = findViewById(R.id.stepsChart);
 
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
@@ -150,20 +169,23 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
                 builder.setTitle(R.string.profile_settings)
-                    .setItems(R.array.profile_settings_options, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
-                                case 0: logout(); break;
-                                case 1: editProfile(); break;
-                                case 2: deleteProfile(); break;
-                                default: break;
+                        .setItems(R.array.profile_settings_options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case 0: logout(); break;
+                                    case 1: editProfile(); break;
+                                    case 2: deleteProfile(); break;
+                                    default: break;
+                                }
                             }
-                        }
-                    })
-                    .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+                        })
+                        .setNegativeButton(R.string.delete_alert_no_opt, null).show();
             }
         });
+
+        // Graficas
+        generateStepsChart();
     }
 
     // this function is triggered when user selects the image from the imageChooser
@@ -188,9 +210,9 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     /*
-    * Sube una imagen a Google Firebase Storage
-    * Si ya tiene subida una imagen y se sube otra se sobreescribe
-    */
+     * Sube una imagen a Google Firebase Storage
+     * Si ya tiene subida una imagen y se sube otra se sobreescribe
+     */
     private void uploadImage(){
         if(filePath != null){
             ProgressDialog dialog = new ProgressDialog(this);
@@ -294,4 +316,78 @@ public class UserProfileActivity extends AppCompatActivity {
         intent.putExtra("uid", uid);
         startActivity(intent);
     }
+
+    private void generateStepsChart(){
+
+
+        db.child("pasos").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Cartesian cartesian = AnyChart.line();
+
+                cartesian.animation(true);
+
+                //cartesian.padding(10d, 20d, 5d, 20d);
+
+                cartesian.crosshair().enabled(true);
+                cartesian.crosshair()
+                        .yLabel(true)
+                        // TODO ystroke
+                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+                cartesian.title("Mis pasos");
+
+                cartesian.yAxis(0).title("Numero de pasos");
+                cartesian.xAxis(0).title("Dia");
+                cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+
+                List<DataEntry> seriesData = new ArrayList<>();
+
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Log.d("---------------->>>>: ", ds.toString());
+                    String pasos = ds.getValue().toString();
+
+                    String fecha = ds.getKey();
+                    seriesData.add(new CustomDataEntry(fecha, Integer.valueOf(pasos)));
+                }
+
+                Set set = Set.instantiate();
+                set.data(seriesData);
+                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+
+                Line series1 = cartesian.line(series1Mapping);
+                series1.name("Progreso");
+                series1.hovered().markers().enabled(true);
+                series1.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series1.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
+
+                cartesian.legend().enabled(true);
+                cartesian.legend().fontSize(13d);
+                cartesian.legend().padding(0d, 0d, 10d, 0d);
+
+                steps.setChart(cartesian);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private class CustomDataEntry extends ValueDataEntry {
+        CustomDataEntry(String x, Number value) {
+            super(x, value);
+        }
+    }
+
 }
