@@ -71,16 +71,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.173" />
 
+
     <com.anychart.AnyChartView
         android:id="@+id/stepsChart"
-        android:layout_width="361dp"
-        android:layout_height="237dp"
+        android:layout_width="383dp"
+        android:layout_height="244dp"
+        app:layout_constraintBottom_toTopOf="@+id/stats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileChangeImg"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/weightsChart"
+        android:layout_width="383dp"
+        android:layout_height="244dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/stats"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileChangeImg"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/stepsChart"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/stats"
@@ -91,9 +104,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.62" />
+        app:layout_constraintVertical_bias="0.964" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

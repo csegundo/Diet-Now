@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -79,6 +80,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageRef, imagesRef;
     private AnyChartView steps;
+    private AnyChartView weights;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,8 @@ public class UserProfileActivity extends AppCompatActivity {
         age        = findViewById(R.id.profileAge);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
-        steps      = findViewById(R.id.stepsChart);
+
+
 
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
@@ -186,6 +189,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // Graficas
         generateStepsChart();
+        generateWeightsChart();
     }
 
     // this function is triggered when user selects the image from the imageChooser
@@ -318,14 +322,13 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void generateStepsChart(){
-
-
+        steps      = findViewById(R.id.stepsChart);
+        APIlib.getInstance().setActiveAnyChartView(steps);
         db.child("pasos").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 Cartesian cartesian = AnyChart.line();
-
                 cartesian.animation(true);
 
                 //cartesian.padding(10d, 20d, 5d, 20d);
@@ -347,7 +350,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 List<DataEntry> seriesData = new ArrayList<>();
 
                 for(DataSnapshot ds : snapshot.getChildren()){
-                    Log.d("---------------->>>>: ", ds.toString());
                     String pasos = ds.getValue().toString();
 
                     String fecha = ds.getKey();
@@ -375,6 +377,75 @@ public class UserProfileActivity extends AppCompatActivity {
                 cartesian.legend().padding(0d, 0d, 10d, 0d);
 
                 steps.setChart(cartesian);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    private void generateWeightsChart(){
+        weights    = findViewById(R.id.weightsChart);
+
+        //Descomentando la linea de abajo se mostrará la grafica de pesos pero se oculará la de pasos
+        //APIlib.getInstance().setActiveAnyChartView(weights);
+
+
+        db.child("weights").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Cartesian cartesianWeight = AnyChart.line();
+                cartesianWeight.animation(true);
+
+                //cartesian.padding(10d, 20d, 5d, 20d);
+
+                cartesianWeight.crosshair().enabled(true);
+                cartesianWeight.crosshair()
+                        .yLabel(true)
+                        // TODO ystroke
+                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+                cartesianWeight.tooltip().positionMode(TooltipPositionMode.POINT);
+
+                cartesianWeight.title("Mis pesos");
+
+                cartesianWeight.yAxis(0).title("Peso en kg");
+                cartesianWeight.xAxis(0).title("Dia");
+                cartesianWeight.xAxis(0).labels().padding(2d, 2d, 2d, 2d);
+
+                List<DataEntry> weightData = new ArrayList<>();
+
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    String peso = ds.getValue().toString();
+                    String fecha = ds.getKey();
+                    weightData.add(new CustomDataEntry(fecha, Integer.valueOf(peso)));
+                }
+
+                Set set = Set.instantiate();
+                set.data(weightData);
+                Mapping series = set.mapAs("{ x: 'x', value: 'value' }");
+
+                Line series1 = cartesianWeight.line(series);
+                series1.name("Progreso");
+                series1.hovered().markers().enabled(true);
+                series1.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series1.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
+
+                cartesianWeight.legend().enabled(true);
+                cartesianWeight.legend().fontSize(13d);
+                cartesianWeight.legend().padding(0d, 0d, 10d, 0d);
+
+                weights.setChart(cartesianWeight);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -383,6 +454,7 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
     }
+
 
     private class CustomDataEntry extends ValueDataEntry {
         CustomDataEntry(String x, Number value) {
