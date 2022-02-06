@@ -17,9 +17,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,9 @@ import com.anychart.graphics.vector.Stroke;
 //import com.anychart.sample.R;
 import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
+import com.dietnow.app.ucm.fdi.model.diet.Diet;
+import com.dietnow.app.ucm.fdi.service.DietService;
+import com.dietnow.app.ucm.fdi.service.StepsService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,11 +56,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.type.DateTime;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -81,6 +89,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private StorageReference storageRef, imagesRef;
     private AnyChartView steps;
     private AnyChartView weights;
+    private Button addStepsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +102,7 @@ public class UserProfileActivity extends AppCompatActivity {
         age        = findViewById(R.id.profileAge);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
+        addStepsBtn= findViewById(R.id.addStepsBtn);
 
 
 
@@ -187,9 +197,54 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        addStepsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
+                final NumberPicker numberPicker = new NumberPicker(UserProfileActivity.this);
+                numberPicker.setMaxValue(100000);
+                numberPicker.setMinValue(0);
+                builder.setTitle(R.string.add_steps);
+                builder.setMessage("Inserta el numero de pasos");
+                builder.setView(numberPicker);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int num = numberPicker.getValue();
+                        Date now = Calendar.getInstance().getTime();
+                        FirebaseUser currentUser = auth.getCurrentUser();
+                        //añadir en base de datos
+                        Steps toCreate = StepsService.getInstance().parseSteps(num);
+                        uploadStepsToFirebase(toCreate, currentUser.getUid());
+                    }
+                });
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.create();
+                builder.show();
+
+            }
+        });
+
         // Graficas
         generateStepsChart();
         generateWeightsChart();
+    }
+    private void uploadStepsToFirebase(Steps toCreate, String UserId){
+        FirebaseUser currentUser = auth.getCurrentUser();
+        String autoId = UserId ;
+
+        // guardar los pasos
+        db.child("pasos").child(autoId).child(toCreate.getDate()).setValue(toCreate.getSteps());
+
+
     }
 
     // this function is triggered when user selects the image from the imageChooser
