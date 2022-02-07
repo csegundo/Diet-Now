@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,10 +36,10 @@ import java.util.List;
 
 public class ViewDietActivity extends AppCompatActivity {
 
-    private TextView name, description;
+    private TextView name, description, status;
     private String actualDiet;
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
-    private Button edit, delete;
+    private Button edit, delete, publish, unpublish;
     private AlimentViewOnlyAdapter alimentsAdapter;
     private ArrayList<Aliment> alimentList;
     private FirebaseAuth auth;
@@ -63,6 +64,9 @@ public class ViewDietActivity extends AppCompatActivity {
         RecyclerView  = findViewById(R.id.dietAliment);
         edit        = findViewById(R.id.btnEditDiet);
         delete      = findViewById(R.id.btnDeleteDiet);
+        publish     = findViewById(R.id.btnPublishDiet);
+        unpublish   = findViewById(R.id.btnUnpublishDiet);
+        status      = findViewById(R.id.statusDietLbl);
         alimentList = new ArrayList<Aliment>();
 
         initializeComponentsWithData(this.actualDiet);
@@ -85,26 +89,18 @@ public class ViewDietActivity extends AppCompatActivity {
                 showDeleteModalAndConfirm(actualDiet);
             }
         });
-    }
 
-    private void getAliment(){
-        db.child("diets").child(actualDiet).child("aliments").addValueEventListener(new ValueEventListener() {
+        publish.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    Aliment aliment = ds.getValue(Aliment.class);
-                    aliment.setId(ds.getKey());
-                    if(aliment.isActive() ){
-                        alimentList.add(aliment);
-                    }
-                }
-                alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
-                RecyclerView.setAdapter(alimentsAdapter);
+            public void onClick(View v) {
+                toggleDietPublication(actualDiet, true);
             }
+        });
 
+        unpublish.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onClick(View v) {
+                toggleDietPublication(actualDiet, false);
             }
         });
     }
@@ -112,6 +108,16 @@ public class ViewDietActivity extends AppCompatActivity {
     /**
      * Metodos/funciones auxiliares
      */
+    private void toggleDietPublication(String dietId, boolean publish){
+        db.child("diets").child(dietId).child("published").setValue(publish);
+        if(publish){
+            status.setText(R.string.published_diet);
+            status.setTextColor(Color.parseColor("#4CAF50"));
+        } else{
+            status.setText(R.string.unpublished_diet);
+            status.setTextColor(Color.parseColor("#DC1414"));
+        }
+    }
 
     private void showDeleteModalAndConfirm(String dietId){
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewDietActivity.this);
@@ -137,6 +143,28 @@ public class ViewDietActivity extends AppCompatActivity {
             }).show();
     }
 
+    private void getAliment(){
+        db.child("diets").child(actualDiet).child("aliments").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Aliment aliment = ds.getValue(Aliment.class);
+                    aliment.setId(ds.getKey());
+                    if(aliment.isActive() ){
+                        alimentList.add(aliment);
+                    }
+                }
+                alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
+                RecyclerView.setAdapter(alimentsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     // Dado el ID de la dieta obtiene toda la info y asigna el valor a cada componente
     private void initializeComponentsWithData(String dietId){
         db.child("diets").child(dietId).addValueEventListener(new ValueEventListener() {
@@ -145,6 +173,14 @@ public class ViewDietActivity extends AppCompatActivity {
                 Diet actual = snapshot.getValue(Diet.class);
                 name.setText(actual.getTitle());
                 description.setText(actual.getDescription());
+
+                if(actual.isPublished()){
+                    status.setText(R.string.published_diet);
+                    status.setTextColor(Color.parseColor("#4CAF50"));
+                } else{
+                    status.setText(R.string.unpublished_diet);
+                    status.setTextColor(Color.parseColor("#DC1414"));
+                }
             }
 
             @Override
