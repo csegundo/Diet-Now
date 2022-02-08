@@ -126,13 +126,17 @@ public class ViewDietActivity extends AppCompatActivity {
             .setPositiveButton(R.string.delete_alert_yes_opt, new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    //System.out.println("BORRA LA DIETA CON ID: "+ dietId);
+
                     db.child("diets").child(dietId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
+                            //System.out.println("BORRA LA DIETA dentro del oNSUCCES");
                             Intent intent = new Intent(ViewDietActivity.this, MyDietsActivity.class);
                             startActivity(intent);
                         }
                     });
+
                 }
             })
             .setNegativeButton(R.string.delete_alert_no_opt, new DialogInterface.OnClickListener(){
@@ -167,10 +171,14 @@ public class ViewDietActivity extends AppCompatActivity {
 
     // Dado el ID de la dieta obtiene toda la info y asigna el valor a cada componente
     private void initializeComponentsWithData(String dietId){
+
+        //SI LO HACEMOS CON EL ADDVALUEEVENTLISTENER AL BORRARLO SALTA A ESTA FUNCION Y CASCA, YA QUE TIENE LA REFERENCIA A LA DIETA ACTUAL
+        /*
         db.child("diets").child(dietId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Diet actual = snapshot.getValue(Diet.class);
+                System.out.println("INTENTA COGER EL VALOR DE LA DIETA");
                 name.setText(actual.getTitle());
                 description.setText(actual.getDescription());
 
@@ -188,5 +196,59 @@ public class ViewDietActivity extends AppCompatActivity {
 
             }
         });
+         */
+
+        /*
+        db.child("diets").child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("FIREBASE EN GET DIET", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("FIREBASE EN GET DIET", String.valueOf(task.getResult().getValue()));
+                    Diet actual = task.getClass(Diet.class);
+                    Log.d("VALOR DE DIETA ACTUAL", String.valueOf(actual));
+
+                    name.setText(actual.getTitle());
+                    description.setText(actual.getDescription());
+
+                    if(actual.isPublished()){
+                        status.setText(R.string.published_diet);
+                        status.setTextColor(Color.parseColor("#4CAF50"));
+                    } else{
+                        status.setText(R.string.unpublished_diet);
+                        status.setTextColor(Color.parseColor("#DC1414"));
+                    }
+
+
+
+                }
+            }
+        });
+        */
+        db.child("diets").child(dietId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // How to return this value?
+                Diet actual = dataSnapshot.getValue(Diet.class);
+                Log.d("INFO", actual.toString());
+
+                name.setText(actual.getTitle());
+                description.setText(actual.getDescription());
+
+                if(actual.isPublished()){
+                    status.setText(R.string.published_diet);
+                    status.setTextColor(Color.parseColor("#4CAF50"));
+                } else{
+                    status.setText(R.string.unpublished_diet);
+                    status.setTextColor(Color.parseColor("#DC1414"));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
     }
 }

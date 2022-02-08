@@ -52,6 +52,10 @@
             android:exported="false"
             android:label="@string/label_user_profile" />
         <activity
+            android:name=".AdminProfileActivity"
+            android:exported="false"
+            android:label="Admin Profile" />
+        <activity
             android:name=".RegisterAdminActivity"
             android:exported="false"
             android:label="@string/label_register" />

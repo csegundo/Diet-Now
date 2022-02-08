@@ -51,7 +51,7 @@ public class AdminPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Con Intent podemos "redirigir" al usuario a nueva actividad
-                Intent intent = new Intent(AdminPageActivity.this, AdminPageActivity.class);
+                Intent intent = new Intent(AdminPageActivity.this, CreateDietActivity.class);
                 startActivity(intent);
             }
         });
@@ -62,7 +62,7 @@ public class AdminPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Con Intent podemos "redirigir" al usuario a nueva actividad
-                Intent intent = new Intent(AdminPageActivity.this, AdminPageActivity.class);
+                Intent intent = new Intent(AdminPageActivity.this, AdminProfileActivity.class);
                 startActivity(intent);
             }
         });
