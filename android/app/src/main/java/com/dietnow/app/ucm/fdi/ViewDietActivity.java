@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,6 +73,8 @@ public class ViewDietActivity extends AppCompatActivity {
         initializeComponentsWithData(this.actualDiet);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
         getAliment();
+
+
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +229,9 @@ public class ViewDietActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        https://stackoverflow.com/questions/41579000/difference-between-addvalueeventlistener-and-addlistenerforsinglevalueevent
         */
         db.child("diets").child(dietId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -236,6 +242,21 @@ public class ViewDietActivity extends AppCompatActivity {
 
                 name.setText(actual.getTitle());
                 description.setText(actual.getDescription());
+
+                FirebaseUser currentUser = auth.getCurrentUser();
+
+                Log.d("CURRENT USER: ", actual.getUser());
+                Log.d("USER DE LA DIETA: ", currentUser.getUid());
+
+                if(!currentUser.getUid().equalsIgnoreCase(actual.getUser())){
+                    publish.setVisibility(View.GONE);
+                    unpublish.setVisibility(View.GONE);
+                    delete.setVisibility(View.GONE);
+                }else{
+                    publish.setVisibility(View.VISIBLE);
+                    unpublish.setVisibility(View.VISIBLE);
+                    delete.setVisibility(View.VISIBLE);
+                }
 
                 if(actual.isPublished()){
                     status.setText(R.string.published_diet);
