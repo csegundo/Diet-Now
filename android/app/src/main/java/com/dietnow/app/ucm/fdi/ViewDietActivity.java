@@ -122,6 +122,7 @@ public class ViewDietActivity extends AppCompatActivity {
         }
     }
 
+    // TODO borrar la carpeta de los documentos de la dieta
     private void showDeleteModalAndConfirm(String dietId){
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewDietActivity.this);
         builder.setTitle(R.string.delete_diet)
