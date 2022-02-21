@@ -91,6 +91,8 @@
     <string name="unpublish">Despublicar</string>
     <string name="unpublished_diet">Despublicada</string>
     <string name="status">Estado:</string>
+    <string name="steps">Pasos</string>
+    <string name="weight">Pesos</string>
     <string name="upload_document">Subir documento</string>
 
     <!-- Arrays de strings -->

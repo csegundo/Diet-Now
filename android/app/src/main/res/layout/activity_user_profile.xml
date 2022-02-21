@@ -78,22 +78,11 @@
         android:layout_height="244dp"
         app:layout_constraintBottom_toTopOf="@+id/stats"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileChangeImg"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.335">
 
-    <com.anychart.AnyChartView
-        android:id="@+id/weightsChart"
-        android:layout_width="383dp"
-        android:layout_height="244dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/stats"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stepsChart"
-        app:layout_constraintVertical_bias="0.0" />
+    </com.anychart.AnyChartView>
 
     <TextView
         android:id="@+id/stats"
@@ -118,9 +107,63 @@
         android:text="Añadir Pasos"
         app:layout_constraintBottom_toTopOf="@+id/stepsChart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.211"
         app:layout_constraintStart_toEndOf="@+id/profileChangeImg"
         app:layout_constraintTop_toBottomOf="@+id/settings"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.621" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/selectorStepsWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:thumb="@drawable/ic_thumb"
+        app:layout_constraintBottom_toTopOf="@+id/stepsChart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.703"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addStepsBtn"
+        app:layout_constraintVertical_bias="0.136"
+        app:track="@drawable/ic_track" />
+
+    <TextView
+        android:id="@+id/stepsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/steps"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/selectorStepsWeight"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addStepsBtn"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/weightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weight"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/selectorStepsWeight"
+        app:layout_constraintTop_toBottomOf="@+id/addStepsBtn"
+        app:layout_constraintVertical_bias="0.068" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/weightsChart"
+        android:layout_width="383dp"
+        android:layout_height="244dp"
+        app:layout_constraintBottom_toBottomOf="@+id/stats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stepsChart">
+
+    </com.anychart.AnyChartView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

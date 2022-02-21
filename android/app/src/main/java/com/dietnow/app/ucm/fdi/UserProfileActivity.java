@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ import com.google.type.DateTime;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.Selector;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -90,6 +92,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private AnyChartView steps;
     private AnyChartView weights;
     private Button addStepsBtn;
+    private CompoundButton selectorStepsWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,7 @@ public class UserProfileActivity extends AppCompatActivity {
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
         addStepsBtn= findViewById(R.id.addStepsBtn);
-
+        selectorStepsWeight= findViewById(R.id.selectorStepsWeight);
 
 
         // inicializar Google Firebase
@@ -234,8 +237,33 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
         // Graficas
+        //generateWeightsChart();
         generateStepsChart();
-        generateWeightsChart();
+        APIlib.getInstance().setActiveAnyChartView(steps);
+
+
+        selectorStepsWeight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // do something, the isChecked will be
+                // true if the switch is in the On position
+                if(isChecked) {
+                    generateStepsChart();
+                   // weights.setVisibility(View.GONE);
+                    //steps.setVisibility(View.VISIBLE);
+                    APIlib.getInstance().setActiveAnyChartView(steps);
+
+                    //generateStepsChart();
+                }
+                else{
+                    generateWeightsChart();
+                    //.setVisibility(View.GONE);
+                    //weights.setVisibility(View.VISIBLE);
+                    APIlib.getInstance().setActiveAnyChartView(weights);
+
+                    //generateWeightsChart();
+                }
+            }
+        });
     }
     private void uploadStepsToFirebase(Steps toCreate, String UserId){
         FirebaseUser currentUser = auth.getCurrentUser();
@@ -378,7 +406,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void generateStepsChart(){
         steps      = findViewById(R.id.stepsChart);
-        APIlib.getInstance().setActiveAnyChartView(steps);
+        //APIlib.getInstance().setActiveAnyChartView(steps);
         db.child("pasos").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -447,7 +475,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //Descomentando la linea de abajo se mostrará la grafica de pesos pero se oculará la de pasos
         //APIlib.getInstance().setActiveAnyChartView(weights);
-
+        //APIlib.getInstance().setActiveAnyChartView(weights);
 
         db.child("weights").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
