@@ -168,13 +168,13 @@ public class UserProfileEditActivity extends AppCompatActivity {
                     // llamar a Firebase para editar el campo {key} del usuario en cuestion
                     switch (key){
                         case "name":
-                            if(!name.getText().toString().equalsIgnoreCase(data.get(key))){
+                            if(!name.getText().toString().equals(data.get(key))){
                                 db.child("users").child(actualUserId).child("name")
                                         .setValue(name.getText().toString());
                             }
                             break;
                         case "lastname":
-                            if(!lastname.getText().toString().equalsIgnoreCase(data.get(key))){
+                            if(!lastname.getText().toString().equals(data.get(key))){
                                 db.child("users").child(actualUserId).child("lastname")
                                         .setValue(lastname.getText().toString());
                             }

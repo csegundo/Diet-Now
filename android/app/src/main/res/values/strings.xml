@@ -93,7 +93,9 @@
     <string name="status">Estado:</string>
     <string name="steps">Pasos</string>
     <string name="weight">Pesos</string>
+    <string name="publiseh_by">Publicada por:</string>
     <string name="upload_document">Subir documento</string>
+    <string name="documents">Documentos</string>
 
     <!-- Arrays de strings -->
     <string-array name="genres">

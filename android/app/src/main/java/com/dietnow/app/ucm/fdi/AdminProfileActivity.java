@@ -302,7 +302,7 @@ public class AdminProfileActivity extends AppCompatActivity {
     }
 
     private void editProfile(){
-        Intent intent = new Intent(AdminProfileActivity.this, AdminProfileActivity.class);
+        Intent intent = new Intent(AdminProfileActivity.this, UserProfileEditActivity.class);
         intent.putExtra("uid", uid);
         startActivity(intent);
     }

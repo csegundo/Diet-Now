@@ -34,15 +34,6 @@ public class AdminPageActivity extends AppCompatActivity {
 
         // inicializar Google Firebase
         auth   = FirebaseAuth.getInstance();
-        logout = findViewById(R.id.cerrarSesionTemp);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                auth.signOut();
-                Intent intent = new Intent(AdminPageActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         creardieta = findViewById(R.id.adminCrearDietaBtn);
 

@@ -60,7 +60,7 @@ public class CreateDietActivity extends AppCompatActivity {
     private ProgressBar progress;
     private String actualDiet;
     private FloatingActionButton addFood;
-    private TextView alimentsLabel;
+    private TextView alimentsLabel, uDietId;
 
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -99,6 +99,7 @@ public class CreateDietActivity extends AppCompatActivity {
         alimentsLabel = findViewById(R.id.dietAlimentsLabel);
         RecyclerView    = findViewById(R.id.AllAlimentsRecycler);
         upload      = findViewById(R.id.btnUploadDoc);
+        uDietId     = findViewById(R.id.uDietId);
 
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -161,14 +162,13 @@ public class CreateDietActivity extends AppCompatActivity {
     // Recibe el ID de la dieta o null en funcion de si está creando dieta o la esta editando
     private void isEditOrCreateDiet(String dietId){
         if(dietId != null){
-
-
             db.child("diets").child(dietId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Diet actual = snapshot.getValue(Diet.class);
                     title.setText(actual.getTitle());
                     description.setText(actual.getDescription());
+                    uDietId.setText(actual.getUser());
                 }
 
                 @Override
@@ -209,10 +209,11 @@ public class CreateDietActivity extends AppCompatActivity {
     private void uploadDietToFirebase(Diet toCreate, String dietId){
         FirebaseUser currentUser = auth.getCurrentUser();
         String autoId = dietId != null ? dietId : db.child("diets").push().getKey();
+        String uId = dietId == null ? currentUser.getUid() : uDietId.getText().toString();
 
         // guardar la dieta
         toCreate.setId(autoId);
-        toCreate.setUser(currentUser.getUid());
+        toCreate.setUser(uId);
         Log.d("NEW DIET", toCreate.toString());
         db.child("diets").child(autoId).setValue(toCreate);
 

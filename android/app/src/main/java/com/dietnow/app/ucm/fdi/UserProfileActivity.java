@@ -108,7 +108,6 @@ public class UserProfileActivity extends AppCompatActivity {
         addStepsBtn= findViewById(R.id.addStepsBtn);
         selectorStepsWeight= findViewById(R.id.selectorStepsWeight);
 
-
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
         db         = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
