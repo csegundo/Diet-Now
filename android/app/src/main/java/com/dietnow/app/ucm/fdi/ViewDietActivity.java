@@ -193,10 +193,10 @@ public class ViewDietActivity extends AppCompatActivity {
             public void onSuccess(ListResult listResult) {
                 for (StorageReference item : listResult.getItems()) {
                     String docUrl = item.toString().replace("gs://", "");
-                    docUrl = "https://firebasestorage.googleapis.com/v0/b/" + docUrl; // nos devuelve la info del doc en JSON
-                    docUrl = docUrl + "?alt=media"; // añadir este parametro para que se visualice el PDF
+                    docUrl = "https://firebasestorage.googleapis.com/v0/b/" + item.getBucket();
+                    docUrl += "/o/diets%2F" + actualDiet + "%2F" + item.getName(); // la ruta [/diets/<id>/<name>.pdf] encodea las '/' == '%2F'
+                    docUrl += "?alt=media"; // añadir este parametro para que se visualice el PDF
                     // si se necesita permisos para leer (en nuestras reglas no es el caso) habria que poner otro parametro "token"
-                    Log.d("DIET DOCCCCCCCCCC", item.getBucket());
                     Pair<String, String> doc = new Pair<>(item.getName(), docUrl);
                     docList.add(doc);
                 }
