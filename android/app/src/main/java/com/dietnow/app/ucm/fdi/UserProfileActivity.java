@@ -237,29 +237,33 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // Graficas
         //generateWeightsChart();
-        generateStepsChart();
-        APIlib.getInstance().setActiveAnyChartView(steps);
+        //generateStepsChart();
+        //APIlib.getInstance().setActiveAnyChartView(steps);
 
 
         selectorStepsWeight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
                 // true if the switch is in the On position
+                //generateStepsChart();
+                //generateWeightsChart();
                 if(isChecked) {
                     generateStepsChart();
-                   // weights.setVisibility(View.GONE);
+                    //weights.setVisibility(View.GONE);
                     //steps.setVisibility(View.VISIBLE);
                     APIlib.getInstance().setActiveAnyChartView(steps);
+
+
+
 
                     //generateStepsChart();
                 }
                 else{
                     generateWeightsChart();
-                    //.setVisibility(View.GONE);
+                    //steps.setVisibility(View.GONE);
                     //weights.setVisibility(View.VISIBLE);
                     APIlib.getInstance().setActiveAnyChartView(weights);
 
-                    //generateWeightsChart();
                 }
             }
         });
@@ -459,6 +463,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 cartesian.legend().padding(0d, 0d, 10d, 0d);
 
                 steps.setChart(cartesian);
+                //APIlib.getInstance().setActiveAnyChartView(steps);
 
             }
             @Override
@@ -474,7 +479,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //Descomentando la linea de abajo se mostrará la grafica de pesos pero se oculará la de pasos
         //APIlib.getInstance().setActiveAnyChartView(weights);
-        //APIlib.getInstance().setActiveAnyChartView(weights);
+
 
         db.child("weights").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -528,6 +533,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 cartesianWeight.legend().padding(0d, 0d, 10d, 0d);
 
                 weights.setChart(cartesianWeight);
+                //APIlib.getInstance().setActiveAnyChartView(weights);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
