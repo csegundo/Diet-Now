@@ -13,7 +13,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
 import com.dietnow.app.ucm.fdi.adapters.AlimentsAdapter;
@@ -38,7 +40,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ViewDietActivity extends AppCompatActivity {
@@ -47,6 +51,7 @@ public class ViewDietActivity extends AppCompatActivity {
     private String actualDiet;
     private androidx.recyclerview.widget.RecyclerView RecyclerView, docTable;
     private Button edit, delete, publish, unpublish;
+    private ImageButton follow;
     private AlimentViewOnlyAdapter alimentsAdapter;
     private DietDocsAdapter docsAdapter;
     private ArrayList<Aliment> alimentList;
@@ -81,6 +86,8 @@ public class ViewDietActivity extends AppCompatActivity {
         status      = findViewById(R.id.statusDietLbl);
         publishedBy  = findViewById(R.id.publishedBy);
         dietActionsLabel= findViewById(R.id.dietActionsLabel);
+        follow        = findViewById(R.id.followbtn);
+
         alimentList = new ArrayList<Aliment>();
         docList = new ArrayList<Pair<String, String>>();
 
@@ -120,11 +127,76 @@ public class ViewDietActivity extends AppCompatActivity {
                 toggleDietPublication(actualDiet, false);
             }
         });
+
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFollowDiet(actualDiet,true);
+            }
+        });
     }
 
     /**
      * Metodos/funciones auxiliares
      */
+
+    private void toggleFollowDiet(String dietId, boolean publish){
+        FirebaseUser user = auth.getCurrentUser();
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User actual = snapshot.child("users").child(user.getUid()).getValue(User.class);
+
+                if(!actual.getDiet().isEmpty()){
+
+                    if(actual.getDiet().equalsIgnoreCase(dietId)){
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertFollowingDiet), Toast.LENGTH_LONG).show();
+                    }else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ViewDietActivity.this);
+                        builder.setTitle(R.string.alertFollowDiet)
+                                .setItems(R.array.yes_no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if(which == 0){
+                                            followDiet(dietId);
+                                        }
+                                    }
+                                })
+                                .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+                    }
+
+                }else{
+                    followDiet(dietId);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+    }
+
+    private void followDiet(String dietId){
+        FirebaseUser user = auth.getCurrentUser();
+
+        db.child("users").child(user.getUid()).child("diet").setValue(dietId).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
+                String created = dateFormat.format(new Date());
+                //TODO PROVISIONAL ,VER CAPTURA
+                db.child("diet_history").child(user.getUid()).child(dietId).setValue(created);
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     private void toggleDietPublication(String dietId, boolean publish){
         db.child("diets").child(dietId).child("published").setValue(publish);
         if(publish){
@@ -249,12 +321,17 @@ public class ViewDietActivity extends AppCompatActivity {
                             unpublish.setVisibility(View.GONE);
                             delete.setVisibility(View.GONE);
                             edit.setVisibility(View.GONE);
+                            follow.setVisibility(View.VISIBLE);
+                            if(u.getDiet().equalsIgnoreCase(dietId)){
+                                follow.setColorFilter(Color.YELLOW);
+                            }
                         }else{
                             dietActionsLabel.setVisibility(View.VISIBLE);
                             publish.setVisibility(View.VISIBLE);
                             unpublish.setVisibility(View.VISIBLE);
                             delete.setVisibility(View.VISIBLE);
                             edit.setVisibility(View.VISIBLE);
+                            follow.setVisibility(View.GONE);
                         }
                     }
 

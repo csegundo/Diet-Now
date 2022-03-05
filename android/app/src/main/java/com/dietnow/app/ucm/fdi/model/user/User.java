@@ -22,6 +22,9 @@ public class User {
     private String date;
     private Double height;
 
+    //dieta seguida
+    private String diet;
+
     private String role;
     private Boolean active;
 
@@ -93,6 +96,7 @@ public class User {
         result.put("name", name);
         result.put("password",password);
         result.put("rol", role);
+        result.put("diet",diet);
 
         return result;
     }
@@ -184,4 +188,14 @@ public class User {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+
+    public String getDiet() {
+        return diet;
+    }
+
+    public void setDiet(String diet) {
+        this.diet = diet;
+    }
+
 }

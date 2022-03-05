@@ -96,6 +96,14 @@
     <string name="publiseh_by">Publicada por:</string>
     <string name="upload_document">Subir documento</string>
     <string name="documents">Documentos</string>
+    <string name="alertFollowDiet">Ya esta siguiendo una dieta, si sigues esta dieta dejaras de seguir la actual, ¿quieres continuar?</string>
+    <string name="alertFollowingDiet">Ya esta siguiendo esta dieta</string>
+
+    <string-array name="yes_no">
+        <item>Si</item>
+        <item>No</item>
+    </string-array>
+
 
     <!-- Arrays de strings -->
     <string-array name="genres">
