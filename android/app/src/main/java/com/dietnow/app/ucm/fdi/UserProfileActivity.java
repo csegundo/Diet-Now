@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -455,19 +456,21 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
         LinearLayout.LayoutParams numPicerParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        numPicerParams.weight = 60;
+        numPicerParams.weight = 50;
 
 
         LinearLayout.LayoutParams qPicerParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        qPicerParams.weight = 60;
+        qPicerParams.weight = 50;
 
+        final TextView meassure =new TextView(UserProfileActivity.this);
+        meassure.setText("Kg");
 
 
         LL.setLayoutParams(params);
         LL.addView(integerWeight,numPicerParams);
         LL.addView(separator,params);
         LL.addView(decimalWeight,qPicerParams);
-
+        LL.addView(meassure,params);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
         builder.setTitle("Select the number");
