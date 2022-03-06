@@ -10,19 +10,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,15 +41,11 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 //import com.anychart.sample.R;
-import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
-import com.dietnow.app.ucm.fdi.model.diet.Aliment;
-import com.dietnow.app.ucm.fdi.model.diet.Diet;
-import com.dietnow.app.ucm.fdi.service.DietService;
 import com.dietnow.app.ucm.fdi.service.StepsService;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.dietnow.app.ucm.fdi.service.WeightService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
@@ -57,12 +54,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.type.DateTime;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.Selector;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -81,6 +75,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private TextView name, age;
     private Button settings;
+    private FloatingActionButton addProfile;
     private ImageView image;
     private Uri filePath;
     private Button change;
@@ -91,7 +86,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private StorageReference storageRef, imagesRef;
     private AnyChartView steps;
     private AnyChartView weights;
-    private Button addStepsBtn;
+
     private CompoundButton selectorStepsWeight;
 
     @Override
@@ -101,11 +96,12 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // inicializar los elementos
         settings   = findViewById(R.id.settings);
+        addProfile   = findViewById(R.id.addProfile);
         name       = findViewById(R.id.profileName);
         age        = findViewById(R.id.profileAge);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
-        addStepsBtn= findViewById(R.id.addStepsBtn);
+
         selectorStepsWeight= findViewById(R.id.selectorStepsWeight);
 
         // inicializar Google Firebase
@@ -199,41 +195,26 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        addStepsBtn.setOnClickListener(new View.OnClickListener() {
+        addProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
-                final NumberPicker numberPicker = new NumberPicker(UserProfileActivity.this);
-                numberPicker.setMaxValue(100000);
-                numberPicker.setMinValue(0);
-                builder.setTitle(R.string.add_steps);
-                builder.setMessage("Inserta el numero de pasos");
-                builder.setView(numberPicker);
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int num = numberPicker.getValue();
-                        Date now = Calendar.getInstance().getTime();
-                        FirebaseUser currentUser = auth.getCurrentUser();
-                        //añadir en base de datos
-                        Steps toCreate = StepsService.getInstance().parseSteps(num);
-                        uploadStepsToFirebase(toCreate, currentUser.getUid());
-                    }
-                });
-                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                builder.create();
-                builder.show();
-
+                builder.setTitle(R.string.profile_add)
+                        .setItems(R.array.profile_settings_add, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case 0: AddStep(); break;
+                                    case 1: AddWeight(); break;
+                                    default: break;
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.delete_alert_no_opt, null).show();
             }
         });
+
+
 
         // Graficas
         //generateWeightsChart();
@@ -269,11 +250,19 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
     private void uploadStepsToFirebase(Steps toCreate, String UserId){
-        FirebaseUser currentUser = auth.getCurrentUser();
         String autoId = UserId ;
 
         // guardar los pasos
         db.child("pasos").child(autoId).child(toCreate.getDate()).setValue(toCreate.getSteps());
+
+
+    }
+
+    private void uploadWeightToFirebase(Weight toCreate, String UserId){
+        String autoId = UserId ;
+
+        // guardar los pasos
+        db.child("weights").child(autoId).child(toCreate.getDate()).setValue(toCreate.getWeight());
 
 
     }
@@ -407,6 +396,110 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void AddStep() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
+        final NumberPicker numberPicker = new NumberPicker(UserProfileActivity.this);
+        numberPicker.setMaxValue(100000);
+        numberPicker.setMinValue(0);
+        builder.setTitle(R.string.add_steps);
+        builder.setMessage("Inserta el numero de pasos");
+        builder.setView(numberPicker);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int num = numberPicker.getValue();
+                Date now = Calendar.getInstance().getTime();
+                FirebaseUser currentUser = auth.getCurrentUser();
+                //añadir en base de datos
+                Steps toCreate = StepsService.getInstance().parseSteps(num);
+                uploadStepsToFirebase(toCreate, currentUser.getUid());
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.create();
+        builder.show();
+
+    }
+    private void AddWeight() {
+
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
+        final DoublePicker numberPicker = new DoublePicker(UserProfileActivity.this);
+        builder.setTitle(R.string.add_Weight);
+        builder.setMessage("Inserta tu peso actual");
+        builder.setView(numberPicker);*/
+
+        LinearLayout LL = new LinearLayout(UserProfileActivity.this);
+
+        final NumberPicker integerWeight = new NumberPicker(UserProfileActivity.this);
+        integerWeight.setMaxValue(200);
+        integerWeight.setMinValue(0);
+
+        final NumberPicker decimalWeight = new NumberPicker(UserProfileActivity.this);
+        decimalWeight.setMaxValue(99);
+        decimalWeight.setMinValue(0);
+
+        final TextView separator =new TextView(UserProfileActivity.this);
+        separator.setText(R.string.local_separator);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(60, 60);
+        params.gravity= Gravity.CENTER;
+
+
+        LinearLayout.LayoutParams numPicerParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        numPicerParams.weight = 60;
+
+
+        LinearLayout.LayoutParams qPicerParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        qPicerParams.weight = 60;
+
+
+
+        LL.setLayoutParams(params);
+        LL.addView(integerWeight,numPicerParams);
+        LL.addView(separator,params);
+        LL.addView(decimalWeight,qPicerParams);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
+        builder.setTitle("Select the number");
+        builder.setView(LL);
+
+
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                double num = Double.parseDouble(""+integerWeight.getValue() + "." + decimalWeight.getValue());
+                Date now = Calendar.getInstance().getTime();
+                FirebaseUser currentUser = auth.getCurrentUser();
+                //añadir en base de datos
+                Weight toCreate = WeightService.getInstance().parseWeight(num);
+                uploadWeightToFirebase(toCreate, currentUser.getUid());
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.create();
+        builder.show();
+
+    }
+
+
     private void generateStepsChart(){
         steps      = findViewById(R.id.stepsChart);
         //APIlib.getInstance().setActiveAnyChartView(steps);
@@ -474,6 +567,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
 
+
     private void generateWeightsChart(){
         weights    = findViewById(R.id.weightsChart);
 
@@ -509,7 +603,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 for(DataSnapshot ds : snapshot.getChildren()){
                     String peso = ds.getValue().toString();
                     String fecha = ds.getKey();
-                    weightData.add(new CustomDataEntry(fecha, Integer.valueOf(peso)));
+                    weightData.add(new CustomDataEntry(fecha, Double.parseDouble(peso)));
                 }
 
                 Set set = Set.instantiate();

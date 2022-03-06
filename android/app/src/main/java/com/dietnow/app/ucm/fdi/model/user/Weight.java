@@ -11,18 +11,22 @@ import java.util.Map;
 public class Weight {
     @Exclude
     private String id;
-    private String user;
-    private Date date;
-    private long weight;
+    private String date;
+    private double weight;
 
+
+    public Weight(String now, double weight) {
+        date=now;
+        this.weight=weight;
+    }
     //getters y setters
 
 
-    public long getSteps() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setSteps(long weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
@@ -34,39 +38,28 @@ public class Weight {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
-    }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("id", id);
-        result.put("user", user);
-        result.put("weight", weight);
-        result.put("date", date);
+
+        result.put(date, weight);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Weight{" +
-                "id=" + id +
-                ", user=" + user +
-                ", date=" + date +
-                ", weight=" + weight +
+        return "Steps{" +
+                date +"=" + weight +
                 '}';
     }
 }

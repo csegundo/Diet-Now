@@ -11,17 +11,13 @@
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_register.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_user_page.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_user_profile.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_view_diet.xml" value="0.23489583333333333" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/drawable/ic_thumb.xml" value="0.3828125" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/drawable/track.xml" value="0.1" />
-        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_user_profile.xml" value="0.33" />
-        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_user_profile_edit.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_view_diet.xml" value="0.34375" />
+        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_user_profile.xml" value="0.2875905797101449" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/drawable/ic_baseline_thumb_down_24.xml" value="0.3828125" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/drawable/ic_like_24.xml" value="0.3828125" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/drawable/ic_unpublished.xml" value="0.3828125" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_admin_page.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_admin_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_admin_register_user.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_all_user.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_create_diet.xml" value="0.36666666666666664" />
@@ -29,16 +25,9 @@
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_my_diets.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_register_diet.xml" value="0.33" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_user_page.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_user_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_user_profile_edit.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_view_diet.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/aliment_item.xml" value="0.3509963768115942" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/aliment_view_only_item.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/diet_item.xml" value="0.3509963768115942" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/document_delete_item.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/document_item.xml" value="0.3509963768115942" />
-        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/document_view_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3828125" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3828125" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/drawable/button_rounded.xml" value="0.3828125" />
@@ -58,6 +47,7 @@
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/activity_user_profile_edit.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/add_step_item.xml" value="0.2838541666666667" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/diet_item.xml" value="0.19114583333333332" />
+        <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/double_picker.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/published_diet_item.xml" value="0.5" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/layout/user_item.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3828125" />

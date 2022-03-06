@@ -85,7 +85,11 @@
     <string name="add">Añadir</string>
     <string name="food_details">Información nutricional</string>
     <string name="profile_settings">Ajustes de perfil</string>
+    <string name="profile_add">Seleccione una opcion</string>
+    <string name="local_separator">,</string>
+    <string name="measure_Weight">kg</string>
     <string name="add_steps">Añadir Pasos</string>
+    <string name="add_Weight">Añadir Peso</string>
     <string name="publish">Publicar</string>
     <string name="published_diet">Publicada</string>
     <string name="unpublish">Despublicar</string>
@@ -128,5 +132,9 @@
         <item>Cerrar sesión</item>
         <item>Editar perfil</item>
         <item>Borrar perfil</item>
+    </string-array>
+    <string-array name="profile_settings_add">
+        <item>Añadir Pasos</item>
+        <item>Añadir Peso</item>
     </string-array>
 </resources>
