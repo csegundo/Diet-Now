@@ -15,6 +15,7 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
+
         android:theme="@style/Theme.DietNow"
         android:usesCleartextTraffic="true">
         <activity
@@ -22,6 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".AddManualFood"
+
             android:exported="false"
             android:label="@string/label_add_food" />
         <activity
