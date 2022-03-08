@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/diet_creator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dieta creada por el usuario"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.053" />
+
+    <Button
+        android:id="@+id/monday_button"
+        android:layout_width="54dp"
+        android:layout_height="47dp"
+        android:text="M"
+        tools:layout_editor_absoluteX="-7dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <Button
+        android:id="@+id/tuesday_button"
+        android:layout_width="54dp"
+        android:layout_height="47dp"
+        android:text="T"
+        tools:layout_editor_absoluteX="49dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <Button
+        android:id="@+id/wednesday_button"
+        android:layout_width="54dp"
+        android:layout_height="47dp"
+        android:text="W"
+        tools:layout_editor_absoluteX="105dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <Button
+        android:id="@+id/thursday_button"
+        android:layout_width="54dp"
+        android:layout_height="47dp"
+        android:text="TH"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <Button
+        android:id="@+id/friday_button"
+        android:layout_width="54dp"
+        android:layout_height="47dp"
+        android:text="F"
+        tools:layout_editor_absoluteX="226dp"
+        tools:layout_editor_absoluteY="88dp" />
+
+    <Button
+        android:id="@+id/saturday_button"
+        android:layout_width="54dp"
+        android:layout_height="47dp"
+        android:text="S"
+        tools:layout_editor_absoluteX="289dp"
+        tools:layout_editor_absoluteY="90dp" />
+
+    <Button
+        android:id="@+id/sunday_button"
+        android:layout_width="54dp"
+        android:layout_height="47dp"
+        android:text="SU"
+        tools:layout_editor_absoluteX="353dp"
+        tools:layout_editor_absoluteY="92dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
