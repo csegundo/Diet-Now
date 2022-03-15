@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <CheckBox
+        android:id="@+id/id_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/id_aliment"
+        android:layout_width="186dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="aliment_name"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/id_kcal"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="210dp"
+        android:layout_marginTop="10dp"
+        android:text="kcal"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/id_cantidad"
+        android:layout_width="45dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="canti"
+        android:textSize="18dp" />
+
+</androidx.cardview.widget.CardView>
