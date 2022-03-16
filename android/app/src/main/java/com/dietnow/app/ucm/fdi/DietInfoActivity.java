@@ -1,6 +1,8 @@
 package com.dietnow.app.ucm.fdi;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,8 +25,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class DietInfoActivity extends AppCompatActivity {
 
@@ -33,7 +39,7 @@ public class DietInfoActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private Button monday, tuesday, wednesday, thursday,friday,saturday,sunday,saveChanges;
     private CheckBox checkBox;
-    private TextView aliment_id ,kcal_info;
+    private TextView aliment_id ,kcal_info,diet_description,diet_title;
     private EditText info_cantidad;
 
     private ArrayList<Aliment> alimentList;
@@ -68,19 +74,68 @@ public class DietInfoActivity extends AppCompatActivity {
         kcal_info    = findViewById(R.id.id_kcal);
         info_cantidad= findViewById(R.id.id_cantidad);
 
+        diet_description= findViewById(R.id.diet_name);
+        diet_title = findViewById(R.id.viewDietDescription);
+
+
         RecyclerView            = findViewById(R.id.diet_followed_aliment);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         getAliments();
 
 
+        // Acciones de los componentes
+        saveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // VER LA FECHA ACTUAL
+                        java.util.Date fecha = new Date();
+                        //METER LOS ALIMENTOS A LA LISTA
+
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                        String strDate = dateFormat.format(fecha);
+                        System.out.println("FECHA ACTUAL:"+strDate);
+
+
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                System.out.println("DIETA SEGUIDA POR EL USARIO"+snapshot);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
+
     }
+
 
     private void getAliments(){
 
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //diet_description.setText(db.child("diets").child(snapshot.getValue().toString()).get()
+                //diet_title.setText(db.child("diets").child(snapshot.getValue().toString()).child("title").get().toString());
+
                 db.child("diets").child(snapshot.getValue().toString()).child("aliments").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

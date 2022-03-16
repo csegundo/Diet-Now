@@ -31,98 +31,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.054" />
 
-    <Button
-        android:id="@+id/monday_button"
-        android:layout_width="54dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="4dp"
-        android:text="M"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
-
-    <Button
-        android:id="@+id/tuesday_button"
-        android:layout_width="54dp"
-        android:layout_height="47dp"
-        android:text="T"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.162"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
-
-    <Button
-        android:id="@+id/wednesday_button"
-        android:layout_width="54dp"
-        android:layout_height="47dp"
-        android:text="W"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.336"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
-
-    <Button
-        android:id="@+id/thursday_button"
-        android:layout_width="54dp"
-        android:layout_height="47dp"
-        android:text="TH"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/sunday_button"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
-
-    <Button
-        android:id="@+id/friday_button"
-        android:layout_width="54dp"
-        android:layout_height="47dp"
-        android:text="F"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.669"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
-
-    <Button
-        android:id="@+id/saturday_button"
-        android:layout_width="54dp"
-        android:layout_height="47dp"
-        android:text="S"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.848"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
-
-    <Button
-        android:id="@+id/sunday_button"
-        android:layout_width="54dp"
-        android:layout_height="47dp"
-        android:text="SU"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/diet_followed_aliment"
         android:layout_width="407dp"
         android:layout_height="263dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.262"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thursday_button"
-        app:layout_constraintVertical_bias="0.425">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.332">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -137,5 +55,76 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.733" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="374dp"
+        android:layout_height="48dp"
+        android:layout_margin="10px"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.146">
+
+        <Button
+            android:id="@+id/monday_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_margin="4px"
+            android:layout_marginStart="20dp"
+            android:padding="1px"
+            android:text="M" />
+
+        <Button
+            android:id="@+id/tuesday_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_margin="4px"
+            android:padding="1px"
+            android:text="T" />
+
+        <Button
+            android:id="@+id/wednesday_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_margin="4px"
+            android:padding="1px"
+            android:text="W" />
+
+        <Button
+            android:id="@+id/thursday_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_margin="4px"
+            android:padding="1px"
+            android:text="TH" />
+
+        <Button
+            android:id="@+id/friday_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_margin="4px"
+            android:padding="3px"
+            android:text="F" />
+
+        <Button
+            android:id="@+id/saturday_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_margin="4px"
+            android:padding="1px"
+            android:text="S" />
+
+        <Button
+            android:id="@+id/sunday_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_margin="4px"
+            android:padding="1px"
+            android:text="SU" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
