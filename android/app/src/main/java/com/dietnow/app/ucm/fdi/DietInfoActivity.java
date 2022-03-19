@@ -37,7 +37,7 @@ public class DietInfoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference db;
     private StorageReference storageRef;
-    private Button monday, tuesday, wednesday, thursday,friday,saturday,sunday,saveChanges;
+    private Button monday, tuesday, wednesday, thursday,friday,saturday,sunday,saveChanges,AbandonDiet;
     private CheckBox checkBox;
     private TextView aliment_id ,kcal_info,diet_description,diet_title;
     private EditText info_cantidad;
@@ -73,7 +73,7 @@ public class DietInfoActivity extends AppCompatActivity {
         aliment_id   = findViewById(R.id.id_aliment);
         kcal_info    = findViewById(R.id.id_kcal);
         info_cantidad= findViewById(R.id.id_cantidad);
-
+        AbandonDiet  = findViewById(R.id.desuscribirBtn);
         diet_description= findViewById(R.id.diet_name);
         diet_title = findViewById(R.id.viewDietDescription);
 
@@ -125,6 +125,13 @@ public class DietInfoActivity extends AppCompatActivity {
             }
         });
 
+        AbandonDiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.child("users").child(auth.getUid()).child("diet").removeValue();
+            }
+        });
+
     }
 
 
@@ -135,23 +142,24 @@ public class DietInfoActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //diet_description.setText(db.child("diets").child(snapshot.getValue().toString()).get()
                 //diet_title.setText(db.child("diets").child(snapshot.getValue().toString()).child("title").get().toString());
-
-                db.child("diets").child(snapshot.getValue().toString()).child("aliments").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            Aliment aliment = ds.getValue(Aliment.class);
-                            alimentList.add(aliment);
+                if(snapshot.hasChildren()) {
+                    db.child("diets").child(snapshot.getValue().toString()).child("aliments").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                Aliment aliment = ds.getValue(Aliment.class);
+                                alimentList.add(aliment);
+                            }
+                            dietFollowedAdapter = new DietFollowedAdapter(alimentList, DietInfoActivity.this);
+                            RecyclerView.setAdapter(dietFollowedAdapter);
                         }
-                        dietFollowedAdapter = new DietFollowedAdapter(alimentList,DietInfoActivity.this);
-                        RecyclerView.setAdapter(dietFollowedAdapter);
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             @Override

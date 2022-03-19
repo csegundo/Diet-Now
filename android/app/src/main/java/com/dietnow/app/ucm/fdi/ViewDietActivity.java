@@ -148,7 +148,7 @@ public class ViewDietActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User actual = snapshot.child("users").child(user.getUid()).getValue(User.class);
 
-                if(!actual.getDiet().isEmpty()){
+                if(actual.getDiet()!=null){
 
                     if(actual.getDiet().equalsIgnoreCase(dietId)){
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertFollowingDiet), Toast.LENGTH_LONG).show();
@@ -322,7 +322,7 @@ public class ViewDietActivity extends AppCompatActivity {
                             delete.setVisibility(View.GONE);
                             edit.setVisibility(View.GONE);
                             follow.setVisibility(View.VISIBLE);
-                            if(u.getDiet().equalsIgnoreCase(dietId)){
+                            if(u.getDiet()!=null && u.getDiet().equalsIgnoreCase(dietId)){
                                 follow.setColorFilter(Color.YELLOW);
                             }
                         }else{
