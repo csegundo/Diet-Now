@@ -49,6 +49,7 @@ public class User {
         this.role = role.isEmpty() || role.equals(UserRole.USER.name())
                 ? UserRole.USER.name() : UserRole.ADMIN.name();
         this.active=active;
+        this.diet = "";
     }
 
     public User(String email, String name, String lastname, String password, String gender, Double height, String role,Boolean active){
@@ -61,6 +62,8 @@ public class User {
         this.role = role.isEmpty() || role.equals(UserRole.USER.name())
                 ? UserRole.USER.name() : UserRole.ADMIN.name();
         this.active = active;
+
+        this.diet = "";
     }
 
     public User(String email, Boolean active){
@@ -74,6 +77,7 @@ public class User {
                 "id=" + id +
                 ", age=" + age +
                 ", email='" + email + '\'' +
+                ", diet='" + diet + '\'' +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", password='" + password + '\'' +

@@ -57,8 +57,10 @@ public class AlimentViewOnlyAdapter extends RecyclerView.Adapter<AlimentViewOnly
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.id.setText(localDataSet.get(position).getId());
         holder.titulo.setText(localDataSet.get(position).getName());
-        holder.kcal.setText(String.valueOf(localDataSet.get(position).getKcal()));
-        holder.grams.setText( String.valueOf(localDataSet.get(position).getGrams()));
+        String kcal_info =  String.valueOf(localDataSet.get(position).getKcal()) + " kcal";
+        holder.kcal.setText(kcal_info);
+        String grams_info= String.valueOf(localDataSet.get(position).getGrams()) + " gr";
+        holder.grams.setText(grams_info);
         holder.fullInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -74,8 +74,8 @@ public class DietInfoActivity extends AppCompatActivity {
         kcal_info    = findViewById(R.id.id_kcal);
         info_cantidad= findViewById(R.id.id_cantidad);
         AbandonDiet  = findViewById(R.id.desuscribirBtn);
-        diet_description= findViewById(R.id.diet_name);
-        diet_title = findViewById(R.id.viewDietDescription);
+        diet_title= findViewById(R.id.diet_name);
+        diet_description = findViewById(R.id.viewDietDescription);
 
 
         RecyclerView            = findViewById(R.id.diet_followed_aliment);
@@ -83,6 +83,7 @@ public class DietInfoActivity extends AppCompatActivity {
 
 
         getAliments();
+        getDietInfo();
 
 
         // Acciones de los componentes
@@ -103,17 +104,10 @@ public class DietInfoActivity extends AppCompatActivity {
 
 
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
-                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                System.out.println("DIETA SEGUIDA POR EL USARIO"+snapshot);
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                        //PROVISIONAL
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).setValue(alimentList);
                     }
 
                     @Override
@@ -121,8 +115,10 @@ public class DietInfoActivity extends AppCompatActivity {
 
                     }
                 });
-
+                Intent intent = new Intent(DietInfoActivity.this, MainActivity.class);
+                startActivity(intent);
             }
+
         });
 
         AbandonDiet.setOnClickListener(new View.OnClickListener() {
@@ -137,12 +133,14 @@ public class DietInfoActivity extends AppCompatActivity {
 
     private void getAliments(){
 
+        System.out.println("COGE LOS ALIMENTOS");
+
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //diet_description.setText(db.child("diets").child(snapshot.getValue().toString()).get()
-                //diet_title.setText(db.child("diets").child(snapshot.getValue().toString()).child("title").get().toString());
-                if(snapshot.hasChildren()) {
+                System.out.println("SNAPSHOT "+ snapshot);
+                //if(snapshot.hasChildren()) {
+                    System.out.println("LOS ALIMENTOS DE LA DIETA SON ");
                     db.child("diets").child(snapshot.getValue().toString()).child("aliments").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -159,9 +157,36 @@ public class DietInfoActivity extends AppCompatActivity {
 
                         }
                     });
-                }
+                //}
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getDietInfo(){
+        db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                db.child("diets").child(snapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Diet diet = snapshot.getValue(Diet.class);
+                        diet_title.setText(diet.getTitle());
+                        diet_description.setText(diet.getDescription());
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

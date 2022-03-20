@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/RemoveAliment"
     android:layout_width="match_parent"
-    android:layout_height="95dp">
+    android:layout_height="120dp">
 
     <TextView
         android:id="@+id/barcodeAliment"
@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/AlimentKal"
-        android:layout_width="250dp"
+        android:layout_width="251dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="65dp"
