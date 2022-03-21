@@ -119,11 +119,6 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
             id =  view.findViewById(R.id.PDietId);
             visit =  view.findViewById(R.id.pNVisitDiet);
             likes =  view.findViewById(R.id.pNlikesDiet);
-
-
-
-
-
         }
     }
 }

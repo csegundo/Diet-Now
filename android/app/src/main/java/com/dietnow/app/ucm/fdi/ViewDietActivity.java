@@ -47,7 +47,7 @@ import java.util.List;
 
 public class ViewDietActivity extends AppCompatActivity {
 
-    private TextView name, description, status, publishedBy, dietActionsLabel;
+    private TextView name, description, status, publishedBy, dietActionsLabel, alimentsLbl;
     private String actualDiet;
     private androidx.recyclerview.widget.RecyclerView RecyclerView, docTable;
     private Button edit, delete, publish, unpublish;
@@ -84,9 +84,10 @@ public class ViewDietActivity extends AppCompatActivity {
         publish     = findViewById(R.id.btnPublishDiet);
         unpublish   = findViewById(R.id.btnUnpublishDiet);
         status      = findViewById(R.id.statusDietLbl);
-        publishedBy  = findViewById(R.id.publishedBy);
+        publishedBy = findViewById(R.id.publishedBy);
         dietActionsLabel= findViewById(R.id.dietActionsLabel);
-        follow        = findViewById(R.id.followbtn);
+        alimentsLbl  = findViewById(R.id.dietAlimentsNumber);
+        follow       = findViewById(R.id.followbtn);
 
         alimentList = new ArrayList<Aliment>();
         docList = new ArrayList<Pair<String, String>>();
@@ -248,6 +249,7 @@ public class ViewDietActivity extends AppCompatActivity {
                         alimentList.add(aliment);
                     }
                 }
+                alimentsLbl.setText(alimentsLbl.getText().toString() + " (" + alimentList.size() + ")");
                 alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
                 RecyclerView.setAdapter(alimentsAdapter);
             }

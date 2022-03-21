@@ -50,7 +50,7 @@ public class UserPageActivity extends AppCompatActivity {
                         if(user.getDiet() == null){
                             Toast.makeText(getApplicationContext(), "Todavía no sigues ninguna dieta, consulta la lista de dietas publicadas.", Toast.LENGTH_LONG).show();
                         }else{
-                            Intent intent = new Intent(UserPageActivity.this,DietInfoActivity.class);
+                            Intent intent = new Intent(UserPageActivity.this, DietInfoActivity.class);
                             startActivity(intent);
                         }
 

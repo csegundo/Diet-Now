@@ -156,9 +156,9 @@ public class Diet {
                 ", title='" + title + '\'' +
                 ", date='" + date + '\'' +
                 ", user='" + user + '\'' +
-                ", visits=" + visits +
-                ", likes=" + likes +
-                ", dislikes=" + dislikes +
+                //", visits=" + visits +
+                //", likes=" + likes +
+                //", dislikes=" + dislikes +
                 ", kcal=" + kcal +
                 ", active=" + active +
                 ", published=" + published +

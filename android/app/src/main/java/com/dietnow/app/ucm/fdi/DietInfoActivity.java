@@ -37,10 +37,11 @@ public class DietInfoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference db;
     private StorageReference storageRef;
-    private Button monday, tuesday, wednesday, thursday,friday,saturday,sunday,saveChanges,AbandonDiet;
+    private Button monday, tuesday, wednesday, thursday, friday, saturday, sunday, saveChanges, AbandonDiet, like, dislike;
     private CheckBox checkBox;
-    private TextView aliment_id ,kcal_info,diet_description,diet_title;
+    private TextView aliment_id, kcal_info, diet_description, diet_title;
     private EditText info_cantidad;
+    private String dietId; // ID de la dieta que está siguiendo
 
     private ArrayList<Aliment> alimentList;
 
@@ -53,14 +54,15 @@ public class DietInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diet_info);
         getSupportActionBar().setTitle("Informacion de la dieta");
 
-
         // Atributos Firebase
         auth        = FirebaseAuth.getInstance();
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         storageRef  = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
 
-        alimentList                = new ArrayList<Aliment> ();
         // Atributos de la vista
+        alimentList  = new ArrayList<Aliment> ();
+        like         = findViewById(R.id.actualDietLike);
+        dislike      = findViewById(R.id.actualDietDislike);
         monday       = findViewById(R.id.monday_button);
         tuesday      = findViewById(R.id.tuesday_button);
         wednesday    = findViewById(R.id.wednesday_button);
@@ -74,23 +76,18 @@ public class DietInfoActivity extends AppCompatActivity {
         kcal_info    = findViewById(R.id.id_kcal);
         info_cantidad= findViewById(R.id.id_cantidad);
         AbandonDiet  = findViewById(R.id.desuscribirBtn);
-        diet_title= findViewById(R.id.diet_name);
+        diet_title   = findViewById(R.id.diet_name);
         diet_description = findViewById(R.id.viewDietDescription);
-
-
-        RecyclerView            = findViewById(R.id.diet_followed_aliment);
+        RecyclerView  = findViewById(R.id.diet_followed_aliment);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         getAliments();
         getDietInfo();
-
 
         // Acciones de los componentes
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,11 +99,9 @@ public class DietInfoActivity extends AppCompatActivity {
                         String strDate = dateFormat.format(fecha);
                         System.out.println("FECHA ACTUAL:"+strDate);
 
-
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
 
-
-                        //PROVISIONAL
+                        // PROVISIONAL
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).setValue(alimentList);
                     }
 
@@ -128,6 +123,18 @@ public class DietInfoActivity extends AppCompatActivity {
             }
         });
 
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDietRating(true);
+            }
+        });
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDietRating(false);
+            }
+        });
     }
 
 
@@ -178,7 +185,7 @@ public class DietInfoActivity extends AppCompatActivity {
                         Diet diet = snapshot.getValue(Diet.class);
                         diet_title.setText(diet.getTitle());
                         diet_description.setText(diet.getDescription());
-
+                        dietId = diet.getId();
                     }
 
                     @Override
@@ -194,6 +201,11 @@ public class DietInfoActivity extends AppCompatActivity {
         });
     }
 
-
-
+    /**
+     * El usuario de la sesion da like o dislike a la dieta que esta siguiendo
+     */
+    private void toggleDietRating(Boolean like){
+        String userSess = auth.getUid();
+        db.child("diets").child(dietId).child(like ? "likes" : "dislikes").child(userSess).setValue(true);
+    }
 }

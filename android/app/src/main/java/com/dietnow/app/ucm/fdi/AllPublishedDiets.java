@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -64,14 +65,19 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String titulo = ds.child("title").getValue().toString();
+                    /**
+                     * TODO Cambiar el tipo de visits, likes y dislikes a HashMap<String, Boolean>
+                     * Para parsear usar esto: https://stackoverflow.com/a/35979715
+                     * Info de arrays==hashmaps en Firebase: https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
+                     */
                     int visit = ds.child("visits").getValue(int.class);
                     int like = ds.child("likes").getValue(int.class);
                     Boolean active = ds.child("active").getValue(Boolean.class);
                     String descripcion = ds.child("description").getValue().toString();
                     boolean published = ds.child("published").getValue(Boolean.class);
-                    Diet us = new Diet(  descripcion, titulo , visit,  like);
+                    Diet us = new Diet(descripcion, titulo, visit, like);
                     us.setId(ds.child("id").getValue().toString());
-                    if( active && published) {
+                    if(active && published) {
                         dietList.add(us);
                     }
                 }
