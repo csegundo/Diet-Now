@@ -3,6 +3,8 @@ package com.dietnow.app.ucm.fdi.adapters;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dietnow.app.ucm.fdi.DietInfoActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
@@ -24,7 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapter.ViewHolder> {
     private ArrayList<Aliment> localDataSet;
@@ -33,9 +39,11 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     private DatabaseReference db;
     private FirebaseAuth auth;
 
+    private ArrayList<Pair<String,Integer>> alimentList_toInsert;
 
 
-    public DietFollowedAdapter(ArrayList<Aliment> dataSet, Context context) {
+
+    public DietFollowedAdapter(ArrayList<Aliment> dataSet,String diet_id, Context context) {
         localDataSet = dataSet;
         allAliments =new ArrayList<>();
         allAliments.addAll(localDataSet);
@@ -60,7 +68,15 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         holder.aliment_id.setText(localDataSet.get(position).getName());
         holder.kcal_info.setText(localDataSet.get(position).getKcal() + "/100g");
         holder.info_cantidad.setText("asda");
-        // CHECKBOX ???
+        holder.aliment_barcode.setText(localDataSet.get(position).getId());
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString());
+                alimentList_toInsert.add(p);
+            }
+        });
+
 
     }
 
@@ -72,7 +88,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private CheckBox checkBox;
-        private TextView aliment_id ,kcal_info;
+        private TextView aliment_id ,kcal_info, aliment_barcode;
         private EditText info_cantidad;
 
 
@@ -83,7 +99,13 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
             aliment_id   = view.findViewById(R.id.id_aliment);
             kcal_info    = view.findViewById(R.id.id_kcal);
             info_cantidad= view.findViewById(R.id.id_cantidad);
+            aliment_barcode =view.findViewById(R.id.aliment_barcode);
+
         }
+    }
+
+    public ArrayList<Pair<String,Integer>>list (){
+        return alimentList_toInsert;
     }
 }
 

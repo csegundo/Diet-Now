@@ -99,10 +99,12 @@ public class DietInfoActivity extends AppCompatActivity {
                         String strDate = dateFormat.format(fecha);
                         System.out.println("FECHA ACTUAL:"+strDate);
 
+
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
 
                         // PROVISIONAL
-                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).setValue(alimentList);
+
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).setValue(dietFollowedAdapter);
                     }
 
                     @Override
@@ -115,6 +117,8 @@ public class DietInfoActivity extends AppCompatActivity {
             }
 
         });
+
+
 
         AbandonDiet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +139,9 @@ public class DietInfoActivity extends AppCompatActivity {
                 toggleDietRating(false);
             }
         });
+
+        aliementInfoToInsert();
+
     }
 
 
@@ -153,9 +160,10 @@ public class DietInfoActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot ds : snapshot.getChildren()) {
                                 Aliment aliment = ds.getValue(Aliment.class);
+                                aliment.setId(ds.getKey());
                                 alimentList.add(aliment);
                             }
-                            dietFollowedAdapter = new DietFollowedAdapter(alimentList, DietInfoActivity.this);
+                            dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId, DietInfoActivity.this);
                             RecyclerView.setAdapter(dietFollowedAdapter);
                         }
 
@@ -201,6 +209,19 @@ public class DietInfoActivity extends AppCompatActivity {
         });
     }
 
+    private void aliementInfoToInsert(){
+        //COGER LOS PARAMETROS DEL ADAPTER
+        Intent intent = getIntent();
+        if(intent.hasExtra("aliment_name")){
+            String aliment_name = intent.getSerializableExtra("aliment_name").toString();
+            String info_cantidad = intent.getSerializableExtra("info_cantidad").toString();
+            Aliment aliment = new Aliment();
+            aliment.setName(aliment_name);
+            alimentList_toInsert.add(aliment);
+        }
+
+
+    }
     /**
      * El usuario de la sesion da like o dislike a la dieta que esta siguiendo
      */
