@@ -24,8 +24,11 @@ import com.dietnow.app.ucm.fdi.model.diet.NutritionalInfo;
 import com.dietnow.app.ucm.fdi.utils.GetAllProductInfo;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -49,6 +52,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         allAliments.addAll(localDataSet);
         this.context=context;
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        auth        = FirebaseAuth.getInstance();
     }
 
 
@@ -67,13 +71,47 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.aliment_id.setText(localDataSet.get(position).getName());
         holder.kcal_info.setText(localDataSet.get(position).getKcal() + "/100g");
-        holder.info_cantidad.setText("asda");
+        holder.info_cantidad.setText("0");
         holder.aliment_barcode.setText(localDataSet.get(position).getId());
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            /*
             @Override
             public void onClick(View v) {
-                Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString());
+                Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString()));
                 alimentList_toInsert.add(p);
+            }
+            */
+
+            @Override
+            public void onClick(View v) {
+
+                db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        java.util.Date fecha = new Date();
+
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                        String strDate = dateFormat.format(fecha);
+
+                        Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString()));
+
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
+
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("id_alimento").setValue(p.first);
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("cantidad").setValue(p.second);
+                        //db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).setValue(p);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+
             }
         });
 

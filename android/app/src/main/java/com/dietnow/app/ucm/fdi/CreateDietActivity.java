@@ -189,7 +189,7 @@ public class CreateDietActivity extends AppCompatActivity {
                         //Log.d("Diet:" + actualDiet + "; Aliment", ds.toString());
                         Aliment aliment = ds.getValue(Aliment.class);
                         aliment.setId(ds.getKey());
-                        if(aliment.isActive() ){
+                        if(aliment.isActive() && !alimentList.contains(ds.getKey())){
                             alimentList.add(aliment);
                         }
                     }

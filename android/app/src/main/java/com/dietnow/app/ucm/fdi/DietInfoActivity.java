@@ -85,6 +85,7 @@ public class DietInfoActivity extends AppCompatActivity {
         getDietInfo();
 
         // Acciones de los componentes
+        /*
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,11 +113,13 @@ public class DietInfoActivity extends AppCompatActivity {
 
                     }
                 });
-                Intent intent = new Intent(DietInfoActivity.this, MainActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(DietInfoActivity.this, MainActivity.class);
+                //startActivity(intent);
             }
 
         });
+
+         */
 
 
 
@@ -140,7 +143,7 @@ public class DietInfoActivity extends AppCompatActivity {
             }
         });
 
-        aliementInfoToInsert();
+       //aliementInfoToInsert();
 
     }
 
@@ -209,6 +212,8 @@ public class DietInfoActivity extends AppCompatActivity {
         });
     }
 
+
+    /*
     private void aliementInfoToInsert(){
         //COGER LOS PARAMETROS DEL ADAPTER
         Intent intent = getIntent();
@@ -222,6 +227,8 @@ public class DietInfoActivity extends AppCompatActivity {
 
 
     }
+
+     */
     /**
      * El usuario de la sesion da like o dislike a la dieta que esta siguiendo
      */
