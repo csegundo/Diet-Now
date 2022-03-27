@@ -67,7 +67,6 @@
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.248"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
@@ -85,7 +84,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/AllAlimentsRecycler"
         android:layout_width="408dp"
-        android:layout_height="178dp"
+        android:layout_height="278dp"
         android:layout_marginTop="37dp"
         app:layout_constraintBottom_toTopOf="@+id/createDietProgress"
         app:layout_constraintTop_toBottomOf="@+id/dietAlimentsLabel"

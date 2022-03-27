@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/RemoveAliment"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="100dp">
 
     <TextView
         android:id="@+id/barcodeAliment"
@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
-        android:singleLine="true"
         android:ellipsize="end"
         android:maxLines="1"
+        android:singleLine="true"
         android:text="Titulo" />
 
     <TextView

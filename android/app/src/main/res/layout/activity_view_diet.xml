@@ -34,7 +34,7 @@
         android:id="@+id/dietActionsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="160dp"
         android:text="@string/actions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,10 +66,11 @@
         android:id="@+id/btnEditDiet"
         android:layout_width="166dp"
         android:layout_height="48dp"
+        android:layout_marginTop="12dp"
         android:drawableLeft="@drawable/ic_edit"
         android:text="@string/edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.162"
         app:layout_constraintStart_toEndOf="@+id/btnDeleteDiet"
         app:layout_constraintTop_toBottomOf="@+id/dietActionsLabel" />
 
@@ -77,12 +78,25 @@
         android:id="@+id/btnUnpublishDiet"
         android:layout_width="166dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="52dp"
         android:drawableLeft="@drawable/ic_unpublished"
         android:text="@string/unpublish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnPublishDiet"
+        android:layout_width="166dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="52dp"
+        android:drawableLeft="@drawable/ic_publish"
+        android:text="@string/publish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnUnpublishDiet"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnDeleteDiet"
@@ -94,20 +108,8 @@
         android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dietActionsLabel" />
-
-    <Button
-        android:id="@+id/btnPublishDiet"
-        android:layout_width="166dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="24dp"
-        android:drawableLeft="@drawable/ic_publish"
-        android:text="@string/publish"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnUnpublishDiet"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/dietActionsLabel"
+        app:layout_constraintVertical_bias="0.325" />
 
     <TextView
         android:id="@+id/statusDietLbl"
@@ -157,11 +159,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dietDocs"
-        android:layout_width="409dp"
-        android:layout_height="141dp"
+        android:layout_width="405dp"
+        android:layout_height="117dp"
         app:layout_constraintBottom_toTopOf="@+id/dietActionsLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
         app:layout_constraintVertical_bias="0.0" />

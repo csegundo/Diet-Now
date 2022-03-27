@@ -47,9 +47,9 @@
 
     <Button
         android:id="@+id/PDietShowBtn"
-        android:layout_width="110dp"
+        android:layout_width="120dp"
         android:layout_height="48dp"
-        android:layout_marginLeft="290dp"
+        android:layout_marginLeft="280dp"
         android:layout_marginTop="5dp"
         android:text="Ver Dieta"
         android:textSize="10dp"
