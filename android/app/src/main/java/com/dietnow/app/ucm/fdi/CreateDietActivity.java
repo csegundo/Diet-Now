@@ -71,7 +71,6 @@ public class CreateDietActivity extends AppCompatActivity {
     private RecyclerView RecyclerView;
     private ArrayList<Aliment> alimentList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

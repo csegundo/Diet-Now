@@ -16,8 +16,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -74,8 +75,7 @@ public class UserProfileActivity extends AppCompatActivity {
     // Necesario para saber cuando el usuario ya ha elegido una imagen de la galeria
     private static final Integer PICK_IMAGE = 1;
 
-    private TextView name, age;
-    private Button settings;
+    private TextView name, age, email, date;
     private FloatingActionButton addProfile;
     private ImageView image;
     private Uri filePath;
@@ -96,10 +96,11 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         // inicializar los elementos
-        settings   = findViewById(R.id.settings);
-        addProfile   = findViewById(R.id.addProfile);
+        addProfile = findViewById(R.id.addProfile);
         name       = findViewById(R.id.profileName);
         age        = findViewById(R.id.profileAge);
+        email      = findViewById(R.id.profileEmail);
+        date       = findViewById(R.id.profileDate);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
 
@@ -122,9 +123,12 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
-                uid= currentUser.getUid();
+                uid = currentUser.getUid();
                 name.setText(user.getName().trim() + " " + user.getLastname().trim());
                 age.setText(user.getAge() + " " + age.getText().toString());
+                email.setText(user.getEmail());
+                date.setText(date.getText().toString() + ": " + user.getStart_date());
+                getSupportActionBar().setTitle(R.string.label_user_view_profile);
 
                 String fileName = "profile_" + currentUser.getUid() + ".jpg";
                 storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -175,27 +179,6 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Acciones del perfil
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
-                builder.setTitle(R.string.profile_settings)
-                        .setItems(R.array.profile_settings_options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case 0: logout(); break;
-                                    case 1: editProfile(); break;
-                                    case 2: deleteProfile(); break;
-                                    default: break;
-                                }
-                            }
-                        })
-                        .setNegativeButton(R.string.delete_alert_no_opt, null).show();
-            }
-        });
-
         addProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,13 +198,10 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
         // Graficas
         //generateWeightsChart();
         //generateStepsChart();
         //APIlib.getInstance().setActiveAnyChartView(steps);
-
 
         selectorStepsWeight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -264,9 +244,31 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // guardar los pasos
         db.child("weights").child(autoId).child(toCreate.getDate()).setValue(toCreate.getWeight());
-
-
     }
+
+    /* START: Acciones del perfil */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logoutMenu:
+                logout();
+                break;
+            case R.id.editProfileMenu:
+                editProfile();
+                break;
+            case R.id.deleteProfileMenu:
+                deleteProfile();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_profile_menu, menu);
+        return true;
+    }
+    /* END: Acciones del perfil */
 
     // this function is triggered when user selects the image from the imageChooser
     @Override

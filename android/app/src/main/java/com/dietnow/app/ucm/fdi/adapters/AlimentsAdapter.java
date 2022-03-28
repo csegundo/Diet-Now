@@ -75,16 +75,16 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                Intent intent = new Intent(context, ViewDietActivity.class);
-                intent.putExtra("did", holder.id.getText().toString());
-                context.startActivity(intent);
-                 */
                 String aliment_id = localDataSet.get(position).getId();
                 db.child("diets").child(diet_id).child("aliments").child(aliment_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         System.out.println("Borra el alimento de la dieta");
+                        /*
+                        Intent intent = new Intent(context, CreateDietActivity.class);
+                        intent.putExtra("did", holder.id.getText().toString());
+                        context.startActivity(intent);
+                        */
                     }
                 });
             }

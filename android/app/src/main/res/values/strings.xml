@@ -8,6 +8,7 @@
     <string name="label_admin_register">Admin Register</string>
     <string name="label_user_profile">User Profile</string>
     <string name="label_user_edit_profile">Editar perfil</string>
+    <string name="label_user_view_profile">Mi perfil</string>
     <string name="label_MyDiets">Mis Dietas</string>
     <string name="label_camera_scan_product">Escanear producto</string>
     <string name="label_create_diet">Dieta</string>
@@ -102,6 +103,7 @@
     <string name="documents">Documentos</string>
     <string name="alertFollowDiet">Ya esta siguiendo una dieta, si sigues esta dieta dejaras de seguir la actual, ¿quieres continuar?</string>
     <string name="alertFollowingDiet">Ya esta siguiendo esta dieta</string>
+    <string name="createdAccount">Miembro desde</string>
 
     <string-array name="yes_no">
         <item>Si</item>

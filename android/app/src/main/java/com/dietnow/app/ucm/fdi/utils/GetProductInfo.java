@@ -59,7 +59,7 @@ public class GetProductInfo {
 
                             // Guardar codigo de barras en el array de la dieta
                             db.child("diets").child(dietId).child("aliments").child(barcode).setValue(aliment);
-                            db.child("aliments").child("barcode").setValue(aliment);
+                            db.child("aliments").child(barcode).setValue(aliment);
                         } else {
                             Log.d("FAILED", response.message());
                         }

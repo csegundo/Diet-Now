@@ -177,9 +177,6 @@ public class ViewDietActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
     private void followDiet(String dietId){
@@ -209,7 +206,6 @@ public class ViewDietActivity extends AppCompatActivity {
         }
     }
 
-    // TODO borrar la carpeta de los documentos de la dieta
     private void showDeleteModalAndConfirm(String dietId){
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewDietActivity.this);
         builder.setTitle(R.string.delete_diet)
@@ -217,12 +213,23 @@ public class ViewDietActivity extends AppCompatActivity {
             .setPositiveButton(R.string.delete_alert_yes_opt, new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //System.out.println("BORRA LA DIETA CON ID: "+ dietId);
-
                     db.child("diets").child(dietId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            //System.out.println("BORRA LA DIETA dentro del oNSUCCES");
+                            /**
+                             * NO se puede borrar un directorio directamente en Firebase Storage
+                             * Hay que eliminar todos sus archivos individualmente
+                             *
+                             * https://stackoverflow.com/a/44989315
+                             */
+                            storageRef.child("diets/" + dietId).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                                @Override
+                                public void onSuccess(ListResult listResult) {
+                                    for(StorageReference item : listResult.getItems()){
+                                        item.delete();
+                                    }
+                                }
+                            });
                             Intent intent = new Intent(ViewDietActivity.this, MyDietsActivity.class);
                             startActivity(intent);
                         }
