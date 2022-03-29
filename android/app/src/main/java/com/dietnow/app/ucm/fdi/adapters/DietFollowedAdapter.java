@@ -88,10 +88,8 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                 db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        java.util.Date fecha = new Date();
-
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-                        String strDate = dateFormat.format(fecha);
+                        DateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
+                        String strDate = dateFormat.format(new Date());
 
                         Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString()));
 
