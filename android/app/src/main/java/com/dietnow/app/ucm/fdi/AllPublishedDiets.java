@@ -26,6 +26,8 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class AllPublishedDiets extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
@@ -70,12 +72,12 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
                      * Para parsear usar esto: https://stackoverflow.com/a/35979715
                      * Info de arrays==hashmaps en Firebase: https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
                      */
-                    int visit = ds.child("visits").getValue(int.class);
-                    int like = ds.child("likes").getValue(int.class);
+                    HashMap<String, Boolean> visit = ds.child("visits").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
+                    HashMap<String, Boolean> rating = ds.child("rating").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
                     Boolean active = ds.child("active").getValue(Boolean.class);
                     String descripcion = ds.child("description").getValue().toString();
                     boolean published = ds.child("published").getValue(Boolean.class);
-                    Diet us = new Diet(descripcion, titulo, visit, like);
+                    Diet us = new Diet(descripcion, titulo, visit, rating);
                     us.setId(ds.child("id").getValue().toString());
                     if(active && published) {
                         dietList.add(us);

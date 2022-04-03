@@ -37,7 +37,7 @@ public class DietInfoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference db;
     private StorageReference storageRef;
-    private Button monday, tuesday, wednesday, thursday, friday, saturday, sunday, saveChanges, AbandonDiet, like, dislike;
+    private Button monday, tuesday, wednesday, thursday, friday, saturday, sunday, comment, AbandonDiet, like, dislike;
     private CheckBox checkBox;
     private TextView aliment_id, kcal_info, diet_description, diet_title;
     private EditText info_cantidad;
@@ -70,7 +70,7 @@ public class DietInfoActivity extends AppCompatActivity {
         friday       = findViewById(R.id.friday_button);
         saturday     = findViewById(R.id.saturday_button);
         sunday       = findViewById(R.id.sunday_button);
-        saveChanges  = findViewById(R.id.save_changes);
+        comment      = findViewById(R.id.comment_diet);
         checkBox     = findViewById(R.id.id_checkBox);
         aliment_id   = findViewById(R.id.id_aliment);
         kcal_info    = findViewById(R.id.id_kcal);
@@ -83,45 +83,6 @@ public class DietInfoActivity extends AppCompatActivity {
 
         getAliments();
         getDietInfo();
-
-        // Acciones de los componentes
-        /*
-        saveChanges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // VER LA FECHA ACTUAL
-                        java.util.Date fecha = new Date();
-                        //METER LOS ALIMENTOS A LA LISTA
-
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-                        String strDate = dateFormat.format(fecha);
-                        System.out.println("FECHA ACTUAL:"+strDate);
-
-
-                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
-
-                        // PROVISIONAL
-
-                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).setValue(dietFollowedAdapter);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                //Intent intent = new Intent(DietInfoActivity.this, MainActivity.class);
-                //startActivity(intent);
-            }
-
-        });
-
-         */
-
-
 
         AbandonDiet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +97,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 toggleDietRating(true);
             }
         });
-        like.setOnClickListener(new View.OnClickListener() {
+        dislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleDietRating(false);
@@ -234,6 +195,6 @@ public class DietInfoActivity extends AppCompatActivity {
      */
     private void toggleDietRating(Boolean like){
         String userSess = auth.getUid();
-        db.child("diets").child(dietId).child(like ? "likes" : "dislikes").child(userSess).setValue(true);
+        db.child("diets").child(dietId).child("rating").child(userSess).setValue(like);
     }
 }

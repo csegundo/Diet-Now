@@ -140,10 +140,10 @@
         app:layout_constraintVertical_bias="0.732" />
 
     <Button
-        android:id="@+id/save_changes"
+        android:id="@+id/comment_diet"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Guardar"
+        android:text="@string/comment_diet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.835"

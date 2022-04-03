@@ -48,6 +48,8 @@ import com.google.firebase.storage.UploadTask;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class CreateDietActivity extends AppCompatActivity {
 
@@ -120,7 +122,7 @@ public class CreateDietActivity extends AppCompatActivity {
                 Diet toCreate = DietService.getInstance().parseDiet(
                     title.getText().toString(),
                     description.getText().toString(),
-                    0, 0, 0,
+                    new HashMap<String, Boolean>(), new HashMap<String, Boolean>(),
                     0.0, true, false
                 );
                 uploadDietToFirebase(toCreate, actualDiet);

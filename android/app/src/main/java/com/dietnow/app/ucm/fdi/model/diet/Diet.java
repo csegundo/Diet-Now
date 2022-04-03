@@ -4,6 +4,7 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -14,7 +15,7 @@ public class Diet {
     @Exclude
     private String id;
     private String description, title, date, user;
-    private int visits, likes, dislikes;
+    private HashMap<String, Boolean> visits, rating;
     private double kcal;
     private boolean active, published;
 
@@ -25,20 +26,19 @@ public class Diet {
         this.title = titulo;
     }
 
-    public Diet(String description, String title, int visits, int likes) {
+    public Diet(String description, String title, HashMap<String, Boolean> visits, HashMap<String, Boolean> rating) {
         this.description = description;
         this.title = title;
         this.visits = visits;
-        this.likes = likes;
+        this.rating = rating;
     }
 
-    public Diet(String name, String description, int visits, int likes, int dislikes,
+    public Diet(String name, String description, HashMap<String, Boolean> visits, HashMap<String, Boolean> rating,
                 double kcal, boolean active, boolean published, String created){
         this.title = name;
         this.description = description;
         this.visits = visits;
-        this.likes = likes;
-        this.dislikes = dislikes;
+        this.rating = rating;
         this.kcal = kcal;
         this.active = active;
         this.published = published;
@@ -51,8 +51,7 @@ public class Diet {
         result.put("descripcion", description);
         result.put("active", active);
         result.put("visitas", visits);
-        result.put("like", likes);
-        result.put("dislike", dislikes);
+        result.put("rating", rating);
         result.put("titulo", title);
         result.put("publicado", published);
         result.put("kcal", kcal);
@@ -84,28 +83,20 @@ public class Diet {
         this.title = titulo;
     }
 
-    public int getVisits() {
+    public HashMap<String, Boolean> getVisits() {
         return visits;
     }
 
-    public void setVisits(int visits) {
+    public void setVisits(HashMap<String, Boolean> visits) {
         this.visits = visits;
     }
 
-    public int getLikes() {
-        return likes;
+    public HashMap<String, Boolean> getRating() {
+        return rating;
     }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public int getDislikes() {
-        return dislikes;
-    }
-
-    public void setDislikes(int dislikes) {
-        this.dislikes = dislikes;
+    public void setRating(HashMap<String, Boolean> rating) {
+        this.rating = rating;
     }
 
     public double getKcal() {
@@ -156,9 +147,8 @@ public class Diet {
                 ", title='" + title + '\'' +
                 ", date='" + date + '\'' +
                 ", user='" + user + '\'' +
-                //", visits=" + visits +
-                //", likes=" + likes +
-                //", dislikes=" + dislikes +
+                ", visits=" + visits +
+                ", rating=" + rating +
                 ", kcal=" + kcal +
                 ", active=" + active +
                 ", published=" + published +

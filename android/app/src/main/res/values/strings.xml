@@ -104,6 +104,7 @@
     <string name="alertFollowDiet">Ya esta siguiendo una dieta, si sigues esta dieta dejaras de seguir la actual, ¿quieres continuar?</string>
     <string name="alertFollowingDiet">Ya esta siguiendo esta dieta</string>
     <string name="createdAccount">Miembro desde</string>
+    <string name="comment_diet">Comentar</string>
 
     <string-array name="yes_no">
         <item>Si</item>

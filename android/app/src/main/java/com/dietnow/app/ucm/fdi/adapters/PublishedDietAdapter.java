@@ -2,6 +2,7 @@ package com.dietnow.app.ucm.fdi.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,11 +80,20 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Integer visits = localDataSet.get(position).getVisits() != null ? localDataSet.get(position).getVisits().size() : 0;
+        HashMap<String, Boolean> rating = localDataSet.get(position).getRating();
+        Integer likes = 0;
+        if(rating != null){
+            for(Boolean isLike : rating.values()){
+                likes += isLike ? 1 : 0;
+            }
+        }
+
         holder.titulo.setText(localDataSet.get(position).getTitle());
         holder.descripcion.setText(localDataSet.get(position).getDescription());
         holder.id.setText(localDataSet.get(position).getId());
-        holder.visit.setText( String.valueOf(localDataSet.get(position).getVisits()));
-        holder.likes.setText( String.valueOf(localDataSet.get(position).getLikes()));
+        holder.visit.setText(String.valueOf(visits));
+        holder.likes.setText(String.valueOf(likes));
         holder.verDieta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
