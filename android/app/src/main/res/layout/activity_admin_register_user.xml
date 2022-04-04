@@ -80,8 +80,8 @@
 
     <Button
         android:id="@+id/registerBtn"
-        android:layout_width="155dp"
-        android:layout_height="50dp"
+        android:layout_width="170dp"
+        android:layout_height="46dp"
         android:text="@string/create_account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

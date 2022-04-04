@@ -64,7 +64,7 @@
             android:layout_margin="4px"
             android:layout_marginStart="20dp"
             android:padding="1px"
-            android:text="M" />
+            android:text="@string/week_char_m" />
 
         <Button
             android:id="@+id/tuesday_button"
@@ -72,7 +72,7 @@
             android:layout_height="48dp"
             android:layout_margin="4px"
             android:padding="1px"
-            android:text="T" />
+            android:text="@string/week_char_t" />
 
         <Button
             android:id="@+id/wednesday_button"
@@ -80,7 +80,7 @@
             android:layout_height="48dp"
             android:layout_margin="4px"
             android:padding="1px"
-            android:text="W" />
+            android:text="@string/week_char_w" />
 
         <Button
             android:id="@+id/thursday_button"
@@ -88,7 +88,7 @@
             android:layout_height="48dp"
             android:layout_margin="4px"
             android:padding="1px"
-            android:text="TH" />
+            android:text="@string/week_char_th" />
 
         <Button
             android:id="@+id/friday_button"
@@ -96,7 +96,7 @@
             android:layout_height="48dp"
             android:layout_margin="4px"
             android:padding="3px"
-            android:text="F" />
+            android:text="@string/week_char_f" />
 
         <Button
             android:id="@+id/saturday_button"
@@ -104,7 +104,7 @@
             android:layout_height="48dp"
             android:layout_margin="4px"
             android:padding="1px"
-            android:text="S" />
+            android:text="@string/week_char_sat" />
 
         <Button
             android:id="@+id/sunday_button"
@@ -112,14 +112,14 @@
             android:layout_height="48dp"
             android:layout_margin="4px"
             android:padding="1px"
-            android:text="SU" />
+            android:text="@string/week_char_sun" />
     </LinearLayout>
 
     <Button
         android:id="@+id/actualDietDislike"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="No me gusta"
+        android:text="@string/dislike"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.164"
@@ -131,7 +131,7 @@
         android:id="@+id/desuscribirBtn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="desuscribir"
+        android:text="@string/unsubscribe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.164"
@@ -155,7 +155,7 @@
         android:id="@+id/actualDietLike"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Me gusta"
+        android:text="@string/like"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.835"
