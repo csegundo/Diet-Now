@@ -4,7 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.dietnow.app.ucm.fdi.adapters.PublishedDietAdapter;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
@@ -17,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DietHistory extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -25,6 +30,9 @@ public class DietHistory extends AppCompatActivity {
     private DatabaseReference bd;
     private ArrayList<Diet> dietList;
     private ArrayList<Diet> Dietas;
+    private TextView titulo,desc,likes,visit;
+    private Button ver;
+    private String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +41,63 @@ public class DietHistory extends AppCompatActivity {
         RecyclerView            = findViewById(R.id.dietHistoryRecycler);
         bd                      = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         dietList                = new ArrayList<Diet> ();
-        Dietas                = (ArrayList<Diet>) getIntent().getExtras().getSerializable("Dietas");
+        Dietas                  = (ArrayList<Diet>) getIntent().getExtras().getSerializable("Dietas");
+        titulo                  =findViewById(R.id.hDietTitulo);
+        desc                    =findViewById(R.id.hDietDesc);
+        likes                   =findViewById(R.id.hNlikesDiet);
+        visit                   =findViewById(R.id.hNVisitDiet);
+        ver                     =findViewById(R.id.hDietShowBtn);
 
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //----------------Dieta Actual--------------------------
+        getDietInfo();
+        //----------------Fin Dieta Actual-----------------------
+
         //----------------Lista de Dietas------------------------
         getDiet();
         //----------------Fin Lista de Dietas--------------------
     }
+
+    private void getDietInfo(){
+        bd.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                bd.child("diets").child(snapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Diet diet = snapshot.getValue(Diet.class);
+                        titulo.setText(diet.getTitle());
+                        desc.setText(diet.getDescription());
+                        id = diet.getId();
+                        HashMap<String, Boolean> visita = diet.getVisits();
+                        HashMap<String, Boolean> rating = diet.getRating();
+                        visit.setText(String.valueOf(visita.size()));
+                        likes.setText(String.valueOf(rating.size()));
+                        ver.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(DietHistory.this, ViewDietActivity.class);
+                                intent.putExtra("did", id);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void getDiet(){
 
             bd.child("diet_history").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
@@ -47,7 +105,7 @@ public class DietHistory extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         for (Diet d : Dietas) {
-                            if(d.getId().equals(ds.getKey()))dietList.add(d);
+                            if( d.getId().equals(ds.getKey()))dietList.add(d);
                         }
                     }
                     historyDietAdapter = new PublishedDietAdapter(dietList, DietHistory.this);

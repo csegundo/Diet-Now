@@ -17,29 +17,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/PDietId"
+        android:id="@+id/hDietId"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
         android:layout_marginBottom="37dp"
         android:text="id"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/PDietTitulo"
+        app:layout_constraintBottom_toTopOf="@+id/hDietTitulo"
         app:layout_constraintEnd_toStartOf="@+id/DietaActualText" />
 
     <TextView
-        android:id="@+id/PDietTitulo"
+        android:id="@+id/hDietTitulo"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
         android:text="Titulo"
         android:textSize="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/PDietDesc"
-        app:layout_constraintEnd_toStartOf="@+id/PDietShowBtn"
+        app:layout_constraintBottom_toTopOf="@+id/hDietDesc"
+        app:layout_constraintEnd_toStartOf="@+id/hDietShowBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DietaActualText" />
 
     <TextView
-        android:id="@+id/PDietDesc"
+        android:id="@+id/hDietDesc"
 
         android:layout_width="235dp"
         android:layout_height="77dp"
@@ -47,19 +47,19 @@
         android:inputType="textMultiLine"
         android:text="Descripcion"
         app:layout_constraintBottom_toTopOf="@+id/historialDietasText"
-        app:layout_constraintEnd_toStartOf="@+id/PDietShowBtn"
+        app:layout_constraintEnd_toStartOf="@+id/hDietShowBtn"
         app:layout_constraintHorizontal_bias="0.812"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DietaActualText"
         app:layout_constraintVertical_bias="0.762" />
 
     <Button
-        android:id="@+id/PDietShowBtn"
+        android:id="@+id/hDietShowBtn"
         android:layout_width="120dp"
         android:layout_height="48dp"
         android:text="Ver Dieta"
         android:textSize="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/pNlikesDiet"
+        app:layout_constraintBottom_toTopOf="@+id/hNlikesDiet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/DietaActualText"
         app:layout_constraintTop_toTopOf="parent"
@@ -68,7 +68,7 @@
 
 
     <TextView
-        android:id="@+id/pNlikesDiet"
+        android:id="@+id/hNlikesDiet"
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:layout_marginEnd="8dp"
@@ -78,7 +78,7 @@
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintEnd_toStartOf="@+id/PvisitDiet"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/PDietDesc" />
+        app:layout_constraintStart_toEndOf="@+id/hDietDesc" />
 
     <ImageView
         android:id="@+id/PlikeDiet"
@@ -88,15 +88,15 @@
         android:layout_marginEnd="7dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
-        app:layout_constraintEnd_toStartOf="@+id/pNlikesDiet"
+        app:layout_constraintEnd_toStartOf="@+id/hNlikesDiet"
         app:layout_constraintHorizontal_bias="0.956"
-        app:layout_constraintStart_toEndOf="@+id/PDietDesc"
-        app:layout_constraintTop_toBottomOf="@+id/PDietShowBtn"
+        app:layout_constraintStart_toEndOf="@+id/hDietDesc"
+        app:layout_constraintTop_toBottomOf="@+id/hDietShowBtn"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_like_24" />
 
     <TextView
-        android:id="@+id/pNVisitDiet"
+        android:id="@+id/hNVisitDiet"
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:layout_marginTop="18dp"
@@ -106,8 +106,8 @@
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintEnd_toStartOf="@+id/PlikeDiet"
         app:layout_constraintHorizontal_bias="0.866"
-        app:layout_constraintStart_toEndOf="@+id/PDietDesc"
-        app:layout_constraintTop_toBottomOf="@+id/PDietShowBtn"
+        app:layout_constraintStart_toEndOf="@+id/hDietDesc"
+        app:layout_constraintTop_toBottomOf="@+id/hDietShowBtn"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
@@ -120,7 +120,7 @@
         android:background="#7C7373"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PDietShowBtn"
+        app:layout_constraintTop_toBottomOf="@+id/hDietShowBtn"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_view" />
 
@@ -158,7 +158,7 @@
         app:layout_constraintBottom_toTopOf="@+id/historialDietasText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PDietDesc" />
+        app:layout_constraintTop_toBottomOf="@+id/hDietDesc" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
