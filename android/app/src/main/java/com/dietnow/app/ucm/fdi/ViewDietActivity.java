@@ -43,11 +43,12 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ViewDietActivity extends AppCompatActivity {
 
-    private TextView name, description, status, publishedBy, dietActionsLabel, alimentsLbl;
+    private TextView name, description, status, publishedBy, dietActionsLabel, alimentsLbl, nLikes, nDislikes;
     private String actualDiet;
     private androidx.recyclerview.widget.RecyclerView RecyclerView, docTable;
     private Button edit, delete, publish, unpublish;
@@ -76,6 +77,8 @@ public class ViewDietActivity extends AppCompatActivity {
 
         // Atributos de la vista
         name        = findViewById(R.id.viewDietName);
+        nLikes      = findViewById(R.id.nLikes);
+        nDislikes   = findViewById(R.id.nDislikes);
         description = findViewById(R.id.viewDietDescription);
         RecyclerView  = findViewById(R.id.dietAliment);
         docTable    = findViewById(R.id.dietDocs);
@@ -97,6 +100,7 @@ public class ViewDietActivity extends AppCompatActivity {
         docTable.setLayoutManager(new LinearLayoutManager(this));
         getAliment();
         getDocuments();
+        setVisit();
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +144,23 @@ public class ViewDietActivity extends AppCompatActivity {
     /**
      * Metodos/funciones auxiliares
      */
+
+    private void setVisit(){
+        db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Diet actual = snapshot.getValue(Diet.class);
+                if(actual.isPublished()){
+                    db.child("diets").child(actualDiet).child("visits").child(auth.getUid()).setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     private void toggleFollowDiet(String dietId, boolean publish){
         FirebaseUser user = auth.getCurrentUser();
@@ -301,8 +322,21 @@ public class ViewDietActivity extends AppCompatActivity {
                 Diet actual = dataSnapshot.getValue(Diet.class);
                 Log.d("INFO", actual.toString());
 
+                Integer likes = 0, dislikes = 0;
+                HashMap<String, Boolean> rating = actual.getRating();
+                if(rating != null){
+                    for(Boolean isLike : rating.values()){
+                        if(isLike){
+                            ++likes;
+                        } else{
+                            ++dislikes;
+                        }
+                    }
+                }
                 name.setText(actual.getTitle());
                 description.setText(actual.getDescription());
+                nLikes.setText(String.valueOf(likes));
+                nDislikes.setText(String.valueOf(dislikes));
 
                 Log.d("CURRENT USER: ", actual.getUser());
                 Log.d("USER DE LA DIETA: ", currentUser.getUid());

@@ -51,7 +51,7 @@
         android:layout_height="48dp"
         android:layout_marginLeft="280dp"
         android:layout_marginTop="5dp"
-        android:text="Ver Dieta"
+        android:text="@string/view_diet"
         android:textSize="10dp"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
