@@ -43,6 +43,7 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 //import com.anychart.sample.R;
+import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.service.StepsService;
 import com.dietnow.app.ucm.fdi.service.WeightService;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -250,7 +251,10 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.logoutMenu:
+            case R.id.DietHistory:
+                DietHistory();
+                break;
+                case R.id.logoutMenu:
                 logout();
                 break;
             case R.id.editProfileMenu:
@@ -261,6 +265,38 @@ public class UserProfileActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+    private void DietHistory(){
+        Intent intent = new Intent(UserProfileActivity.this, DietHistory.class);
+        ArrayList<Diet>array =new ArrayList<>();
+        db.child("diets").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds2 : snapshot.getChildren()) {
+                    String titulo = ds2.child("title").getValue().toString();
+                    int visit = 0;
+                    int like = 0;
+                    Boolean active = ds2.child("active").getValue(Boolean.class);
+                    String descripcion = ds2.child("description").getValue().toString();
+                    boolean published = ds2.child("published").getValue(Boolean.class);
+                    String id = ds2.getKey();
+                    Diet us = new Diet(descripcion, titulo, visit, like);
+                    us.setId(ds2.child("id").getValue().toString());
+                    array.add(us);
+                }
+
+                intent.putExtra("Dietas", array);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
     }
 
     @Override

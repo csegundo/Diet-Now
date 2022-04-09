@@ -131,6 +131,7 @@
     </string-array>
 
     <string-array name="profile_settings_options">
+        <item>Historico de dietas</item>
         <item>Cerrar sesión</item>
         <item>Editar perfil</item>
         <item>Borrar perfil</item>

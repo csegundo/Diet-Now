@@ -3,6 +3,7 @@ package com.dietnow.app.ucm.fdi.model.diet;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import java.util.Map;
  * "user" es el UID del usuario que ha creado la dieta
  */
 @IgnoreExtraProperties
-public class Diet {
+public class Diet implements Serializable {
     @Exclude
     private String id;
     private String description, title, date, user;
