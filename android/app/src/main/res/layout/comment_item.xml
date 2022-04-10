@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp">
+
+    <TextView
+        android:id="@+id/commentItem"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="id"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/commentItemText"
+        android:layout_width="390dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/comment"
+        android:inputType="textMultiLine"
+        />
+
+    <Button
+        android:id="@+id/deleteComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:drawableRight="@drawable/ic_delete"
+        android:text="@string/remove" />
+
+    <Button
+        android:id="@+id/editComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_marginLeft="290dp"
+        android:drawableRight="@drawable/ic_edit"
+        android:text="@string/edit" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="148dp"
+        android:foreground="@color/purple_700"
+        android:background="?android:attr/listDivider" />
+
+</androidx.cardview.widget.CardView>

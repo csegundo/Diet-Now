@@ -158,4 +158,8 @@
     <string name="week_char_sun">d</string>
     <string name="followed_diet">Dieta seguida</string>
     <string name="view_diet">Ver dieta</string>
+    <string name="dietComments">Comentarios de la dieta</string>
+    <string name="comment">Comentar</string>
+    <string name="emptyComment">El comentario está vacío</string>
+    <string name="created_comment_diet_successfully">Comentario de dieta creado correctamente</string>
 </resources>

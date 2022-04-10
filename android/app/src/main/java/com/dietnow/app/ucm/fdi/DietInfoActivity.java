@@ -106,6 +106,14 @@ public class DietInfoActivity extends AppCompatActivity {
 
        //aliementInfoToInsert();
 
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DietInfoActivity.this, DietComments.class);
+                intent.putExtra("did", dietId);
+                startActivity(intent);
+            }
+        });
     }
 
 

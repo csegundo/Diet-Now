@@ -157,4 +157,8 @@
     <string name="week_char_sun">s</string>
     <string name="followed_diet">Followed diet</string>
     <string name="view_diet">View diet</string>
+    <string name="dietComments">Diet comments</string>
+    <string name="comment">Comment</string>
+    <string name="emptyComment">Comment is empty!</string>
+    <string name="created_comment_diet_successfully">Comment diet created successfully</string>
 </resources>
