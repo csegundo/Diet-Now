@@ -162,4 +162,7 @@
     <string name="comment">Comentar</string>
     <string name="emptyComment">El comentario está vacío</string>
     <string name="created_comment_diet_successfully">Comentario de dieta creado correctamente</string>
+    <string name="delete_comment">Borrar comentario</string>
+    <string name="confirm_delete_comment">¿Seguro que desea eliminar este comentario?</string>
+    <string name="add_comment_hint">Escribe aquí tu comentario</string>
 </resources>

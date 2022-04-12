@@ -14,17 +14,6 @@
         android:text="id"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/commentItemText"
-        android:layout_width="390dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/comment"
-        android:inputType="textMultiLine"
-        />
-
     <Button
         android:id="@+id/deleteComment"
         android:layout_width="wrap_content"
@@ -49,5 +38,17 @@
         android:layout_marginTop="148dp"
         android:foreground="@color/purple_700"
         android:background="?android:attr/listDivider" />
+
+    <EditText
+        android:id="@+id/commentItemText"
+        android:layout_width="390dp"
+        android:layout_height="110dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:textSize="14sp" />
 
 </androidx.cardview.widget.CardView>

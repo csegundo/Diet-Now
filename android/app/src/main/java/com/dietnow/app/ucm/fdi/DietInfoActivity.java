@@ -104,7 +104,6 @@ public class DietInfoActivity extends AppCompatActivity {
             }
         });
 
-
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,10 +114,7 @@ public class DietInfoActivity extends AppCompatActivity {
         });
     }
 
-
     private void getAliments(){
-
-
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

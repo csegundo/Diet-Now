@@ -29,18 +29,25 @@
 
     <EditText
         android:id="@+id/newCommentText"
-        android:layout_width="391dp"
-        android:layout_height="146dp"
+        android:layout_width="411dp"
+        android:layout_height="144dp"
         android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:paddingTop="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="@string/add_comment_hint"
         android:inputType="textMultiLine"
         android:lines="10"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allDietComments"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.874" />
 
     <Button
         android:id="@+id/newCommentBtn"

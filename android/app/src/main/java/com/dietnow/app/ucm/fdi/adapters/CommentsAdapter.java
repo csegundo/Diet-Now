@@ -1,20 +1,31 @@
 package com.dietnow.app.ucm.fdi.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dietnow.app.ucm.fdi.DietComments;
+import com.dietnow.app.ucm.fdi.DietInfoActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
+import com.dietnow.app.ucm.fdi.MyDietsActivity;
 import com.dietnow.app.ucm.fdi.R;
+import com.dietnow.app.ucm.fdi.ViewDietActivity;
 import com.dietnow.app.ucm.fdi.model.comments.Comment;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,8 +36,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
@@ -37,12 +51,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     private FirebaseAuth auth;
     private String diet_id;
 
-    public CommentsAdapter(ArrayList<Comment> dataSet, Context context,String diet_id) {
-        this.diet_id =diet_id;
+    public CommentsAdapter(ArrayList<Comment> dataSet, Context context, String diet_id) {
+        this.diet_id = diet_id;
         localDataSet = dataSet;
-        allComments =new ArrayList<>();
+        allComments = new ArrayList<>();
         allComments.addAll(localDataSet);
-        this.context= context;
+        this.context = context;
         auth     = FirebaseAuth.getInstance();
         db       = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
     }
@@ -58,7 +72,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder holder,@SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.id.setText(localDataSet.get(position).getId());
         holder.comment.setText(localDataSet.get(position).getComment());
 
@@ -68,30 +82,51 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         if(!user.getUid().equalsIgnoreCase(user_comment_id)) {
             holder.edit.setVisibility(View.GONE);
             holder.delete.setVisibility(View.GONE);
+            holder.comment.setFocusable(false);
+            holder.comment.setFocusableInTouchMode(false);
+            holder.comment.setInputType(InputType.TYPE_NULL);
+            holder.comment.setBackgroundColor(Color.TRANSPARENT);
+            holder.comment.setHeight(150);
         }
 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //redirigir a la vista de insertar un comenrtario
-                String auto_key = db.child("comments").child(holder.id.getText().toString()).getKey();
-                System.out.println("Esta es la auto key"+ auto_key);
-                //intent
-
+                if(user_comment_id.equalsIgnoreCase(user.getUid())){
+                    db.child("comments").child(diet_id).child(localDataSet.get(position).getId())
+                            .child("comment").setValue(holder.comment.getText().toString())
+                            ;
+                }
             }
         });
+
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user_comment_id  = localDataSet.get(position).getUser();
-
-
-
+                if(user_comment_id.equalsIgnoreCase(user.getUid())){
+                    confirmAndDeleteComment(holder);
+                }
             }
         });
-
     }
 
+    private void confirmAndDeleteComment(CommentsAdapter.ViewHolder holder){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.delete_comment)
+                .setMessage(R.string.confirm_delete_comment)
+                .setPositiveButton(R.string.delete_alert_yes_opt, new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.child("comments").child(diet_id).child(holder.id.getText().toString()).removeValue();
+                    }
+                })
+                .setNegativeButton(R.string.delete_alert_no_opt, new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+    }
 
     @Override
     public int getItemCount() {
@@ -100,7 +135,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView comment;
+        private final EditText comment;
         private final TextView id;
         private final Button delete;
         private final Button edit;

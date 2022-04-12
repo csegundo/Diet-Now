@@ -15,9 +15,13 @@ import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
 import com.dietnow.app.ucm.fdi.adapters.CommentsAdapter;
 import com.dietnow.app.ucm.fdi.model.comments.Comment;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +47,6 @@ public class DietComments extends AppCompatActivity {
     private ArrayList<Comment> commentList;
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +62,6 @@ public class DietComments extends AppCompatActivity {
         commentBtn  = findViewById(R.id.newCommentBtn);
         RecyclerView  = findViewById(R.id.allDietComments);
         commentList = new ArrayList<Comment>();
-
 
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -88,11 +90,18 @@ public class DietComments extends AppCompatActivity {
         Comment c = new Comment(auth.getUid(), comment.getText().toString(), created);
         c.setId(commentId);
 
+        /*
         db.child("comments").child(actualDiet).child(commentId).setValue(c).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.created_comment_diet_successfully), Toast.LENGTH_SHORT).show();
-
+            }
+        });
+        */
+        db.child("comments").child(actualDiet).child(commentId).setValue(c).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.created_comment_diet_successfully), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -109,7 +118,7 @@ public class DietComments extends AppCompatActivity {
                     //System.out.println(comment);
                 }
 
-                commentsAdapter = new CommentsAdapter(commentList,DietComments.this,actualDiet);
+                commentsAdapter = new CommentsAdapter(commentList,DietComments.this, actualDiet);
                 RecyclerView.setAdapter(commentsAdapter);
             }
 

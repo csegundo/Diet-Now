@@ -161,4 +161,7 @@
     <string name="comment">Comment</string>
     <string name="emptyComment">Comment is empty!</string>
     <string name="created_comment_diet_successfully">Comment diet created successfully</string>
+    <string name="delete_comment">Delete comment</string>
+    <string name="confirm_delete_comment">Are you sure to want to delete comment?</string>
+    <string name="add_comment_hint">Write here your comment</string>
 </resources>
