@@ -118,7 +118,6 @@ public class DietInfoActivity extends AppCompatActivity {
 
     private void getAliments(){
 
-        System.out.println("COGE LOS ALIMENTOS");
 
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

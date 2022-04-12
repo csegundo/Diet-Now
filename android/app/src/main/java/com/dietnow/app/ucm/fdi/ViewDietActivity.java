@@ -313,7 +313,7 @@ public class ViewDietActivity extends AppCompatActivity {
                 // How to return this value?
                 FirebaseUser currentUser = auth.getCurrentUser();
                 Diet actual = dataSnapshot.getValue(Diet.class);
-                Log.d("INFO", actual.toString());
+
 
                 Integer likes = 0, dislikes = 0;
                 HashMap<String, Boolean> rating = actual.getRating();

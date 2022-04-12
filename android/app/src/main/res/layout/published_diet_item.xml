@@ -18,32 +18,32 @@
         android:id="@+id/PDietTitulo"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:textSize="18dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Titulo" />
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Titulo"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/PDietDesc"
 
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
+        android:layout_width="247dp"
+        android:layout_height="46dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="45dp"
         android:layout_marginBottom="10dp"
-        android:text="Descripcion"
         android:inputType="textMultiLine"
-        />
+        android:text="Descripcion" />
 
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginTop="95dp"
 
-        android:foreground="@color/purple_700"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        android:foreground="@color/purple_700" />
 
     <Button
         android:id="@+id/PDietShowBtn"

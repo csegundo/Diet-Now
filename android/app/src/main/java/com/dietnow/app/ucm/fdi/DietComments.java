@@ -1,6 +1,9 @@
 package com.dietnow.app.ucm.fdi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,15 +11,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
+import com.dietnow.app.ucm.fdi.adapters.CommentsAdapter;
 import com.dietnow.app.ucm.fdi.model.comments.Comment;
+import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -29,6 +39,10 @@ public class DietComments extends AppCompatActivity {
     private DatabaseReference db;
     private EditText comment;
     private Button commentBtn;
+    private CommentsAdapter commentsAdapter;
+    private ArrayList<Comment> commentList;
+    private androidx.recyclerview.widget.RecyclerView RecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +57,11 @@ public class DietComments extends AppCompatActivity {
         actualDiet  = getIntent().getExtras().getString("did");
         comment     = findViewById(R.id.newCommentText);
         commentBtn  = findViewById(R.id.newCommentBtn);
+        RecyclerView  = findViewById(R.id.allDietComments);
+        commentList = new ArrayList<Comment>();
+
+
+        RecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +73,9 @@ public class DietComments extends AppCompatActivity {
                 }
             }
         });
+
+
+        getComments();
     }
 
     /**
@@ -70,6 +92,29 @@ public class DietComments extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.created_comment_diet_successfully), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    private void getComments(){
+        db.child("comments").child(actualDiet).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Comment comment = ds.getValue(Comment.class);
+                    comment.setId(ds.getKey());
+                    commentList.add(comment);
+                    //System.out.println(comment);
+                }
+
+                commentsAdapter = new CommentsAdapter(commentList,DietComments.this,actualDiet);
+                RecyclerView.setAdapter(commentsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
