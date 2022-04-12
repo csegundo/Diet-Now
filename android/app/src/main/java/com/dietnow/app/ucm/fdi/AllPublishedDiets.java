@@ -67,11 +67,7 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String titulo = ds.child("title").getValue().toString();
-                    /**
-                     * TODO Cambiar el tipo de visits, likes y dislikes a HashMap<String, Boolean>
-                     * Para parsear usar esto: https://stackoverflow.com/a/35979715
-                     * Info de arrays==hashmaps en Firebase: https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
-                     */
+
                     HashMap<String, Boolean> visit = ds.child("visits").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
                     HashMap<String, Boolean> rating = ds.child("rating").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
                     Boolean active = ds.child("active").getValue(Boolean.class);

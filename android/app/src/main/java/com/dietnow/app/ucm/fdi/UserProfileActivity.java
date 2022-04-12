@@ -112,14 +112,12 @@ public class UserProfileActivity extends AppCompatActivity {
         auth       = FirebaseAuth.getInstance();
         db         = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
 
-        /*
-         * Para acceder a imagenes es con imagesRef.child("fileName")
-         * Propiedades de las referencias: getPath(), getName() y getBucket()
-         */
-        storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
-        imagesRef  = storageRef.child("images"); // referencia exclusivamente para imagenes (nivel mas bajo)
 
-        // llamada a Firebase para obtener la info del usuario logueado y actualizar la vista
+
+        storageRef = FirebaseStorage.getInstance().getReference();
+        imagesRef  = storageRef.child("images");
+
+
         FirebaseUser currentUser = auth.getCurrentUser();
         ValueEventListener profileListener = new ValueEventListener() {
             @Override
@@ -136,7 +134,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+
                         Executor executor = Executors.newSingleThreadExecutor();
                         Handler handler = new Handler(Looper.getMainLooper());
                         executor.execute(new Runnable() {
@@ -200,32 +198,15 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Graficas
-        //generateWeightsChart();
-        //generateStepsChart();
-        //APIlib.getInstance().setActiveAnyChartView(steps);
 
         selectorStepsWeight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-                //generateStepsChart();
-                //generateWeightsChart();
                 if(isChecked) {
                     generateStepsChart();
-                    //weights.setVisibility(View.GONE);
-                    //steps.setVisibility(View.VISIBLE);
                     APIlib.getInstance().setActiveAnyChartView(steps);
-
-
-
-
-                    //generateStepsChart();
                 }
                 else{
                     generateWeightsChart();
-                    //steps.setVisibility(View.GONE);
-                    //weights.setVisibility(View.VISIBLE);
                     APIlib.getInstance().setActiveAnyChartView(weights);
 
                 }
@@ -305,7 +286,7 @@ public class UserProfileActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.user_profile_menu, menu);
         return true;
     }
-    /* END: Acciones del perfil */
+
 
     // this function is triggered when user selects the image from the imageChooser
     @Override
@@ -317,21 +298,16 @@ public class UserProfileActivity extends AppCompatActivity {
                 return;
             }
             try{
-                // proceso explicativo https://www.youtube.com/watch?v=ZmgncLHk_s4
                 filePath = data.getData();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                image.setImageBitmap(bitmap); // actualizar la imagen directamente a la vista
-                uploadImage(); // subir la imagen a Google Firebase Storage
+                image.setImageBitmap(bitmap);
+                uploadImage();
             } catch(Exception e){
                 e.printStackTrace();
             }
         }
     }
 
-    /*
-     * Sube una imagen a Google Firebase Storage
-     * Si ya tiene subida una imagen y se sube otra se sobreescribe
-     */
     private void uploadImage(){
         if(filePath != null){
             ProgressDialog dialog = new ProgressDialog(this);
@@ -403,8 +379,6 @@ public class UserProfileActivity extends AppCompatActivity {
                     Map<String, Object> userValues = user.toMap();
                     db.child("users").child(userAuth.getUid()).updateChildren(userValues);
 
-                    // redirige a la página principal
-                    // auth.signOut();
                     Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
                     startActivity(intent);
 
@@ -470,12 +444,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
     private void AddWeight() {
-
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
-        final DoublePicker numberPicker = new DoublePicker(UserProfileActivity.this);
-        builder.setTitle(R.string.add_Weight);
-        builder.setMessage("Inserta tu peso actual");
-        builder.setView(numberPicker);*/
 
         LinearLayout LL = new LinearLayout(UserProfileActivity.this);
 
@@ -552,8 +520,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 Cartesian cartesian = AnyChart.line();
                 cartesian.animation(true);
 
-                //cartesian.padding(10d, 20d, 5d, 20d);
-
                 cartesian.crosshair().enabled(true);
                 cartesian.crosshair()
                         .yLabel(true)
@@ -598,8 +564,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 cartesian.legend().padding(0d, 0d, 10d, 0d);
 
                 steps.setChart(cartesian);
-                //APIlib.getInstance().setActiveAnyChartView(steps);
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -613,10 +577,6 @@ public class UserProfileActivity extends AppCompatActivity {
     private void generateWeightsChart(){
         weights    = findViewById(R.id.weightsChart);
 
-        //Descomentando la linea de abajo se mostrará la grafica de pesos pero se oculará la de pasos
-        //APIlib.getInstance().setActiveAnyChartView(weights);
-
-
         db.child("weights").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -624,7 +584,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 Cartesian cartesianWeight = AnyChart.line();
                 cartesianWeight.animation(true);
 
-                //cartesian.padding(10d, 20d, 5d, 20d);
 
                 cartesianWeight.crosshair().enabled(true);
                 cartesianWeight.crosshair()
@@ -669,7 +628,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 cartesianWeight.legend().padding(0d, 0d, 10d, 0d);
 
                 weights.setChart(cartesianWeight);
-                //APIlib.getInstance().setActiveAnyChartView(weights);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

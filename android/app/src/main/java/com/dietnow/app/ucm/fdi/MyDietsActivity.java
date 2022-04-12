@@ -49,7 +49,6 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
         CurrentUser             = auth.getCurrentUser().getUid();
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        System.out.println("HACE EL INTENT DE DONDE ESTAN TODAS LAS DIETAS");
         //----------------Fin Variables----------------
 
         //----------------Lista de Dietas------------------------

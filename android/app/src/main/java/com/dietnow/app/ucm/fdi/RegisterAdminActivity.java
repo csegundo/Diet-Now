@@ -221,8 +221,6 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
 
         String role = parent.getItemAtPosition(position).toString();
 
-        // ahora solo muestra mensaje, luego quitarlo
-        // Toast.makeText(parent.getContext(), "Género: " + genre, Toast.LENGTH_SHORT).show();
     }
 
     @Override

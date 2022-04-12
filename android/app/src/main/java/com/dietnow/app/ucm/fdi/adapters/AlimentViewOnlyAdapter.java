@@ -106,7 +106,7 @@ public class AlimentViewOnlyAdapter extends RecyclerView.Adapter<AlimentViewOnly
             titulo =  view.findViewById(R.id.AlimentNameOnly);
             grams =  view.findViewById(R.id.AlimentGramsOnly);
             kcal =  view.findViewById(R.id.AlimentKalOnly);
-            id =  view.findViewById(R.id.barcodeAlimentOnly); // de la vista aliment_item_test
+            id =  view.findViewById(R.id.barcodeAlimentOnly);
             fullInfo =  view.findViewById(R.id.viewOnlyAlimentDetails);
 
         }

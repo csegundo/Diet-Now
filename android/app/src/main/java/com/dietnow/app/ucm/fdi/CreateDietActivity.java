@@ -78,7 +78,7 @@ public class CreateDietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_diet);
 
-        // parametros intent (crear o editar dieta)
+
         actualDiet = null;
         if(getIntent().getExtras() != null){
             actualDiet = getIntent().getExtras().getString("did");
@@ -88,8 +88,8 @@ public class CreateDietActivity extends AppCompatActivity {
         auth        = FirebaseAuth.getInstance();
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         alimentList = new ArrayList<Aliment> ();
-        storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
-        docsRef    = storageRef.child("diets"); // referencia exclusivamente para docs de dietas (nivel mas bajo)
+        storageRef = FirebaseStorage.getInstance().getReference();
+        docsRef    = storageRef.child("diets");
 
         // Inicializar los componentes de la vista
         title       = findViewById(R.id.createDietTitle);
@@ -155,12 +155,6 @@ public class CreateDietActivity extends AppCompatActivity {
         });
     }
 
-
-    /**
-     * Metodos/funciones auxiliares de ayuda
-     */
-
-    // Recibe el ID de la dieta o null en funcion de si está creando dieta o la esta editando
     private void isEditOrCreateDiet(String dietId){
         if(dietId != null){
             db.child("diets").child(dietId).addValueEventListener(new ValueEventListener() {
@@ -181,13 +175,6 @@ public class CreateDietActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot ds : snapshot.getChildren()){
-                        /**
-                         * En ds.getKey() tenemos el barcode del alimento
-                         * En ds.getValue(Aliment.class) tenemos la info del alimento para ponerlo en la tabla
-                         *
-                         * NOTE: a cada fila de la tabla hay que meterle el barcode para poder eliminarlo
-                         * */
-                        //Log.d("Diet:" + actualDiet + "; Aliment", ds.toString());
                         Aliment aliment = ds.getValue(Aliment.class);
                         aliment.setId(ds.getKey());
                         if(aliment.isActive() && !alimentList.contains(ds.getKey())){
@@ -215,12 +202,8 @@ public class CreateDietActivity extends AppCompatActivity {
         // guardar la dieta
         toCreate.setId(autoId);
         toCreate.setUser(uId);
-        Log.d("NEW DIET", toCreate.toString());
         db.child("diets").child(autoId).setValue(toCreate);
 
-        // guardar la dieta en el usuario
-        // TODO firebase acepta arrays ???
-        // User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
     }
 
     private void updateUI(Boolean success){
@@ -251,7 +234,6 @@ public class CreateDietActivity extends AppCompatActivity {
                 return;
             }
             try{
-                // proceso explicativo https://www.youtube.com/watch?v=ZmgncLHk_s4
                 filePath = data.getData();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 uploadDocument(); // subir la imagen a Google Firebase Storage
@@ -261,17 +243,12 @@ public class CreateDietActivity extends AppCompatActivity {
         }
     }
 
-    /*
-     * Sube un documento a Google Firebase Storage
-     * Si ya existe un dcumento igual se sobreescribe
-     */
     private void uploadDocument(){
         if(filePath != null){
             ProgressDialog dialog = new ProgressDialog(this);
             dialog.setTitle(getResources().getString(R.string.uploading));
             dialog.show();
 
-            // Se crea una referencia a la ruta de acceso completa del archivo
             String fileHash = "";
             try {
                 fileHash = filePath.toString();
@@ -289,7 +266,6 @@ public class CreateDietActivity extends AppCompatActivity {
             String fileName = fileHash + ".pdf";
             StorageReference dietDoc = docsRef.child(fileName);
 
-            // Se sube la imagen
             dietDoc.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

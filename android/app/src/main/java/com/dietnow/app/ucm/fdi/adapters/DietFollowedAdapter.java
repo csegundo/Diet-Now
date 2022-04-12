@@ -74,13 +74,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         holder.info_cantidad.setText("0");
         holder.aliment_barcode.setText(localDataSet.get(position).getId());
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            /*
-            @Override
-            public void onClick(View v) {
-                Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString()));
-                alimentList_toInsert.add(p);
-            }
-            */
 
             @Override
             public void onClick(View v) {

@@ -87,10 +87,6 @@ public class AdminProfileActivity extends AppCompatActivity {
         auth       = FirebaseAuth.getInstance();
         db         = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
 
-        /*
-         * Para acceder a imagenes es con imagesRef.child("fileName")
-         * Propiedades de las referencias: getPath(), getName() y getBucket()
-         */
         storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
         imagesRef  = storageRef.child("images"); // referencia exclusivamente para imagenes (nivel mas bajo)
 
@@ -100,7 +96,6 @@ public class AdminProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
-                Log.d("ES EL USUARIO: ",currentUser.toString());
                 uid= currentUser.getUid();
                 name.setText(user.getName().trim() + " " + user.getLastname().trim());
                 age.setText(user.getAge() + " " + age.getText().toString());
@@ -188,7 +183,6 @@ public class AdminProfileActivity extends AppCompatActivity {
                 return;
             }
             try{
-                // proceso explicativo https://www.youtube.com/watch?v=ZmgncLHk_s4
                 filePath = data.getData();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 image.setImageBitmap(bitmap); // actualizar la imagen directamente a la vista
@@ -274,8 +268,7 @@ public class AdminProfileActivity extends AppCompatActivity {
                     Map<String, Object> userValues = user.toMap();
                     db.child("users").child(userAuth.getUid()).updateChildren(userValues);
 
-                    // redirige a la página principal
-                    // auth.signOut();
+
                     Intent intent = new Intent(AdminProfileActivity.this, MainActivity.class);
                     startActivity(intent);
 

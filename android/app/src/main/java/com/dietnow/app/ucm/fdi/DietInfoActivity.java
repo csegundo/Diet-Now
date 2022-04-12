@@ -104,7 +104,6 @@ public class DietInfoActivity extends AppCompatActivity {
             }
         });
 
-       //aliementInfoToInsert();
 
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,9 +123,6 @@ public class DietInfoActivity extends AppCompatActivity {
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("SNAPSHOT "+ snapshot);
-                //if(snapshot.hasChildren()) {
-                    System.out.println("LOS ALIMENTOS DE LA DIETA SON ");
                     db.child("diets").child(snapshot.getValue().toString()).child("aliments").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -181,26 +177,6 @@ public class DietInfoActivity extends AppCompatActivity {
         });
     }
 
-
-    /*
-    private void aliementInfoToInsert(){
-        //COGER LOS PARAMETROS DEL ADAPTER
-        Intent intent = getIntent();
-        if(intent.hasExtra("aliment_name")){
-            String aliment_name = intent.getSerializableExtra("aliment_name").toString();
-            String info_cantidad = intent.getSerializableExtra("info_cantidad").toString();
-            Aliment aliment = new Aliment();
-            aliment.setName(aliment_name);
-            alimentList_toInsert.add(aliment);
-        }
-
-
-    }
-
-     */
-    /**
-     * El usuario de la sesion da like o dislike a la dieta que esta siguiendo
-     */
     private void toggleDietRating(Boolean like){
         String userSess = auth.getUid();
         db.child("diets").child(dietId).child("rating").child(userSess).setValue(like);

@@ -68,19 +68,6 @@ public class UserPageActivity extends AppCompatActivity {
         perfil = findViewById(R.id.miPerfilBtn);
 
 
-        /*
-        dieta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
-                Intent intent = new Intent(UserPageActivity.this,DietInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-        perfil = findViewById(R.id.miPerfilBtn);
-        */
-
-
         // Acciones de los componentes
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -237,12 +237,6 @@ public class ViewDietActivity extends AppCompatActivity {
                     db.child("diets").child(dietId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            /**
-                             * NO se puede borrar un directorio directamente en Firebase Storage
-                             * Hay que eliminar todos sus archivos individualmente
-                             *
-                             * https://stackoverflow.com/a/44989315
-                             */
                             storageRef.child("diets/" + dietId).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
                                 @Override
                                 public void onSuccess(ListResult listResult) {
@@ -313,7 +307,6 @@ public class ViewDietActivity extends AppCompatActivity {
 
     // Dado el ID de la dieta obtiene toda la info y asigna el valor a cada componente
     private void initializeComponentsWithData(String dietId){
-        // https://stackoverflow.com/questions/41579000/difference-between-addvalueeventlistener-and-addlistenerforsinglevalueevent
         db.child("diets").child(dietId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -338,10 +331,6 @@ public class ViewDietActivity extends AppCompatActivity {
                 nLikes.setText(String.valueOf(likes));
                 nDislikes.setText(String.valueOf(dislikes));
 
-                Log.d("CURRENT USER: ", actual.getUser());
-                Log.d("USER DE LA DIETA: ", currentUser.getUid());
-
-                // Mostrar el NOMBRE de la persona que ha creado la dieta
                 db.child("users").child(actual.getUser()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -70,21 +70,8 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
         holder.see.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("--- DOC_URL ---", localDataSet.get(position).second);
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(docUrl));
                 context.startActivity(browserIntent);
-
-                //https://stackoverflow.com/questions/26965706/webview-doesnt-load-the-url-but-browser-does
-                /*WebView urlWebView = new WebView(v.getContext());
-                urlWebView.setWebViewClient(new WebViewClient());
-                urlWebView.getSettings().setJavaScriptEnabled(true);
-                urlWebView.setWebViewClient(new WebViewClient(){
-                    @Override
-                    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                        handler.proceed();
-                    }
-                });
-                urlWebView.loadUrl(localDataSet.get(position).second);*/
             }
         });
         holder.download.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +79,7 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
             public void onClick(View v) {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-                new DownloadFileFromURL().execute(docUrl); // https://stackoverflow.com/questions/15758856/android-how-to-download-a-file-from-a-webserver
+                new DownloadFileFromURL().execute(docUrl);
             }
         });
 

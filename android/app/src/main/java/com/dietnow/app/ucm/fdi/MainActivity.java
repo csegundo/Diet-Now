@@ -80,10 +80,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    // FirebaseUser user = auth.getCurrentUser();
-                    // updateUI(user);
-
-                    // sacar el User dado el UID para conocer el rol y redirigir a una vista u otra
                     FirebaseUser currentUser = auth.getCurrentUser();
                     ValueEventListener postListener = new ValueEventListener() {
                         @Override
@@ -124,16 +120,5 @@ public class MainActivity extends AppCompatActivity {
                     getResources().getString(R.string.login_failed),
                     Toast.LENGTH_LONG).show();
         }
-    }
-
-    // comprueba el estado de la autenticacion actual
-    public Boolean checkLoginStatus() {
-        FirebaseUser user = auth.getCurrentUser();
-        if (user != null) {
-            // usuario logueado
-        } else {
-            // usuario sin loguear
-        }
-        return false;
     }
 }

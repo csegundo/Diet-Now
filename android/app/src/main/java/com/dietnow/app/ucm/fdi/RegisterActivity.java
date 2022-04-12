@@ -160,9 +160,6 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String genre = parent.getItemAtPosition(position).toString();
-
-        // ahora solo muestra mensaje, luego quitarlo
-        // Toast.makeText(parent.getContext(), "Género: " + genre, Toast.LENGTH_SHORT).show();
     }
 
     @Override

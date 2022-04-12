@@ -164,8 +164,6 @@ public class UserProfileEditActivity extends AppCompatActivity {
                 String actualUserId = parametros.get("uid").toString();
 
                 for (String key : data.keySet()){
-                    // si data.{key} ha cambiado con el valor que hay en la vista ->
-                    // llamar a Firebase para editar el campo {key} del usuario en cuestion
                     switch (key){
                         case "name":
                             if(!name.getText().toString().equals(data.get(key))){
