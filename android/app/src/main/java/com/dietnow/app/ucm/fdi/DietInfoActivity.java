@@ -1,6 +1,8 @@
 package com.dietnow.app.ucm.fdi;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -27,10 +30,13 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 public class DietInfoActivity extends AppCompatActivity {
 
@@ -48,6 +54,7 @@ public class DietInfoActivity extends AppCompatActivity {
     private com.dietnow.app.ucm.fdi.adapters.DietFollowedAdapter dietFollowedAdapter;
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +119,34 @@ public class DietInfoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        LocalDate currentDate = LocalDate.now();
+        DayOfWeek day = currentDate.getDayOfWeek();
+        String weekName = day.name().toLowerCase(Locale.ROOT);
+        switch (weekName){
+            case "monday":
+                monday.setBackgroundColor(Color.LTGRAY);
+                break;
+            case "tuesday":
+                tuesday.setBackgroundColor(Color.LTGRAY);
+                break;
+            case "wednesday":
+                wednesday.setBackgroundColor(Color.LTGRAY);
+                break;
+            case "thursday":
+                thursday.setBackgroundColor(Color.LTGRAY);
+                break;
+            case "friday":
+                friday.setBackgroundColor(Color.LTGRAY);
+                break;
+            case "saturday":
+                saturday.setBackgroundColor(Color.LTGRAY);
+                break;
+            case "sunday":
+                sunday.setBackgroundColor(Color.LTGRAY);
+                break;
+
+        }
     }
 
     private void getAliments(){

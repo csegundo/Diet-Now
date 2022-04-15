@@ -8,7 +8,7 @@
     <string name="label_admin_register">Admin Register</string>
     <string name="label_user_profile">User Profile</string>
     <string name="label_user_edit_profile">Edit profile</string>
-    <string name="label_user_view_profile">My perfile</string>
+    <string name="label_user_view_profile">My profile</string>
     <string name="label_MyDiets">My diets</string>
     <string name="label_camera_scan_product">Scan product</string>
     <string name="label_create_diet">Diet</string>
@@ -70,6 +70,7 @@
     <string name="dislikes">Dislikes</string>
     <string name="views">Visits</string>
     <string name="food">Aliments</string>
+    <string name="Edit_comments">Edit comments</string>
     <string name="delete">Delete</string>
     <string name="remove">Remove</string>
     <string name="view">View</string>
@@ -105,6 +106,8 @@
     <string name="alertFollowingDiet">Are you already following this diet?</string>
     <string name="createdAccount">Member since</string>
     <string name="comment_diet">Comment</string>
+    <string name="current_diet_history">Current diet graphic</string>
+    <string name="graphic_diet_text_title">Current diet graphic</string>
 
     <string-array name="yes_no">
         <item>Yes</item>

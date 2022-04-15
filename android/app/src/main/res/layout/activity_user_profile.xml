@@ -128,7 +128,7 @@
         app:layout_constraintVertical_bias="0.223" />
 
     <com.anychart.AnyChartView
-        android:id="@+id/stepsChart"
+        android:id="@+id/dietchart"
         android:layout_width="383dp"
         android:layout_height="244dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -136,7 +136,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.388">
+        app:layout_constraintVertical_bias="0.418">
 
     </com.anychart.AnyChartView>
 
@@ -168,5 +168,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:maxImageSize="40dp" />
+
+    <Button
+        android:id="@+id/current_diet_history"
+        android:layout_width="101dp"
+        android:layout_height="43dp"
+        android:text="@string/current_diet_history"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="163dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

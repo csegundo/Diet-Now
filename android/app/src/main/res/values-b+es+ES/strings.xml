@@ -70,6 +70,7 @@
     <string name="dislikes">Dislikes</string>
     <string name="views">Visitas</string>
     <string name="food">Alimentos</string>
+    <string name="Edit_comments">Editar comentarios</string>
     <string name="delete">Eliminar</string>
     <string name="remove">Borrar</string>
     <string name="view">Ver</string>
@@ -105,6 +106,8 @@
     <string name="alertFollowingDiet">Ya esta siguiendo esta dieta</string>
     <string name="createdAccount">Miembro desde</string>
     <string name="comment_diet">Comentar</string>
+    <string name="current_diet_history">Gráfico dieta actual</string>
+    <string name="graphic_diet_text_title">Gráfico dieta actual</string>
 
     <string-array name="yes_no">
         <item>Si</item>

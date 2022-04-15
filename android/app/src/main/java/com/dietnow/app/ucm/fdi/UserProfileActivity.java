@@ -81,7 +81,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private FloatingActionButton addProfile;
     private ImageView image;
     private Uri filePath;
-    private Button change;
+    private Button change, current_diet_graphic;
     private String uid;
     private DatabaseReference db;
     private FirebaseAuth auth;
@@ -105,6 +105,7 @@ public class UserProfileActivity extends AppCompatActivity {
         date       = findViewById(R.id.profileDate);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
+        current_diet_graphic = findViewById(R.id.current_diet_history);
 
         selectorStepsWeight= findViewById(R.id.selectorStepsWeight);
 
@@ -212,6 +213,17 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        current_diet_graphic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this, CurrentDietGraphic.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
     private void uploadStepsToFirebase(Steps toCreate, String UserId){
         String autoId = UserId ;
@@ -511,7 +523,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
     private void generateStepsChart(){
-        steps      = findViewById(R.id.stepsChart);
+        steps      = findViewById(R.id.dietchart);
         //APIlib.getInstance().setActiveAnyChartView(steps);
         db.child("pasos").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override

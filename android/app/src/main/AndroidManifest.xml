@@ -82,6 +82,10 @@
             android:exported="false"
             android:label="Dieta seguida" />
         <activity
+            android:name=".CurrentDietGraphic"
+            android:exported="false"
+            android:label="Grafico dieta actual" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/label_login">

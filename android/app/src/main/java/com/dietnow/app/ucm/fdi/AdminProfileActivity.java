@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -72,9 +74,10 @@ public class AdminProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.dietnow.app.ucm.fdi.R.layout.activity_admin_profile);
+        //setContentView(R.layout.activity_user_profile);
 
         // inicializar los elementos
-        settings   = findViewById(com.dietnow.app.ucm.fdi.R.id.settings);
+        //settings   = findViewById(com.dietnow.app.ucm.fdi.R.id.settings);
         name       = findViewById(com.dietnow.app.ucm.fdi.R.id.profileName);
         age        = findViewById(com.dietnow.app.ucm.fdi.R.id.profileAge);
         image      = (ImageView) findViewById(com.dietnow.app.ucm.fdi.R.id.profileImage);
@@ -150,6 +153,7 @@ public class AdminProfileActivity extends AppCompatActivity {
         });
 
         // Acciones del perfil
+        /*
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +173,34 @@ public class AdminProfileActivity extends AppCompatActivity {
                         .setNegativeButton(com.dietnow.app.ucm.fdi.R.string.delete_alert_no_opt, null).show();
             }
         });
+        */
 
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_profile_menu, menu);
+        return true;
+    }
+
+
+    /* START: Acciones del perfil */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logoutMenu:
+                logout();
+                break;
+            case R.id.editProfileMenu:
+                editProfile();
+                break;
+            case R.id.deleteProfileMenu:
+                deleteProfile();
+                break;
+        }
+        return true;
     }
 
 

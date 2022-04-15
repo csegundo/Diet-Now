@@ -51,7 +51,7 @@ public class ViewDietActivity extends AppCompatActivity {
     private TextView name, description, status, publishedBy, dietActionsLabel, alimentsLbl, nLikes, nDislikes;
     private String actualDiet;
     private androidx.recyclerview.widget.RecyclerView RecyclerView, docTable;
-    private Button edit, delete, publish, unpublish;
+    private Button edit, delete, publish, unpublish, comments;
     private ImageButton follow;
     private AlimentViewOnlyAdapter alimentsAdapter;
     private DietDocsAdapter docsAdapter;
@@ -91,6 +91,7 @@ public class ViewDietActivity extends AppCompatActivity {
         dietActionsLabel= findViewById(R.id.dietActionsLabel);
         alimentsLbl  = findViewById(R.id.dietAlimentsNumber);
         follow       = findViewById(R.id.followbtn);
+        comments     = findViewById(R.id.commentsButton);
 
         alimentList = new ArrayList<Aliment>();
         docList = new ArrayList<Pair<String, String>>();
@@ -101,6 +102,24 @@ public class ViewDietActivity extends AppCompatActivity {
         getAliment();
         getDocuments();
         setVisit();
+
+        //check if it is an admin
+        FirebaseUser user = auth.getCurrentUser();
+        db.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (!user.getRole().equalsIgnoreCase("ADMIN")){
+                    comments.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,11 +158,21 @@ public class ViewDietActivity extends AppCompatActivity {
                 toggleFollowDiet(actualDiet,true);
             }
         });
+
+        comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewDietActivity.this, DietComments.class);
+                intent.putExtra("did", actualDiet);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
      * Metodos/funciones auxiliares
      */
+
 
     private void setVisit(){
         db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {

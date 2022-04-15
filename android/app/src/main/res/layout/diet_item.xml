@@ -18,12 +18,12 @@
     <TextView
         android:id="@+id/AlimentName"
         android:layout_width="300dp"
-        android:fontFamily="sans-serif-black"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:textSize="18dp"
-        android:text="Titulo" />
+        android:fontFamily="sans-serif-black"
+        android:text="Titulo"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/AlimentKal"
@@ -31,11 +31,10 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="55dp"
         android:layout_marginBottom="10dp"
-        android:text="Descripcion"
         android:inputType="textMultiLine"
-        />
+        android:text="Descripcion" />
 
     <Button
         android:id="@+id/myDietShowBtn"
@@ -51,10 +50,10 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="95dp"
+        android:layout_marginTop="105dp"
 
-        android:foreground="@color/purple_700"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        android:foreground="@color/purple_700" />
 
 
 </androidx.cardview.widget.CardView>
