@@ -9,6 +9,7 @@ import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
 import com.anychart.data.Mapping;
@@ -66,19 +67,22 @@ public class CurrentDietGraphic extends AppCompatActivity {
 
                 cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
-                cartesian.title("Mis pasos");
+                cartesian.title("Mi grafica");
 
-                cartesian.yAxis(0).title("Numero de pasos");
+                cartesian.yAxis(0).title("Numero de calorias");
                 cartesian.xAxis(0).title("Dia");
                 cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
                 List<DataEntry> seriesData = new ArrayList<>();
 
                 for(DataSnapshot ds : snapshot.getChildren()){
-                    String pasos = ds.getValue().toString();
 
-                    String fecha = ds.getKey();
-                    seriesData.add(new UserProfileActivity.CustomDataEntry(fecha, Integer.valueOf(pasos)));
+
+                    //String pasos = ds.getValue().toString();
+
+                    //String fecha = ds.getKey();
+                    //seriesData.add(new UserProfileActivity.CustomDataEntry(fecha, Integer.valueOf(pasos)));
+                    //seriesData.add(new CustomDataEntry(fecha, Integer.valueOf(pasos)));
                 }
 
                 Set set = Set.instantiate();
@@ -101,7 +105,7 @@ public class CurrentDietGraphic extends AppCompatActivity {
                 cartesian.legend().fontSize(13d);
                 cartesian.legend().padding(0d, 0d, 10d, 0d);
 
-                steps.setChart(cartesian);
+                //steps.setChart(cartesian);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -110,66 +114,14 @@ public class CurrentDietGraphic extends AppCompatActivity {
         });
     }
 
-    private void generateStepsChart(){
-        steps      = findViewById(R.id.dietchart);
-        //APIlib.getInstance().setActiveAnyChartView(steps);
-        db.child("pasos").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                Cartesian cartesian = AnyChart.line();
-                cartesian.animation(true);
 
-                cartesian.crosshair().enabled(true);
-                cartesian.crosshair()
-                        .yLabel(true)
-                        // TODO ystroke
-                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
 
-                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
-                cartesian.title("Mis pasos");
-
-                cartesian.yAxis(0).title("Numero de pasos");
-                cartesian.xAxis(0).title("Dia");
-                cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-
-                List<DataEntry> seriesData = new ArrayList<>();
-
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    String pasos = ds.getValue().toString();
-
-                    String fecha = ds.getKey();
-                    seriesData.add(new UserProfileActivity.CustomDataEntry(fecha, Integer.valueOf(pasos)));
-                }
-
-                Set set = Set.instantiate();
-                set.data(seriesData);
-                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-
-                Line series1 = cartesian.line(series1Mapping);
-                series1.name("Progreso");
-                series1.hovered().markers().enabled(true);
-                series1.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series1.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                cartesian.legend().enabled(true);
-                cartesian.legend().fontSize(13d);
-                cartesian.legend().padding(0d, 0d, 10d, 0d);
-
-                steps.setChart(cartesian);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    private class CustomDataEntry extends ValueDataEntry {
+        CustomDataEntry(String x, Number value) {
+            super(x, value);
+        }
     }
 
 

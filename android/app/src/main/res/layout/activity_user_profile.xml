@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.025"
+        app:layout_constraintVertical_bias="0.012"
         tools:srcCompat="@drawable/ic_person_128_black" />
 
     <TextView
@@ -71,6 +71,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.06" />
 
+
     <Button
         android:id="@+id/profileChangeImg"
         android:layout_width="124dp"
@@ -83,7 +84,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.173" />
 
-
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/selectorStepsWeight"
         android:layout_width="wrap_content"
@@ -92,10 +92,10 @@
         android:thumb="@drawable/ic_thumb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.706"
+        app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.177"
+        app:layout_constraintVertical_bias="0.171"
         app:track="@drawable/ic_track" />
 
     <TextView
@@ -108,7 +108,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.871"
+        app:layout_constraintHorizontal_bias="0.956"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.177" />
@@ -122,34 +122,34 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
+        app:layout_constraintHorizontal_bias="0.653"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.223" />
 
     <com.anychart.AnyChartView
         android:id="@+id/dietchart"
-        android:layout_width="383dp"
-        android:layout_height="244dp"
+        android:layout_width="374dp"
+        android:layout_height="212dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.418">
+        app:layout_constraintVertical_bias="0.448">
 
     </com.anychart.AnyChartView>
 
     <com.anychart.AnyChartView
         android:id="@+id/weightsChart"
-        android:layout_width="383dp"
-        android:layout_height="244dp"
+        android:layout_width="374dp"
+        android:layout_height="235dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.938">
+        app:layout_constraintVertical_bias="0.911">
 
     </com.anychart.AnyChartView>
 
@@ -171,10 +171,13 @@
 
     <Button
         android:id="@+id/current_diet_history"
-        android:layout_width="101dp"
-        android:layout_height="43dp"
+        android:layout_width="201dp"
+        android:layout_height="51dp"
         android:text="@string/current_diet_history"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="163dp" />
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileChangeImg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,6 +34,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapter.ViewHolder> {
     private ArrayList<Aliment> localDataSet;
@@ -87,10 +89,10 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                         Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString()));
 
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
-
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("id_alimento").setValue(p.first);
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("cantidad").setValue(p.second);
-                        //db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).setValue(p);
+
+
 
                     }
 
