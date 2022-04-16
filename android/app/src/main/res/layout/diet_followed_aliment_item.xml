@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/id_aliment"
-        android:layout_width="187dp"
+        android:layout_width="124dp"
         android:layout_height="55dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
@@ -24,9 +24,9 @@
 
     <TextView
         android:id="@+id/id_kcal"
-        android:layout_width="80dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="205dp"
+        android:layout_marginLeft="155dp"
         android:layout_marginTop="5dp"
         android:text="kcal"
         android:textSize="14sp" />
@@ -49,5 +49,38 @@
         android:layout_height="wrap_content"
         android:text="barcodeAqui"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="155dp"
+        android:layout_marginTop="30dp"
+        android:text="Llevas:" />
+
+    <TextView
+        android:id="@+id/llevasGR"
+        android:layout_width="43dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="155dp"
+        android:layout_marginTop="55dp" />
+
+    <TextView
+        android:id="@+id/textviewbarrra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="55dp"
+        android:text="/"
+        />
+
+    <TextView
+        android:id="@+id/totalGR"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="205dp"
+        android:layout_marginTop="55dp"
+         />
+
 
 </androidx.cardview.widget.CardView>

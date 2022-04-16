@@ -111,6 +111,15 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
             }
         });
 
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
+
+            }
+        });
+
     }
 
     @Override
@@ -126,7 +135,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
         private final TextView id;
         private final ImageButton delete;
         private final ImageButton fullInfo;
-
+        private final ImageButton edit;
 
         public ViewHolder(View view) {
             super(view);
@@ -138,7 +147,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
             id =  view.findViewById(R.id.barcodeAliment); // de la vista aliment_item_test
             delete =  view.findViewById(R.id.deleteAlimentBtn);
             fullInfo =  view.findViewById(R.id.viewAlimentDetails);
-
+            edit    = view.findViewById(R.id.EditGrButton);
         }
     }
 }

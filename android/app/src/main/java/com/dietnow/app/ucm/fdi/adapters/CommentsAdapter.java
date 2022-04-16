@@ -28,6 +28,7 @@ import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.ViewDietActivity;
 import com.dietnow.app.ucm.fdi.model.comments.Comment;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
+import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,34 +79,45 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         String user_comment_id  = localDataSet.get(position).getUser();
         FirebaseUser user = auth.getCurrentUser();
+        db.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-        if(!user.getUid().equalsIgnoreCase(user_comment_id)) {
-            holder.edit.setVisibility(View.GONE);
-            holder.delete.setVisibility(View.GONE);
-            holder.comment.setFocusable(false);
-            holder.comment.setFocusableInTouchMode(false);
-            holder.comment.setInputType(InputType.TYPE_NULL);
-            holder.comment.setBackgroundColor(Color.TRANSPARENT);
-            holder.comment.setHeight(150);
-        }
+                if(!user.getUid().equalsIgnoreCase(user_comment_id) && !snapshot.child("role").getValue(String.class).equalsIgnoreCase("admin")) {
+                    holder.edit.setVisibility(View.GONE);
+                    holder.delete.setVisibility(View.GONE);
+                    holder.comment.setFocusable(false);
+                    holder.comment.setFocusableInTouchMode(false);
+                    holder.comment.setInputType(InputType.TYPE_NULL);
+                    holder.comment.setBackgroundColor(Color.TRANSPARENT);
+                    holder.comment.setHeight(150);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(user_comment_id.equalsIgnoreCase(user.getUid())){
-                    db.child("comments").child(diet_id).child(localDataSet.get(position).getId())
-                            .child("comment").setValue(holder.comment.getText().toString())
-                            ;
-                }
+
+                db.child("comments").child(diet_id).child(localDataSet.get(position).getId())
+                        .child("comment").setValue(holder.comment.getText().toString())
+                        ;
+
             }
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(user_comment_id.equalsIgnoreCase(user.getUid())){
-                    confirmAndDeleteComment(holder);
-                }
+
+                confirmAndDeleteComment(holder);
+
             }
         });
     }

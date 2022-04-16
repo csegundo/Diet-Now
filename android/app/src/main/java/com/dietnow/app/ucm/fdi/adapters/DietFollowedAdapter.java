@@ -43,7 +43,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     private Context context;
     private DatabaseReference db;
     private FirebaseAuth auth;
-
+    private String dietID;
     private ArrayList<Pair<String,Integer>> alimentList_toInsert;
 
 
@@ -55,6 +55,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         this.context=context;
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         auth        = FirebaseAuth.getInstance();
+        dietID = diet_id;
     }
 
 
@@ -72,9 +73,22 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.aliment_id.setText(localDataSet.get(position).getName());
-        holder.kcal_info.setText(localDataSet.get(position).getKcal() + "/100g");
+        holder.kcal_info.setText(localDataSet.get(position).getKcal() + "kcal/100g");
         holder.info_cantidad.setText("0");
         holder.aliment_barcode.setText(localDataSet.get(position).getId());
+
+        db.child("diets").child(dietID).child("aliments").child(localDataSet.get(position).getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                holder.totalGR.setText(snapshot.child("grams").getValue(Long.class).toString() +" gr");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -88,7 +102,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
 
                         Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString()));
 
-                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).setValue(strDate);
+
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("id_alimento").setValue(p.first);
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("cantidad").setValue(p.second);
 
@@ -119,7 +133,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private CheckBox checkBox;
-        private TextView aliment_id ,kcal_info, aliment_barcode;
+        private TextView aliment_id ,kcal_info, aliment_barcode,totalGR,llevasGR;
         private EditText info_cantidad;
 
 
@@ -131,6 +145,8 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
             kcal_info    = view.findViewById(R.id.id_kcal);
             info_cantidad= view.findViewById(R.id.id_cantidad);
             aliment_barcode =view.findViewById(R.id.aliment_barcode);
+            totalGR =view.findViewById(R.id.totalGR);
+            llevasGR =view.findViewById(R.id.llevasGR);
 
         }
     }

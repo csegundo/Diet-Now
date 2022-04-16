@@ -107,6 +107,7 @@ public class CreateDietActivity extends AppCompatActivity {
         if(actualDiet == null){
             addFood.setVisibility(View.GONE);
             alimentsLabel.setVisibility(View.GONE);
+
         } else{
             upload.setVisibility(View.VISIBLE);
             docsRef = storageRef.child("diets").child(actualDiet); // referencia exclusivamente para docs de dietas (nivel mas bajo)

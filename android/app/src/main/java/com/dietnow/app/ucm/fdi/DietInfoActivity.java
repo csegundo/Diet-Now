@@ -153,6 +153,7 @@ public class DietInfoActivity extends AppCompatActivity {
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    dietId=snapshot.getValue(String.class);
                     db.child("diets").child(snapshot.getValue().toString()).child("aliments").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -160,6 +161,7 @@ public class DietInfoActivity extends AppCompatActivity {
                                 Aliment aliment = ds.getValue(Aliment.class);
                                 aliment.setId(ds.getKey());
                                 alimentList.add(aliment);
+
                             }
                             dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId, DietInfoActivity.this);
                             RecyclerView.setAdapter(dietFollowedAdapter);
