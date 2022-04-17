@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapter.ViewHolder> {
@@ -73,7 +74,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.aliment_id.setText(localDataSet.get(position).getName());
-        holder.kcal_info.setText(localDataSet.get(position).getKcal() + "kcal/100g");
+        holder.kcal_info.setText(localDataSet.get(position).getKcal() + " kcal/100g");
         holder.info_cantidad.setText("0");
         holder.aliment_barcode.setText(localDataSet.get(position).getId());
 
@@ -81,6 +82,44 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 holder.totalGR.setText(snapshot.child("grams").getValue(Long.class).toString() +" gr");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        db.child("diet_history").child(auth.getUid()).child(dietID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
+                String strDate = dateFormat.format(new Date());
+                HashMap<String, Integer> map_grams_counter = new HashMap<String, Integer>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String strDate_info[] = strDate.split(" ");
+                    String db_date[] = ds.getKey().split(" ");
+
+                    if(strDate_info[0].equalsIgnoreCase(db_date[0])){
+                        System.out.println(ds.toString());
+                        Integer counter =  map_grams_counter.get(ds.child("id_alimento").getValue().toString());
+                        if(counter != null){ //ya esta ese id en el mapa
+                            Integer total = counter + Integer.parseInt(ds.child("cantidad").getValue().toString());
+                            map_grams_counter.put(ds.child("id_alimento").getValue().toString(),total);
+                        }else {
+                            map_grams_counter.put(ds.child("id_alimento").getValue().toString(), Integer.parseInt(ds.child("cantidad").getValue().toString()));
+                        }
+                    }
+                }
+
+                if(map_grams_counter.get(holder.aliment_barcode.getText().toString()) == null){
+                    holder.llevasGR.setText("0");
+                }else{
+                    holder.llevasGR.setText(map_grams_counter.get(holder.aliment_barcode.getText().toString()).toString());
+                }
+
+
             }
 
             @Override

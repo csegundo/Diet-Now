@@ -100,16 +100,21 @@ public class DietHistory extends AppCompatActivity {
 
     private void getDiet(){
 
+        // ver que dieta es la actual para no meterla en la lista de dietas anteriores
+
             bd.child("diet_history").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         for (Diet d : Dietas) {
-                            if( d.getId().equals(ds.getKey()))dietList.add(d);
+                            if(d.getId().equals(ds.getKey()))dietList.add(d);
                         }
                     }
-                    historyDietAdapter = new PublishedDietAdapter(dietList, DietHistory.this);
-                    RecyclerView.setAdapter(historyDietAdapter);
+                    // TODO parche para que si solo tiene una dieta no aparezaca duplicada
+                    if(dietList.size() > 1){
+                        historyDietAdapter = new PublishedDietAdapter(dietList, DietHistory.this);
+                        RecyclerView.setAdapter(historyDietAdapter);
+                    }
                 }
 
                 @Override
