@@ -167,4 +167,8 @@
     <string name="delete_comment">Delete comment</string>
     <string name="confirm_delete_comment">Are you sure to want to delete comment?</string>
     <string name="add_comment_hint">Write here your comment</string>
+    <string name="item_menu_history">Diet history</string>
+    <string name="item_menu_delete_profile">Delete account</string>
+    <string name="item_menu_logout">Logout</string>
+    <string name="item_menu_edit_profile">Edit profile</string>
 </resources>

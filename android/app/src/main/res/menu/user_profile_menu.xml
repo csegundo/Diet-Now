@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/DietHistory"
-        android:title="Historico de dietas"></item>
+        android:title="@string/item_menu_history"></item>
     <item
         android:id="@+id/logoutMenu"
-        android:title="Cerrar sesión"></item>
+        android:title="@string/item_menu_logout"></item>
     <item
         android:id="@+id/editProfileMenu"
-        android:title="Editar perfil"></item>
+        android:title="@string/item_menu_edit_profile"></item>
     <item
         android:id="@+id/deleteProfileMenu"
-        android:title="Eliminar cuenta"></item>
+        android:title="@string/item_menu_delete_profile"></item>
 </menu>

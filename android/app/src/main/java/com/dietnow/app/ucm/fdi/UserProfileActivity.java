@@ -248,7 +248,7 @@ public class UserProfileActivity extends AppCompatActivity {
             case R.id.DietHistory:
                 DietHistory();
                 break;
-                case R.id.logoutMenu:
+            case R.id.logoutMenu:
                 logout();
                 break;
             case R.id.editProfileMenu:
@@ -262,7 +262,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
     private void DietHistory(){
         Intent intent = new Intent(UserProfileActivity.this, DietHistory.class);
-        ArrayList<Diet>array =new ArrayList<>();
+        ArrayList<Diet> array = new ArrayList<>();
         db.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -288,9 +288,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
     @Override
@@ -521,7 +518,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
-
     private void generateStepsChart(){
         steps      = findViewById(R.id.dietchart);
         //APIlib.getInstance().setActiveAnyChartView(steps);
@@ -583,8 +579,6 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void generateWeightsChart(){
         weights    = findViewById(R.id.weightsChart);
@@ -648,7 +642,6 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
     }
-
 
     private class CustomDataEntry extends ValueDataEntry {
         CustomDataEntry(String x, Number value) {

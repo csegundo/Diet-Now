@@ -167,4 +167,8 @@
     <string name="delete_comment">Borrar comentario</string>
     <string name="confirm_delete_comment">¿Seguro que desea eliminar este comentario?</string>
     <string name="add_comment_hint">Escribe aquí tu comentario</string>
+    <string name="item_menu_history">Histórico de dietas</string>
+    <string name="item_menu_delete_profile">Eliminar cuenta</string>
+    <string name="item_menu_logout">Cerrar sesión</string>
+    <string name="item_menu_edit_profile">Editar perfil</string>
 </resources>

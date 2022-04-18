@@ -41,11 +41,11 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
     private FirebaseAuth auth;
     private String diet_id;
 
-    public PublishedDietAdapter(ArrayList<Diet> dataSet,String dietId, Context context) {
+    public PublishedDietAdapter(ArrayList<Diet> dataSet, String dietId, Context context) {
         localDataSet = dataSet;
-        allDiet =new ArrayList<>();
+        allDiet = new ArrayList<>();
         allDiet.addAll(localDataSet);
-        this.context=context;
+        this.context = context;
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         this.diet_id = dietId;
     }

@@ -32,7 +32,7 @@ public class DietHistory extends AppCompatActivity {
     private ArrayList<Diet> Dietas;
     private TextView titulo,desc,likes,visit;
     private Button ver;
-    private String id,dietId;
+    private String id, dietId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +42,11 @@ public class DietHistory extends AppCompatActivity {
         bd                      = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         dietList                = new ArrayList<Diet> ();
         Dietas                  = (ArrayList<Diet>) getIntent().getExtras().getSerializable("Dietas");
-        titulo                  =findViewById(R.id.hDietTitulo);
-        desc                    =findViewById(R.id.hDietDesc);
-        likes                   =findViewById(R.id.hNlikesDiet);
-        visit                   =findViewById(R.id.hNVisitDiet);
-        ver                     =findViewById(R.id.hDietShowBtn);
+        titulo                  = findViewById(R.id.hDietTitulo);
+        desc                    = findViewById(R.id.hDietDesc);
+        likes                   = findViewById(R.id.hNlikesDiet);
+        visit                   = findViewById(R.id.hNVisitDiet);
+        ver                     = findViewById(R.id.hDietShowBtn);
         dietId                  = "";
 
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,8 +69,6 @@ public class DietHistory extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Diet diet = snapshot.getValue(Diet.class);
-                        dietId = diet.getId();
-                        Log.d("Dieta actual :",diet.toString());
                         titulo.setText(diet.getTitle());
                         desc.setText(diet.getDescription());
                         id = diet.getId();
@@ -108,28 +106,34 @@ public class DietHistory extends AppCompatActivity {
     }
 
     private void getDiet(){
-
         // ver que dieta es la actual para no meterla en la lista de dietas anteriores
+        bd.child("users").child(auth.getUid()).child("diet").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dietId = snapshot.getValue(String.class);
+                bd.child("diet_history").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds : snapshot.getChildren()){
+                            for(Diet d : Dietas) {
+                                if(d.getId().equals(ds.getKey()) && !dietId.equals(d.getId())){
+                                    dietList.add(d);
+                                }
+                            }
+                        }
 
-            bd.child("users").child(auth.getUid()).child("diet").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (Diet d : Dietas) {
-                        if(!d.getId().equals(snapshot.getValue(String.class)))dietList.add(d);
+                        historyDietAdapter = new PublishedDietAdapter(dietList, dietId, DietHistory.this);
+                        RecyclerView.setAdapter(historyDietAdapter);
                     }
 
-                    historyDietAdapter = new PublishedDietAdapter(dietList,dietId, DietHistory.this);
-                    RecyclerView.setAdapter(historyDietAdapter);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                });
+            }
 
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
 }

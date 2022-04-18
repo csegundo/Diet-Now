@@ -84,8 +84,6 @@ public class AdminProfileActivity extends AppCompatActivity {
         change     = findViewById(com.dietnow.app.ucm.fdi.R.id.profileChangeImg);
         //addStepsBtn= findViewById(com.dietnow.app.ucm.fdi.R.id.addStepsBtn);
 
-
-
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
         db         = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
@@ -152,30 +150,6 @@ public class AdminProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Acciones del perfil
-        /*
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AdminProfileActivity.this);
-                builder.setTitle(com.dietnow.app.ucm.fdi.R.string.profile_settings)
-                        .setItems(com.dietnow.app.ucm.fdi.R.array.profile_settings_options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case 0: logout(); break;
-                                    case 1: editProfile(); break;
-                                    case 2: deleteProfile(); break;
-                                    default: break;
-                                }
-                            }
-                        })
-                        .setNegativeButton(com.dietnow.app.ucm.fdi.R.string.delete_alert_no_opt, null).show();
-            }
-        });
-        */
-
-
     }
 
 
@@ -185,7 +159,6 @@ public class AdminProfileActivity extends AppCompatActivity {
         menu.findItem(R.id.DietHistory).setVisible(false);
         return true;
     }
-
 
     /* START: Acciones del perfil */
     @Override
