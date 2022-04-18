@@ -59,7 +59,7 @@
         android:layout_height="48dp"
         android:text="Ver Dieta"
         android:textSize="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/hNlikesDiet"
+        app:layout_constraintBottom_toTopOf="@+id/hNVisitDiet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/DietaActualText"
         app:layout_constraintTop_toTopOf="parent"
@@ -68,7 +68,7 @@
 
 
     <TextView
-        android:id="@+id/hNlikesDiet"
+        android:id="@+id/hNVisitDiet"
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:layout_marginEnd="8dp"
@@ -88,7 +88,7 @@
         android:layout_marginEnd="7dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
-        app:layout_constraintEnd_toStartOf="@+id/hNlikesDiet"
+        app:layout_constraintEnd_toStartOf="@+id/hNVisitDiet"
         app:layout_constraintHorizontal_bias="0.956"
         app:layout_constraintStart_toEndOf="@+id/hDietDesc"
         app:layout_constraintTop_toBottomOf="@+id/hDietShowBtn"
@@ -96,7 +96,7 @@
         app:srcCompat="@drawable/ic_like_24" />
 
     <TextView
-        android:id="@+id/hNVisitDiet"
+        android:id="@+id/hNlikesDiet"
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:layout_marginTop="18dp"

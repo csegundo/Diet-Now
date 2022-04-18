@@ -2,6 +2,7 @@ package com.dietnow.app.ucm.fdi.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +39,15 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
     private Context context;
     private DatabaseReference db;
     private FirebaseAuth auth;
+    private String diet_id;
 
-    public PublishedDietAdapter(ArrayList<Diet> dataSet, Context context) {
+    public PublishedDietAdapter(ArrayList<Diet> dataSet,String dietId, Context context) {
         localDataSet = dataSet;
         allDiet =new ArrayList<>();
         allDiet.addAll(localDataSet);
         this.context=context;
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        this.diet_id = dietId;
     }
 
     // Create new views (invoked by the layout manager)
@@ -80,28 +83,32 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Integer visits = localDataSet.get(position).getVisits() != null ? localDataSet.get(position).getVisits().size() : 0;
-        HashMap<String, Boolean> rating = localDataSet.get(position).getRating();
-        Integer likes = 0;
-        if(rating != null){
-            for(Boolean isLike : rating.values()){
-                likes += isLike ? 1 : 0;
+        if(!diet_id.equalsIgnoreCase(localDataSet.get(position).getId().toString())){
+            Integer visits = localDataSet.get(position).getVisits() != null ? localDataSet.get(position).getVisits().size() : 0;
+            HashMap<String, Boolean> rating = localDataSet.get(position).getRating();
+            Integer likes = 0;
+            if(rating != null){
+                for(Boolean isLike : rating.values()){
+                    likes += isLike ? 1 : 0;
+                }
             }
-        }
 
-        holder.titulo.setText(localDataSet.get(position).getTitle());
-        holder.descripcion.setText(localDataSet.get(position).getDescription());
-        holder.id.setText(localDataSet.get(position).getId());
-        holder.visit.setText(String.valueOf(visits));
-        holder.likes.setText(String.valueOf(likes));
-        holder.verDieta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ViewDietActivity.class);
-                intent.putExtra("did", holder.id.getText().toString());
-                context.startActivity(intent);
-            }
-        });
+            holder.titulo.setText(localDataSet.get(position).getTitle());
+            holder.descripcion.setText(localDataSet.get(position).getDescription());
+            holder.id.setText(localDataSet.get(position).getId());
+            holder.visit.setText(String.valueOf(visits));
+            holder.likes.setText(String.valueOf(likes));
+            holder.verDieta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ViewDietActivity.class);
+                    intent.putExtra("did", holder.id.getText().toString());
+                    context.startActivity(intent);
+                }
+            });
+        }else{
+
+        }
 
 
     }

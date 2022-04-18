@@ -7,9 +7,9 @@
 
     <CheckBox
         android:id="@+id/id_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="22dp"
-        android:layout_marginLeft="350dp"
+        android:layout_width="28dp"
+        android:layout_height="19dp"
+        android:layout_marginLeft="370dp"
         android:layout_marginTop="5dp"
         android:textSize="18dp" />
 
@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/id_kcal"
-        android:layout_width="130dp"
+        android:layout_width="112dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="155dp"
         android:layout_marginTop="5dp"
@@ -33,13 +33,13 @@
 
     <EditText
         android:id="@+id/id_cantidad"
-        android:layout_width="25dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="300dp"
+        android:layout_marginLeft="280dp"
         android:layout_marginTop="5dp"
         android:ems="10"
+        android:hint="0 gr"
         android:inputType="number"
-        android:text="canti"
         android:textSize="16sp"
         android:visibility="visible" />
 

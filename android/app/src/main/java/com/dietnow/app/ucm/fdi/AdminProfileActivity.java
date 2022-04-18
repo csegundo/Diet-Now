@@ -182,6 +182,7 @@ public class AdminProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.user_profile_menu, menu);
+        menu.findItem(R.id.DietHistory).setVisible(false);
         return true;
     }
 

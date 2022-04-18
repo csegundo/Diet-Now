@@ -79,7 +79,7 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
                         dietList.add(us);
                     }
                 }
-                PublishedDietAdapter = new PublishedDietAdapter(dietList,AllPublishedDiets.this);
+                PublishedDietAdapter = new PublishedDietAdapter(dietList,"",AllPublishedDiets.this);
                 RecyclerView.setAdapter(PublishedDietAdapter);
             }
 
