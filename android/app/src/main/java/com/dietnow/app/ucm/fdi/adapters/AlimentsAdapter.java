@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -114,7 +115,9 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            //TODO peta algo
+               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
+               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("name").setValue(Double.parseDouble(holder.titulo.getText().toString()));
                db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
 
             }

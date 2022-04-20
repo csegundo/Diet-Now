@@ -126,15 +126,19 @@ public class ViewDietActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Diet d = snapshot.getValue(Diet.class);
-                Boolean contains_key = d.getRating().containsKey(auth.getUid());
-                if(contains_key){
-                    Boolean info = d.getRating().get(auth.getUid());
-                    if(info){
-                        like.setColorFilter(Color.YELLOW);
-                    }else{
-                        dislike.setColorFilter(Color.YELLOW);
+                if(d.getRating()!=null){
+                    Boolean contains_key = d.getRating().containsKey(auth.getUid());
+
+                    if(contains_key){
+                        Boolean info = d.getRating().get(auth.getUid());
+                        if(info){
+                            like.setColorFilter(Color.GREEN);
+                        }else{
+                            dislike.setColorFilter(Color.RED);
+                        }
                     }
                 }
+
 
             }
 

@@ -109,6 +109,9 @@
     <string name="current_diet_history">Gráfico dieta actual</string>
     <string name="graphic_diet_text_title">Gráfico dieta actual</string>
     <string name="add_manual_food_byText">Añadir producto manualmente</string>
+    <string name="nameAdd">Nombre</string>
+    <string name="kcalAdd">Kcal por cada 100g</string>
+    <string name="gAdd">Gramos</string>
 
     <string-array name="yes_no">
         <item>Si</item>
