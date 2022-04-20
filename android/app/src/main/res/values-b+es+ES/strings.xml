@@ -83,7 +83,9 @@
     <string name="create_diet">Crear dieta</string>
     <string name="create_diet_error">Error al crear dieta</string>
     <string name="create_diet_success">Dieta creada correctamente</string>
-    <string name="add_manual_food">Añadir producto por código de barras de forma manual</string>
+    <string name="add_manual_food">Añadir producto por código de barras</string>
+    <string name="add_manual_food_byText">Añadir producto manualmente</string>
+
     <string name="add">Añadir</string>
     <string name="food_details">Información nutricional</string>
     <string name="profile_settings">Ajustes de perfil</string>
@@ -148,7 +150,7 @@
     <string name="published_diets">Dietas publicadas</string>
     <string name="my_diets_created">Mis dietas creadas</string>
     <string name="create_user">Crear usuario</string>
-    <string name="unsubscribe">Desucribir</string>
+    <string name="unsubscribe">Dejar de seguir</string>
     <string name="dislike">No me gusta</string>
     <string name="like">Me gusta</string>
     <string name="week_char_m">l</string>

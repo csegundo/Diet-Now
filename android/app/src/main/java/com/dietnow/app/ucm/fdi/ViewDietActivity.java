@@ -52,7 +52,7 @@ public class ViewDietActivity extends AppCompatActivity {
     private String actualDiet;
     private androidx.recyclerview.widget.RecyclerView RecyclerView, docTable;
     private Button edit, delete, publish, unpublish, comments;
-    private ImageButton follow;
+    private ImageButton follow,like,dislike;
     private AlimentViewOnlyAdapter alimentsAdapter;
     private DietDocsAdapter docsAdapter;
     private ArrayList<Aliment> alimentList;
@@ -91,6 +91,8 @@ public class ViewDietActivity extends AppCompatActivity {
         dietActionsLabel= findViewById(R.id.dietActionsLabel);
         alimentsLbl  = findViewById(R.id.dietAlimentsNumber);
         follow       = findViewById(R.id.followbtn);
+        like         = findViewById(R.id.likeButton);
+        dislike      = findViewById(R.id.dislikeButton);
         comments     = findViewById(R.id.commentsButton);
 
         alimentList = new ArrayList<Aliment>();
@@ -112,6 +114,28 @@ public class ViewDietActivity extends AppCompatActivity {
                 if (!user.getRole().equalsIgnoreCase("ADMIN")){
                     comments.setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Diet d = snapshot.getValue(Diet.class);
+                Boolean contains_key = d.getRating().containsKey(auth.getUid());
+                if(contains_key){
+                    Boolean info = d.getRating().get(auth.getUid());
+                    if(info){
+                        like.setColorFilter(Color.YELLOW);
+                    }else{
+                        dislike.setColorFilter(Color.YELLOW);
+                    }
+                }
+
             }
 
             @Override

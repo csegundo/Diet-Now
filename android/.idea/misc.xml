@@ -4,13 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/drawable/activity_user_profile.xml" value="0.29739583333333336" />
+        <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_add_manual_food.xml" value="0.34782608695652173" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_admin_page.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_admin_profile.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_admin_register_user.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_all_published_diets.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_diet_history.xml" value="0.34057971014492755" />
+        <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_diet_info.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_main.xml" value="0.2694746376811594" />
+        <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_my_diets.xml" value="0.34782608695652173" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_register.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_user_page.xml" value="0.2694746376811594" />
         <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_user_profile.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/David/Desktop/TFG/Diet-Now/android/app/src/main/res/layout/activity_view_diet.xml" value="0.67" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/drawable/ic_thumb.xml" value="0.3828125" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/drawable/track.xml" value="0.1" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_user_profile.xml" value="0.2875905797101449" />
