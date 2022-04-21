@@ -94,32 +94,53 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
             @Override
             public void onClick(View v) {
 
-                NutritionalInfo nutri = GetAllProductInfo.getInstance().getInfo(holder.id.getText().toString());
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(R.string.food_details)
-                        //.setMessage("Informacion detallada aqui igual una tabla o algo yo que se")
-                        .setMessage(
-                                "Por cada 100g de " + nutri.getName() + ": \n" +
-                                "Valor energético:    " + nutri.getKcal() + " kcal \n" +
-                                        "Grasas:    " + nutri.getFat() + "g \n" +
-                                        "   de las cuales saturadas:    " + nutri.getSaturatedFat() + "g \n" +
-                                        "Hidratos de cabrono:    " + nutri.getCarbs() + "g \n" +
-                                        "   de los cuales azúcares:    " + nutri.getSugar() + "g \n" +
-                                        "Proteinas:    " + nutri.getProteins() + "g \n" +
-                                        "Sal:    " + nutri.getSalt() + "g \n"
-                        )
-                        .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+                String name = holder.id.getText().toString();
+                boolean result = name.matches("[0-9]+");
+
+                if(result){
+                    NutritionalInfo nutri = GetAllProductInfo.getInstance().getInfo(holder.id.getText().toString());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(R.string.food_details)
+                            //.setMessage("Informacion detallada aqui igual una tabla o algo yo que se")
+                            .setMessage(
+                                    "Por cada 100g de " + nutri.getName() + ": \n" +
+                                            "Valor energético:    " + nutri.getKcal() + " kcal \n" +
+                                            "Grasas:    " + nutri.getFat() + "g \n" +
+                                            "   de las cuales saturadas:    " + nutri.getSaturatedFat() + "g \n" +
+                                            "Hidratos de cabrono:    " + nutri.getCarbs() + "g \n" +
+                                            "   de los cuales azúcares:    " + nutri.getSugar() + "g \n" +
+                                            "Proteinas:    " + nutri.getProteins() + "g \n" +
+                                            "Sal:    " + nutri.getSalt() + "g \n"
+                            )
+                            .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+                }
+                else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(R.string.food_details)
+                            //.setMessage("Informacion detallada aqui igual una tabla o algo yo que se")
+                            .setMessage(
+                                    "Por cada 100g de " + holder.titulo.getText().toString() + ": \n" +
+                                            "Valor energético:    " + holder.kcal.getText().toString() + " kcal \n"
+
+                            )
+                            .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+                }
+
+
+
             }
         });
 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //TODO peta algo
                db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
-               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("name").setValue(Double.parseDouble(holder.titulo.getText().toString()));
+               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("name").setValue((holder.titulo.getText().toString()));
                db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
 
+               db.child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
+               db.child("aliments").child(holder.id.getText().toString()).child("name").setValue((holder.titulo.getText().toString()));
+               db.child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
             }
         });
 
