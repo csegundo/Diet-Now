@@ -28,8 +28,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.anychart.AnyChartView;
 
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -93,54 +95,16 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         // llamada a Firebase para obtener la info del usuario logueado y actualizar la vista
         FirebaseUser currentUser = auth.getCurrentUser();
-        ValueEventListener profileListener = new ValueEventListener() {
+        this.uid = currentUser.getUid();
+        db.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
-                uid= currentUser.getUid();
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                User user = task.getResult().getValue(User.class);
                 name.setText(user.getName().trim() + " " + user.getLastname().trim());
                 age.setText(user.getAge() + " " + age.getText().toString());
-
-                String fileName = "profile_" + currentUser.getUid() + ".jpg";
-                storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
-                        Executor executor = Executors.newSingleThreadExecutor();
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        executor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    InputStream in = new java.net.URL(uri.toString()).openStream();
-                                    Bitmap bitmap = BitmapFactory.decodeStream(in);
-                                    handler.post(new Runnable() { // making changes in UI
-                                        @Override
-                                        public void run() {
-                                            image.setImageBitmap(bitmap);
-                                        }
-                                    });
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    image.setImageResource(com.dietnow.app.ucm.fdi.R.drawable.ic_person_128_black); // imagen predeterminada
-                                }
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        image.setImageResource(com.dietnow.app.ucm.fdi.R.drawable.ic_person_128_black); // imagen predeterminada
-                    }
-                });
+                setAdminProfileImage();
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("UserProfile", "UserProfile:onCancelled", databaseError.toException());
-            }
-        };
-        db.addValueEventListener(profileListener);
+        });
 
         // Cambiar la imagen del usuario: gallery/docs
         change.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +116,40 @@ public class AdminProfileActivity extends AppCompatActivity {
 
     }
 
+    public void setAdminProfileImage(){
+        String fileName = "profile_" + uid + ".jpg";
+        storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                Executor executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            InputStream in = new java.net.URL(uri.toString()).openStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(in);
+                            handler.post(new Runnable() { // making changes in UI
+                                @Override
+                                public void run() {
+                                    image.setImageBitmap(bitmap);
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            image.setImageResource(com.dietnow.app.ucm.fdi.R.drawable.ic_person_128_black); // imagen predeterminada
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                image.setImageResource(com.dietnow.app.ucm.fdi.R.drawable.ic_person_128_black); // imagen predeterminada
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -176,7 +174,6 @@ public class AdminProfileActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
     // this function is triggered when user selects the image from the imageChooser
     @Override
@@ -254,49 +251,34 @@ public class AdminProfileActivity extends AppCompatActivity {
     }
 
     private void deleteProfile() {
-        FirebaseUser user = auth.getCurrentUser();
+        FirebaseUser authUser = auth.getCurrentUser();
 
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // borrar de auth
-                FirebaseUser userAuth = FirebaseAuth.getInstance().getCurrentUser();
-
-                if (userAuth != null) {
-                    Toast.makeText(getApplicationContext(),
-                            "Usuario borrado correctamente",
-                            Toast.LENGTH_LONG).show();
-
-                    // borrar de la base de datos
-                    User user = dataSnapshot.child("users").child(userAuth.getUid()).getValue(User.class);
+        if(authUser == null){
+            Toast.makeText(getApplicationContext(),
+                    "El usuario no se ha borrado correctamente",
+                    Toast.LENGTH_LONG).show();
+        } else{
+            db.child("users").child(authUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    User user = task.getResult().getValue(User.class);
                     user.setActive(false);
                     Map<String, Object> userValues = user.toMap();
-                    db.child("users").child(userAuth.getUid()).updateChildren(userValues);
+                    db.child("users").child(authUser.getUid()).updateChildren(userValues);
 
-
-                    Intent intent = new Intent(AdminProfileActivity.this, MainActivity.class);
-                    startActivity(intent);
-
-
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "El usuario no se ha borrado correctamente",
-                            Toast.LENGTH_LONG).show();
+                    // cierra sesion y vuelve al login
+                    logout();
                 }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("TAG", "UserPost:onCancelled", databaseError.toException());
-            }
-        };
-        db.addValueEventListener(postListener);
+            });
+        }
     }
 
     private void logout(){
         auth.signOut();
         Intent intent = new Intent(AdminProfileActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void editProfile(){

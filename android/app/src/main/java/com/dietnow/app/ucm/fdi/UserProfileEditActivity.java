@@ -3,6 +3,7 @@ package com.dietnow.app.ucm.fdi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,14 +16,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.apis.DietNowService;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.dietnow.app.ucm.fdi.utils.BCrypt;
 import com.dietnow.app.ucm.fdi.utils.DietNowTokens;
 import com.dietnow.app.ucm.fdi.utils.RetrofitResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -97,6 +101,7 @@ public class UserProfileEditActivity extends AppCompatActivity {
 
         // se obtiene la info del usuario para rellenar los campos
         FirebaseUser currentUser = auth.getCurrentUser();
+        /*
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,7 +125,6 @@ public class UserProfileEditActivity extends AppCompatActivity {
                 storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
                         Executor executor = Executors.newSingleThreadExecutor();
                         Handler handler = new Handler(Looper.getMainLooper());
                         executor.execute(new Runnable() {
@@ -156,6 +160,31 @@ public class UserProfileEditActivity extends AppCompatActivity {
             }
         };
         db.addValueEventListener(postListener);
+        */
+
+        String uidParams = parametros.getString("uid");
+        db.child("users").child(uidParams).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().getValue(User.class);
+                    Log.d("USER FROM DB", user.toString());
+
+                    date.setText(date.getText().toString() + ": " + user.getStart_date());
+                    name.setText(user.getName());
+                    lastname.setText(user.getLastname());
+                    email.setText(user.getEmail());
+                    age.setText(String.valueOf(user.getAge()));
+                    data.put("name", user.getName());
+                    data.put("lastname", user.getLastname());
+                    data.put("email", user.getEmail());
+                    data.put("age", String.valueOf(user.getAge()));
+                    data.put("password", user.getPassword());
+
+                    setProfileImage();
+                }
+            }
+        });
 
         // Guardar los campos
         save.setOnClickListener(new View.OnClickListener() {
@@ -167,14 +196,12 @@ public class UserProfileEditActivity extends AppCompatActivity {
                     switch (key){
                         case "name":
                             if(!name.getText().toString().equals(data.get(key))){
-                                db.child("users").child(actualUserId).child("name")
-                                        .setValue(name.getText().toString());
+                                db.child("users").child(actualUserId).child("name").setValue(name.getText().toString());
                             }
                             break;
                         case "lastname":
                             if(!lastname.getText().toString().equals(data.get(key))){
-                                db.child("users").child(actualUserId).child("lastname")
-                                        .setValue(lastname.getText().toString());
+                                db.child("users").child(actualUserId).child("lastname").setValue(lastname.getText().toString());
                             }
                             break;
                         case "email":
@@ -184,8 +211,7 @@ public class UserProfileEditActivity extends AppCompatActivity {
                             break;
                         case "age":
                             if(!age.getText().toString().equalsIgnoreCase(data.get(key))){
-                                db.child("users").child(actualUserId).child("age")
-                                        .setValue(Integer.valueOf(age.getText().toString()));
+                                db.child("users").child(actualUserId).child("age").setValue(Integer.valueOf(age.getText().toString()));
                             }
                             break;
                         case "password":
@@ -197,6 +223,9 @@ public class UserProfileEditActivity extends AppCompatActivity {
                         default: break;
                     }
                 }
+
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.profile_updated_sucesfully), Toast.LENGTH_SHORT).show();
+                finish(); // volver hacia atras finalizando esta Activity
             }
         });
     }
@@ -246,5 +275,40 @@ public class UserProfileEditActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void setProfileImage(){
+        storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
+        String fileName = "profile_" + parametros.getString("uid") + ".jpg";
+        storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Executor executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            InputStream in = new java.net.URL(uri.toString()).openStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(in);
+                            handler.post(new Runnable() { // making changes in UI
+                                @Override
+                                public void run() {
+                                    imageUser.setImageBitmap(bitmap);
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            imageUser.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                imageUser.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+            }
+        });
     }
 }

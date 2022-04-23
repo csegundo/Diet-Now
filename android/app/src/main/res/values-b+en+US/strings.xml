@@ -176,4 +176,8 @@
     <string name="item_menu_logout">Logout</string>
     <string name="item_menu_edit_profile">Edit profile</string>
     <string name="alertSaveAliment">Select all aliments you want to save</string>
+    <string name="add_steps_label">Enter the number of steps taken in the day</string>
+    <string name="add_weight_label">Add weight for the day</string>
+    <string name="add_weight">Add weight</string>
+    <string name="profile_updated_sucesfully">Profile updated successfully</string>
 </resources>

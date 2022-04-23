@@ -158,18 +158,13 @@ public class CreateDietActivity extends AppCompatActivity {
 
     private void isEditOrCreateDiet(String dietId){
         if(dietId != null){
-            db.child("diets").child(dietId).addValueEventListener(new ValueEventListener() {
+            db.child("diets").child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Diet actual = snapshot.getValue(Diet.class);
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    Diet actual = task.getResult().getValue(Diet.class);
                     title.setText(actual.getTitle());
                     description.setText(actual.getDescription());
                     uDietId.setText(actual.getUser());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
             db.child("diets").child(dietId).child("aliments").addValueEventListener(new ValueEventListener() {

@@ -46,8 +46,10 @@ import com.anychart.graphics.vector.Stroke;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.service.StepsService;
 import com.dietnow.app.ucm.fdi.service.WeightService;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,6 +62,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -105,72 +108,33 @@ public class UserProfileActivity extends AppCompatActivity {
         date       = findViewById(R.id.profileDate);
         image      = (ImageView) findViewById(R.id.profileImage);
         change     = findViewById(R.id.profileChangeImg);
+        selectorStepsWeight  = findViewById(R.id.selectorStepsWeight);
         current_diet_graphic = findViewById(R.id.current_diet_history);
-
-        selectorStepsWeight= findViewById(R.id.selectorStepsWeight);
 
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
         db         = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
-
-
-
         storageRef = FirebaseStorage.getInstance().getReference();
         imagesRef  = storageRef.child("images");
 
-
         FirebaseUser currentUser = auth.getCurrentUser();
-        ValueEventListener profileListener = new ValueEventListener() {
+        this.uid = currentUser.getUid();
+
+        db.child("users").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
-                uid = currentUser.getUid();
-                name.setText(user.getName().trim() + " " + user.getLastname().trim());
-                age.setText(user.getAge() + " " + age.getText().toString());
-                email.setText(user.getEmail());
-                date.setText(date.getText().toString() + ": " + user.getStart_date());
-                getSupportActionBar().setTitle(R.string.label_user_view_profile);
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().getValue(User.class);
+                    name.setText(user.getName().trim() + " " + user.getLastname().trim());
+                    age.setText(user.getAge() + " " + age.getText().toString());
+                    email.setText(user.getEmail());
+                    date.setText(date.getText().toString() + ": " + user.getStart_date());
+                    getSupportActionBar().setTitle(R.string.label_user_view_profile);
 
-                String fileName = "profile_" + currentUser.getUid() + ".jpg";
-                storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-
-                        Executor executor = Executors.newSingleThreadExecutor();
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        executor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    InputStream in = new java.net.URL(uri.toString()).openStream();
-                                    Bitmap bitmap = BitmapFactory.decodeStream(in);
-                                    handler.post(new Runnable() { // making changes in UI
-                                        @Override
-                                        public void run() {
-                                            image.setImageBitmap(bitmap);
-                                        }
-                                    });
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
-                                }
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
-                    }
-                });
+                    setProfileImage();
+                }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("UserProfile", "UserProfile:onCancelled", databaseError.toException());
-            }
-        };
-        db.addValueEventListener(profileListener);
+        });
 
         // Cambiar la imagen del usuario: gallery/docs
         change.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +163,6 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-
         selectorStepsWeight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
@@ -214,7 +177,6 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-
         current_diet_graphic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,16 +184,48 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
+
+    private void setProfileImage(){
+        storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
+        String fileName = "profile_" + uid + ".jpg";
+        storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Executor executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            InputStream in = new java.net.URL(uri.toString()).openStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(in);
+                            handler.post(new Runnable() { // making changes in UI
+                                @Override
+                                public void run() {
+                                    image.setImageBitmap(bitmap);
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
+            }
+        });
+    }
+
     private void uploadStepsToFirebase(Steps toCreate, String UserId){
         String autoId = UserId ;
 
         // guardar los pasos
         db.child("pasos").child(autoId).child(toCreate.getDate()).setValue(toCreate.getSteps());
-
-
     }
 
     private void uploadWeightToFirebase(Weight toCreate, String UserId){
@@ -260,6 +254,7 @@ public class UserProfileActivity extends AppCompatActivity {
         }
         return true;
     }
+
     private void DietHistory(){
         Intent intent = new Intent(UserProfileActivity.this, DietHistory.class);
         ArrayList<Diet> array = new ArrayList<>();
@@ -295,7 +290,6 @@ public class UserProfileActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.user_profile_menu, menu);
         return true;
     }
-
 
     // this function is triggered when user selects the image from the imageChooser
     @Override
@@ -369,48 +363,38 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void deleteProfile() {
-        FirebaseUser user = auth.getCurrentUser();
+        FirebaseUser authUser = auth.getCurrentUser();
 
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // borrar de auth
-                FirebaseUser userAuth = FirebaseAuth.getInstance().getCurrentUser();
-
-                if (userAuth != null) {
-                    Toast.makeText(getApplicationContext(),
-                            "Usuario borrado correctamente",
-                            Toast.LENGTH_LONG).show();
-
-                    // borrar de la base de datos
-                    User user = dataSnapshot.child("users").child(userAuth.getUid()).getValue(User.class);
+        if(authUser == null){
+            Toast.makeText(getApplicationContext(),
+                    "El usuario no se ha borrado correctamente",
+                    Toast.LENGTH_LONG).show();
+        } else{
+            db.child("users").child(authUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    User user = task.getResult().getValue(User.class);
                     user.setActive(false);
                     Map<String, Object> userValues = user.toMap();
-                    db.child("users").child(userAuth.getUid()).updateChildren(userValues);
+                    db.child("users").child(authUser.getUid()).updateChildren(userValues);
 
-                    Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
-                    startActivity(intent);
-
-
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "El usuario no se ha borrado correctamente",
-                            Toast.LENGTH_LONG).show();
+                    // cierra sesion y vuelve al login
+                    logout();
                 }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("TAG", "UserPost:onCancelled", databaseError.toException());
-            }
-        };
-        db.addValueEventListener(postListener);
+            });
+        }
     }
 
     private void logout(){
         auth.signOut();
+        /**
+         * Eliminar todas las actividades anteriores y empezar una nueva
+         * https://localcoder.org/android-kill-all-activities-on-logout
+         */
         Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void editProfile(){
@@ -420,13 +404,14 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void AddStep() {
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-y");
+        String today = dateFormat.format(new Date());
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
         final NumberPicker numberPicker = new NumberPicker(UserProfileActivity.this);
         numberPicker.setMaxValue(100000);
         numberPicker.setMinValue(0);
         builder.setTitle(R.string.add_steps);
-        builder.setMessage("Inserta el numero de pasos");
+        builder.setMessage(getResources().getString(R.string.add_steps_label) + " " + today);
         builder.setView(numberPicker);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -452,8 +437,10 @@ public class UserProfileActivity extends AppCompatActivity {
         builder.show();
 
     }
-    private void AddWeight() {
 
+    private void AddWeight() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-y");
+        String today = dateFormat.format(new Date());
         LinearLayout LL = new LinearLayout(UserProfileActivity.this);
 
         final NumberPicker integerWeight = new NumberPicker(UserProfileActivity.this);
@@ -489,10 +476,9 @@ public class UserProfileActivity extends AppCompatActivity {
         LL.addView(meassure,params);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
-        builder.setTitle("Select the number");
+        builder.setTitle(getResources().getString(R.string.add_weight));
+        builder.setMessage(getResources().getString(R.string.add_weight_label) + " " + today);
         builder.setView(LL);
-
-
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 

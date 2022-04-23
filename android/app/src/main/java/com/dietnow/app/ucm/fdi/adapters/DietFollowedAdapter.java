@@ -123,8 +123,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                 }else{
                     holder.llevasGR.setText(map_grams_counter.get(holder.aliment_barcode.getText().toString()).toString());
                 }
-
-
             }
 
             @Override
@@ -134,7 +132,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         });
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if(holder.checkBox.isChecked())
@@ -145,8 +142,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
 
             }
         });
-
-
     }
     public void guardar(){
         if(!alimentList_toInsert.isEmpty()) {
@@ -157,8 +152,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                         DateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
                         String strDate = dateFormat.format(new Date());
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child(data.first).setValue(Integer.parseInt(data.second.info_cantidad.getText().toString()));
-
-
                     }
 
                     @Override

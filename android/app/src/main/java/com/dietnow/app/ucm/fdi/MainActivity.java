@@ -81,19 +81,13 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     FirebaseUser currentUser = auth.getCurrentUser();
-                    ValueEventListener postListener = new ValueEventListener() {
+                    db.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            User user = dataSnapshot.child("users").child(currentUser.getUid()).getValue(User.class);
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            User user = task.getResult().getValue(User.class);
                             updateUI(user);
                         }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.w("TAG", "UserPost:onCancelled", databaseError.toException());
-                        }
-                    };
-                    db.addValueEventListener(postListener);
+                    });
                 } else{
                     updateUI(null);
                 }
@@ -112,9 +106,15 @@ public class MainActivity extends AppCompatActivity {
 
             progress.setVisibility(View.INVISIBLE);
 
-            Intent intent = new Intent(MainActivity.this, rol.equalsIgnoreCase("admin") ?
-                    AdminPageActivity.class : UserPageActivity.class);
+            Intent intent = new Intent(MainActivity.this, rol.equalsIgnoreCase("admin") ? AdminPageActivity.class : UserPageActivity.class);
             startActivity(intent);
+            /**
+             * finish() cierra la actividad pero hace el "esfuerzo" de quitarla de la memoria
+             * onDestroy() la elimina completamente (dibujo => https://developer.android.com/reference/android/app/Activity)
+             *
+             * A efectos prácticos es lo mismo
+             */
+            finish();
         } else{
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.login_failed),
