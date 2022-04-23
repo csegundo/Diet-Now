@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,12 +46,13 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     private DatabaseReference db;
     private FirebaseAuth auth;
     private String dietID;
-    private ArrayList<Pair<String,Integer>> alimentList_toInsert;
+    private ArrayList<Pair<String,ViewHolder>> alimentList_toInsert;
 
 
 
     public DietFollowedAdapter(ArrayList<Aliment> dataSet,String diet_id, Context context) {
         localDataSet = dataSet;
+        alimentList_toInsert =new ArrayList<>();
         allAliments =new ArrayList<>();
         allAliments.addAll(localDataSet);
         this.context=context;
@@ -100,15 +102,18 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String strDate_info[] = strDate.split(" ");
                     String db_date[] = ds.getKey().split(" ");
-
-                    if(strDate_info[0].equalsIgnoreCase(db_date[0])){
+                    if (strDate_info[0].equalsIgnoreCase(db_date[0])) {
                         System.out.println(ds.toString());
-                        Integer counter =  map_grams_counter.get(ds.child("id_alimento").getValue().toString());
-                        if(counter != null){ //ya esta ese id en el mapa
-                            Integer total = counter + Integer.parseInt(ds.child("cantidad").getValue().toString());
-                            map_grams_counter.put(ds.child("id_alimento").getValue().toString(),total);
-                        }else {
-                            map_grams_counter.put(ds.child("id_alimento").getValue().toString(), Integer.parseInt(ds.child("cantidad").getValue().toString()));
+                        for(DataSnapshot ds2 :ds.getChildren()) {
+
+
+                            Integer counter = map_grams_counter.get(ds2.getKey());
+                            if (counter != null) { //ya esta ese id en el mapa
+                                Integer total = counter + Integer.parseInt(ds.child(ds2.getKey()).getValue().toString());
+                                map_grams_counter.put(ds2.getKey(), total);
+                            } else {
+                                map_grams_counter.put(ds2.getKey(), Integer.parseInt(ds2.getValue().toString()));
+                            }
                         }
                     }
                 }
@@ -132,19 +137,26 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
 
             @Override
             public void onClick(View v) {
+                if(holder.checkBox.isChecked())
+                    alimentList_toInsert.add(new Pair<String,ViewHolder>(holder.aliment_barcode.getText().toString(),holder));
+                else{
+                    alimentList_toInsert.remove(new Pair<String,ViewHolder>(holder.aliment_barcode.getText().toString(),holder));
+                }
 
+            }
+        });
+
+
+    }
+    public void guardar(){
+        if(!alimentList_toInsert.isEmpty()) {
+            for (Pair<String, ViewHolder> data : alimentList_toInsert) {
                 db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         DateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
                         String strDate = dateFormat.format(new Date());
-
-                        Pair<String,Integer> p = new Pair<String,Integer>(holder.aliment_barcode.getText().toString(),Integer.parseInt(holder.info_cantidad.getText().toString()));
-
-
-                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("id_alimento").setValue(p.first);
-                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child("cantidad").setValue(p.second);
-
+                        db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child(data.first).setValue(Integer.parseInt(data.second.info_cantidad.getText().toString()));
 
 
                     }
@@ -154,16 +166,14 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
 
                     }
                 });
-
-
-
-
             }
-        });
 
-
+            alimentList_toInsert.clear();
+        }
+        else{
+            Toast.makeText(context, context.getResources().getString(R.string.alertSaveAliment), Toast.LENGTH_LONG).show();
+        }
     }
-
     @Override
     public int getItemCount() {
         return localDataSet.size();
@@ -190,7 +200,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         }
     }
 
-    public ArrayList<Pair<String,Integer>>list (){
+    public ArrayList<Pair<String,ViewHolder>>list (){
         return alimentList_toInsert;
     }
 }

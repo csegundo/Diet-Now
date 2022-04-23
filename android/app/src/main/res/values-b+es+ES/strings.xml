@@ -85,7 +85,7 @@
     <string name="create_diet_success">Dieta creada correctamente</string>
     <string name="add_manual_food">Añadir producto por código de barras</string>
     <string name="add_manual_food_byText">Añadir producto manualmente</string>
-
+    <string name="alertSaveAliment">Selecciona los alimentos que quieres guardar</string>
     <string name="add">Añadir</string>
     <string name="food_details">Información nutricional</string>
     <string name="profile_settings">Ajustes de perfil</string>

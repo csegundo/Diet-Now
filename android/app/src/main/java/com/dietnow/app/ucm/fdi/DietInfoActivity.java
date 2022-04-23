@@ -43,7 +43,7 @@ public class DietInfoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference db;
     private StorageReference storageRef;
-    private Button monday, tuesday, wednesday, thursday, friday, saturday, sunday, comment, AbandonDiet, like, dislike;
+    private Button monday, tuesday, wednesday, thursday, friday, saturday, sunday, comment, AbandonDiet, like, dislike,guardar;
     private CheckBox checkBox;
     private TextView aliment_id, kcal_info, diet_description, diet_title;
     private EditText info_cantidad;
@@ -76,6 +76,7 @@ public class DietInfoActivity extends AppCompatActivity {
         thursday     = findViewById(R.id.thursday_button);
         friday       = findViewById(R.id.friday_button);
         saturday     = findViewById(R.id.saturday_button);
+        guardar      = findViewById(R.id.GuardarAlimentoDietaBtn);
         sunday       = findViewById(R.id.sunday_button);
         comment      = findViewById(R.id.comment_diet);
         checkBox     = findViewById(R.id.id_checkBox);
@@ -147,6 +148,13 @@ public class DietInfoActivity extends AppCompatActivity {
                 break;
 
         }
+        guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dietFollowedAdapter.guardar();
+
+            }
+        });
     }
 
     private void getAliments(){
@@ -180,6 +188,7 @@ public class DietInfoActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void getDietInfo(){
