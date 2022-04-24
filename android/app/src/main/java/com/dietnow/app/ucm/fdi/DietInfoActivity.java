@@ -51,9 +51,10 @@ public class DietInfoActivity extends AppCompatActivity {
     private CheckBox checkBox;
     private TextView aliment_id, kcal_info, diet_description, diet_title;
     private EditText info_cantidad;
-    private String dietId; // ID de la dieta que está siguiendo
+    private String dietId, weekName; // ID de la dieta que está siguiendo
 
     private ArrayList<Aliment> alimentList;
+    private ArrayList<Button> listaBotones;
 
     private com.dietnow.app.ucm.fdi.adapters.DietFollowedAdapter dietFollowedAdapter;
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
@@ -72,6 +73,8 @@ public class DietInfoActivity extends AppCompatActivity {
 
         // Atributos de la vista
         alimentList  = new ArrayList<Aliment> ();
+        listaBotones  = new ArrayList<Button>();
+
         like         = findViewById(R.id.actualDietLike);
         dislike      = findViewById(R.id.actualDietDislike);
         monday       = findViewById(R.id.monday_button);
@@ -93,6 +96,15 @@ public class DietInfoActivity extends AppCompatActivity {
         RecyclerView  = findViewById(R.id.diet_followed_aliment);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        listaBotones.add(monday);
+        listaBotones.add(tuesday);
+        listaBotones.add(wednesday);
+        listaBotones.add(thursday);
+        listaBotones.add(friday);
+        listaBotones.add(saturday);
+        listaBotones.add(sunday);
+
+        
         getAliments();
         getDietInfo();
 
@@ -128,6 +140,120 @@ public class DietInfoActivity extends AppCompatActivity {
         LocalDate currentDate = LocalDate.now();
         DayOfWeek day = currentDate.getDayOfWeek();
         String weekName = day.name().toLowerCase(Locale.ROOT);
+        this.weekName = weekName;
+
+        colorButtons();
+
+        guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dietFollowedAdapter.guardar();
+            }
+        });
+        monday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colorButtons();
+               if(!weekName.equalsIgnoreCase("monday")){
+                   monday.setBackgroundColor(Color.DKGRAY);
+                   guardar.setVisibility(View.GONE);
+               }else{
+                   guardar.setVisibility(View.VISIBLE);
+                   getAliments();
+
+               }
+            }
+        });
+        tuesday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colorButtons();
+                if(!weekName.equalsIgnoreCase("tuesday")){
+                    tuesday.setBackgroundColor(Color.DKGRAY);
+                    guardar.setVisibility(View.GONE);
+                }else{
+                    guardar.setVisibility(View.VISIBLE);
+                    getAliments();
+                }
+            }
+        });
+        wednesday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colorButtons();
+                if(!weekName.equalsIgnoreCase("wednesday")){
+                    wednesday.setBackgroundColor(Color.DKGRAY);
+                    guardar.setVisibility(View.GONE);
+                }else{
+                    guardar.setVisibility(View.VISIBLE);
+                    getAliments();
+                }
+            }
+        });
+        thursday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colorButtons();
+                if(!weekName.equalsIgnoreCase("thursday")){
+                    thursday.setBackgroundColor(Color.DKGRAY);
+                    guardar.setVisibility(View.GONE);
+                }else{
+                    guardar.setVisibility(View.VISIBLE);
+                    getAliments();
+                }
+            }
+        });
+        friday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colorButtons();
+                if(!weekName.equalsIgnoreCase("friday")){
+                    friday.setBackgroundColor(Color.DKGRAY);
+                    guardar.setVisibility(View.GONE);
+                }else{
+                    guardar.setVisibility(View.VISIBLE);
+                    getAliments();
+                }
+            }
+        });
+        saturday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colorButtons();
+                if(!weekName.equalsIgnoreCase("saturday")){
+                    saturday.setBackgroundColor(Color.DKGRAY);
+                    guardar.setVisibility(View.GONE);
+                }else{
+                    guardar.setVisibility(View.VISIBLE);
+                    getAliments();
+                }
+
+            }
+        });
+        sunday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colorButtons();
+                if(!weekName.equalsIgnoreCase("sunday")){
+                    sunday.setBackgroundColor(Color.DKGRAY);
+                    guardar.setVisibility(View.GONE);
+                }else{
+                    guardar.setVisibility(View.VISIBLE);
+                    getAliments();
+                }
+
+
+            }
+        });
+
+    }
+
+
+    private void colorButtons(){
+        for(Button b : listaBotones){
+            b.setBackgroundColor(Color.MAGENTA);
+        }
+        // coloreo el del dia actual
         switch (weekName){
             case "monday":
                 monday.setBackgroundColor(Color.LTGRAY);
@@ -152,10 +278,20 @@ public class DietInfoActivity extends AppCompatActivity {
                 break;
 
         }
-        guardar.setOnClickListener(new View.OnClickListener() {
+
+    }
+
+    private void getDietFromOtherDay(){
+        db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                dietFollowedAdapter.guardar();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dietId= snapshot.getValue(String.class);
+
+                //db.child("diet_history").child(auth.getUid()).child(dietId).child()
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -174,9 +310,8 @@ public class DietInfoActivity extends AppCompatActivity {
                                 Aliment aliment = ds.getValue(Aliment.class);
                                 aliment.setId(ds.getKey());
                                 alimentList.add(aliment);
-
                             }
-                            dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId, DietInfoActivity.this);
+                            dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId,true, DietInfoActivity.this);
                             RecyclerView.setAdapter(dietFollowedAdapter);
                         }
                     }).addOnFailureListener(new OnFailureListener() {

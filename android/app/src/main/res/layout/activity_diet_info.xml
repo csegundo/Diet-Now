@@ -36,7 +36,7 @@
         android:id="@+id/diet_followed_aliment"
         android:layout_width="402dp"
         android:layout_height="270dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/GuardarAlimentoDietaBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
@@ -115,65 +115,50 @@
             android:text="@string/week_char_sun" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/actualDietDislike"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:text="@string/dislike"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="408dp"
+        android:layout_height="285dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943" />
+        app:layout_constraintTop_toBottomOf="@+id/diet_followed_aliment"
+        app:layout_constraintVertical_bias="0.0">
 
-    <Button
-        android:id="@+id/desuscribirBtn"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:text="@string/unsubscribe"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.818" />
+        <Button
+            android:id="@+id/GuardarAlimentoDietaBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Guardar" />
 
-    <Button
-        android:id="@+id/comment_diet"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/comment_diet"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.865"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.818" />
+        <Button
+            android:id="@+id/actualDietDislike"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/dislike" />
 
-    <Button
-        android:id="@+id/actualDietLike"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/like"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.858"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943" />
+        <Button
+            android:id="@+id/desuscribirBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/unsubscribe" />
 
-    <Button
-        android:id="@+id/GuardarAlimentoDietaBtn"
-        android:layout_width="125dp"
-        android:layout_height="60dp"
-        android:text="Guardar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71" />
+        <Button
+            android:id="@+id/comment_diet"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/comment_diet" />
+
+        <Button
+            android:id="@+id/actualDietLike"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/like" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

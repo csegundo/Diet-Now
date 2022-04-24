@@ -47,10 +47,11 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     private FirebaseAuth auth;
     private String dietID;
     private ArrayList<Pair<String,ViewHolder>> alimentList_toInsert;
+    private Boolean can_edit = false;
 
 
 
-    public DietFollowedAdapter(ArrayList<Aliment> dataSet,String diet_id, Context context) {
+    public DietFollowedAdapter(ArrayList<Aliment> dataSet,String diet_id,Boolean can_edit, Context context) {
         localDataSet = dataSet;
         alimentList_toInsert =new ArrayList<>();
         allAliments =new ArrayList<>();
@@ -59,6 +60,9 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         auth        = FirebaseAuth.getInstance();
         dietID = diet_id;
+        this.can_edit = can_edit;// para saber si solo es para visulizar los alimentos de otro dia o es para editar los alimentos del día actual
+        // TODO si queremos que no se vea el checkbox habróia que ocultarlo y habría que ocultar el boton de guardar de la vista general
+
     }
 
 
@@ -66,8 +70,14 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
     public DietFollowedAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.diet_followed_aliment_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.diet_followed_aliment_item, viewGroup, false);
+
+        //TODO
+        if(!can_edit){
+            //view.findViewById(R.layout.diet_followed_aliment_item).addChildrenForAccessibility(new ArrayList<>);
+        }else{
+
+        }
 
         return new DietFollowedAdapter.ViewHolder(view);
 

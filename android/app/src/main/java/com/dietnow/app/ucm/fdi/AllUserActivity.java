@@ -94,6 +94,7 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
             }
         });
         */
+
         bd.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
