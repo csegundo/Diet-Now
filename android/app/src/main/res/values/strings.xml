@@ -181,4 +181,6 @@
     <string name="add_weight_label">Añadir peso para el día</string>
     <string name="add_weight">Añadir peso</string>
     <string name="profile_updated_sucesfully">Perfil actualizado correctamente</string>
+    <string name="editComment">Actualizar</string>
+    <string name="comment_updated_succesfully">Comentario actualizado correctament</string>
 </resources>

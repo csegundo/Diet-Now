@@ -104,6 +104,8 @@ public class DietComments extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.created_comment_diet_successfully), Toast.LENGTH_SHORT).show();
+                getComments();
+                comment.setText("");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -141,6 +143,7 @@ public class DietComments extends AppCompatActivity {
         db.child("comments").child(actualDiet).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
+                commentList.clear();
                 for(DataSnapshot ds : task.getResult().getChildren()){
                     Comment comment = ds.getValue(Comment.class);
                     comment.setId(ds.getKey());
@@ -149,6 +152,7 @@ public class DietComments extends AppCompatActivity {
 
                 commentsAdapter = new CommentsAdapter(commentList,DietComments.this, actualDiet);
                 RecyclerView.setAdapter(commentsAdapter);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -82,5 +82,14 @@
         android:layout_marginTop="55dp"
          />
 
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="85dp"
+
+        android:background="?android:attr/listDivider"
+        android:foreground="@color/purple_700" />
+
 
 </androidx.cardview.widget.CardView>

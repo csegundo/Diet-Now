@@ -24,12 +24,12 @@
 
     <Button
         android:id="@+id/editComment"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="240dp"
         android:layout_marginTop="110dp"
-        android:layout_marginLeft="290dp"
-        android:drawableRight="@drawable/ic_edit"
-        android:text="@string/edit" />
+        android:drawableRight="@drawable/ic_baseline_cloud_upload_24"
+        android:text="@string/editComment" />
 
     <View
         android:id="@+id/divider"

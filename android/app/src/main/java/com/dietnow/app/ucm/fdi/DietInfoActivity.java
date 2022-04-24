@@ -354,6 +354,7 @@ public class DietInfoActivity extends AppCompatActivity {
     }
 
     private void getAliments(){
+        alimentList.clear();
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

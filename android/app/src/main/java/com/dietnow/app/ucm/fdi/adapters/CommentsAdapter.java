@@ -16,10 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dietnow.app.ucm.fdi.AdminPageActivity;
 import com.dietnow.app.ucm.fdi.DietComments;
 import com.dietnow.app.ucm.fdi.DietInfoActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
@@ -29,7 +31,9 @@ import com.dietnow.app.ucm.fdi.ViewDietActivity;
 import com.dietnow.app.ucm.fdi.model.comments.Comment;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -108,6 +112,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 db.child("comments").child(diet_id).child(localDataSet.get(position).getId())
                         .child("comment").setValue(holder.comment.getText().toString())
                         ;
+                Toast.makeText(context, context.getResources().getString(R.string.comment_updated_succesfully), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -115,7 +120,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 confirmAndDeleteComment(holder);
 
             }
@@ -129,7 +133,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 .setPositiveButton(R.string.delete_alert_yes_opt, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        db.child("comments").child(diet_id).child(holder.id.getText().toString()).removeValue();
+                        db.child("comments").child(diet_id).child(holder.id.getText().toString()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                /*
+                                allComments.remove(holder.getAdapterPosition());
+                                notifyItemRemoved(holder.getAdapterPosition());
+                                notifyItemRangeChanged(holder.getAdapterPosition(),allComments.size());
+                                notifyDataSetChanged();
+                                //notifyItemRangeRemoved(holder.getAdapterPosition(),allComments.size());
+                                holder.itemView.setVisibility(View.GONE);
+
+                                 */
+                            }
+                        });
                     }
                 })
                 .setNegativeButton(R.string.delete_alert_no_opt, new DialogInterface.OnClickListener(){

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="98dp">
+    android:layout_height="100dp">
 
     <TextView
         android:id="@+id/PDietId"
@@ -39,7 +39,7 @@
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_marginTop="95dp"
 
         android:background="?android:attr/listDivider"
@@ -61,8 +61,8 @@
         android:layout_height="20dp"
         android:layout_marginLeft="275dp"
         android:layout_marginTop="65dp"
-        android:textDirection="rtl"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textDirection="rtl" />
 
     <ImageView
         android:id="@+id/PlikeDiet"
@@ -73,15 +73,14 @@
         app:srcCompat="@drawable/ic_like_24" />
 
 
-
     <TextView
         android:id="@+id/pNVisitDiet"
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:layout_marginLeft="340dp"
         android:layout_marginTop="65dp"
-        android:textDirection="rtl"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textDirection="rtl" />
 
     <ImageView
         android:id="@+id/PvisitDiet"
