@@ -47,7 +47,7 @@ public class UserPageActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
 
-                        if(user.getDiet() == null){
+                        if(user.getDiet() == null || user.getDiet().isEmpty()){
                             Toast.makeText(getApplicationContext(), "Todavía no sigues ninguna dieta, consulta la lista de dietas publicadas.", Toast.LENGTH_LONG).show();
                         }else{
                             Intent intent = new Intent(UserPageActivity.this, DietInfoActivity.class);

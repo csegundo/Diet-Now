@@ -226,7 +226,14 @@ public class CreateDietActivity extends AppCompatActivity {
         // guardar la dieta
         toCreate.setId(autoId);
         toCreate.setUser(uId);
-        db.child("diets").child(autoId).setValue(toCreate);
+        db.child("diets").child(autoId).setValue(toCreate).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                finish();
+                Intent intent = new Intent(CreateDietActivity.this, MyDietsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

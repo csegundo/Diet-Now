@@ -14,6 +14,10 @@ public class Aliment {
     private boolean active;
     private double grams, kcal;
 
+
+    @Exclude
+    private double grams_consumed;
+
     public Aliment(String name, double grams, double kcal) {
         this.name = name;
         this.grams = grams;
@@ -32,6 +36,14 @@ public class Aliment {
         result.put("kcal", kcal);
 
         return result;
+    }
+
+    public double getGrams_consumed() {
+        return grams_consumed;
+    }
+
+    public void setGrams_consumed(double grams_consumed) {
+        this.grams_consumed = grams_consumed;
     }
 
 

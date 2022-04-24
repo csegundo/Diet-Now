@@ -72,12 +72,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.diet_followed_aliment_item, viewGroup, false);
 
-        //TODO
-        if(!can_edit){
-            //view.findViewById(R.layout.diet_followed_aliment_item).addChildrenForAccessibility(new ArrayList<>);
-        }else{
 
-        }
 
         return new DietFollowedAdapter.ViewHolder(view);
 
@@ -85,6 +80,10 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        if(!can_edit){
+            holder.checkBox.setVisibility(View.GONE);
+            holder.info_cantidad.setVisibility(View.GONE);
+        }
         holder.aliment_id.setText(localDataSet.get(position).getName());
         holder.kcal_info.setText(localDataSet.get(position).getKcal() + " kcal/100g");
         holder.info_cantidad.setText("0");
@@ -115,8 +114,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                     if (strDate_info[0].equalsIgnoreCase(db_date[0])) {
                         System.out.println(ds.toString());
                         for(DataSnapshot ds2 :ds.getChildren()) {
-
-
                             Integer counter = map_grams_counter.get(ds2.getKey());
                             if (counter != null) { //ya esta ese id en el mapa
                                 Integer total = counter + Integer.parseInt(ds.child(ds2.getKey()).getValue().toString());
@@ -170,7 +167,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                     }
                 });
             }
-
             alimentList_toInsert.clear();
         }
         else{

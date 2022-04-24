@@ -117,7 +117,7 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("OnFailureAllPublishedDiets: ","");
+                Log.d("OnFailureAllPublished: ","");
                 e.printStackTrace();
             }
         });

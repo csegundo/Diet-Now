@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,14 +34,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ObjectInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class DietInfoActivity extends AppCompatActivity {
@@ -51,7 +57,8 @@ public class DietInfoActivity extends AppCompatActivity {
     private CheckBox checkBox;
     private TextView aliment_id, kcal_info, diet_description, diet_title;
     private EditText info_cantidad;
-    private String dietId, weekName; // ID de la dieta que está siguiendo
+    private String dietId, dayName; // ID de la dieta que está siguiendo
+    private HashMap<String, Aliment> original_aliments;
 
     private ArrayList<Aliment> alimentList;
     private ArrayList<Button> listaBotones;
@@ -96,6 +103,8 @@ public class DietInfoActivity extends AppCompatActivity {
         RecyclerView  = findViewById(R.id.diet_followed_aliment);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        original_aliments = new HashMap<String, Aliment>();
+
         listaBotones.add(monday);
         listaBotones.add(tuesday);
         listaBotones.add(wednesday);
@@ -104,7 +113,7 @@ public class DietInfoActivity extends AppCompatActivity {
         listaBotones.add(saturday);
         listaBotones.add(sunday);
 
-        
+
         getAliments();
         getDietInfo();
 
@@ -139,8 +148,8 @@ public class DietInfoActivity extends AppCompatActivity {
 
         LocalDate currentDate = LocalDate.now();
         DayOfWeek day = currentDate.getDayOfWeek();
-        String weekName = day.name().toLowerCase(Locale.ROOT);
-        this.weekName = weekName;
+        String dayName = day.name().toLowerCase(Locale.ROOT);
+        this.dayName = dayName;
 
         colorButtons();
 
@@ -154,9 +163,10 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorButtons();
-               if(!weekName.equalsIgnoreCase("monday")){
+               if(!dayName.equalsIgnoreCase("monday")){
                    monday.setBackgroundColor(Color.DKGRAY);
                    guardar.setVisibility(View.GONE);
+                   getDietFromOtherDay(getDate(1).toString());
                }else{
                    guardar.setVisibility(View.VISIBLE);
                    getAliments();
@@ -168,9 +178,10 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorButtons();
-                if(!weekName.equalsIgnoreCase("tuesday")){
+                if(!dayName.equalsIgnoreCase("tuesday")){
                     tuesday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
+                    getDietFromOtherDay(getDate(2).toString());
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -181,9 +192,10 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorButtons();
-                if(!weekName.equalsIgnoreCase("wednesday")){
+                if(!dayName.equalsIgnoreCase("wednesday")){
                     wednesday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
+                    getDietFromOtherDay(getDate(3).toString());
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -194,9 +206,10 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorButtons();
-                if(!weekName.equalsIgnoreCase("thursday")){
+                if(!dayName.equalsIgnoreCase("thursday")){
                     thursday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
+                    getDietFromOtherDay(getDate(4).toString());
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -207,9 +220,10 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorButtons();
-                if(!weekName.equalsIgnoreCase("friday")){
+                if(!dayName.equalsIgnoreCase("friday")){
                     friday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
+                    getDietFromOtherDay(getDate(5).toString());
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -220,9 +234,10 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorButtons();
-                if(!weekName.equalsIgnoreCase("saturday")){
+                if(!dayName.equalsIgnoreCase("saturday")){
                     saturday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
+                    getDietFromOtherDay(getDate(6).toString());
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -234,15 +249,14 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorButtons();
-                if(!weekName.equalsIgnoreCase("sunday")){
+                if(!dayName.equalsIgnoreCase("sunday")){
                     sunday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
+                    getDietFromOtherDay(getDate(7).toString());
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
                 }
-
-
             }
         });
 
@@ -254,7 +268,7 @@ public class DietInfoActivity extends AppCompatActivity {
             b.setBackgroundColor(Color.MAGENTA);
         }
         // coloreo el del dia actual
-        switch (weekName){
+        switch (dayName){
             case "monday":
                 monday.setBackgroundColor(Color.LTGRAY);
                 break;
@@ -281,13 +295,55 @@ public class DietInfoActivity extends AppCompatActivity {
 
     }
 
-    private void getDietFromOtherDay(){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private LocalDate getDate (int wanted_day_position){
+        LocalDate currentDate = LocalDate.now();
+        LocalDate wanted_date;
+
+        int current_day_position = currentDate.getDayOfWeek().getValue();
+
+        if(current_day_position > wanted_day_position){
+            wanted_date = currentDate.minusDays(current_day_position - wanted_day_position);
+        }else{
+            wanted_date = currentDate.plusDays(wanted_day_position - current_day_position);
+        }
+
+        return wanted_date;
+
+    }
+
+
+    private void getDietFromOtherDay(String wanted_day){
         db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dietId= snapshot.getValue(String.class);
 
-                //db.child("diet_history").child(auth.getUid()).child(dietId).child()
+                db.child("diet_history").child(auth.getUid()).child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        Aliment aliment ;
+                        HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>(original_aliments);// para no alterar el otro mapa original que tiene los alimentos por defecto de la dieta
+                        for (DataSnapshot ds: task.getResult().getChildren()){
+                            if(wanted_day.equalsIgnoreCase(ds.getKey().toString().split(" ")[0])){
+                                for(DataSnapshot ds2 :ds.getChildren()){
+                                    aliment = local_copy.get(ds2.getKey().toString());
+                                    aliment.setGrams_consumed(0);
+                                    aliment.setGrams_consumed(aliment.getGrams_consumed()+ds2.getValue(double.class));
+                                    local_copy.put( ds2.getKey().toString(),aliment);
+                                }
+                            }
+                        }
+
+                        ArrayList<Aliment> local_array = new ArrayList<>();
+                        for (Aliment a :local_copy.values()){ // para pasarle al adapter una lista con los alimentos que ha consumido ese dia, convierte el hasmap a un array list
+                            local_array.add(a);
+                        }
+                        dietFollowedAdapter = new DietFollowedAdapter(local_array,dietId,false, DietInfoActivity.this);
+                        RecyclerView.setAdapter(dietFollowedAdapter);
+
+                    }
+                });
             }
 
             @Override
@@ -310,7 +366,9 @@ public class DietInfoActivity extends AppCompatActivity {
                                 Aliment aliment = ds.getValue(Aliment.class);
                                 aliment.setId(ds.getKey());
                                 alimentList.add(aliment);
+                                original_aliments.put(ds.getKey(),aliment);
                             }
+
                             dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId,true, DietInfoActivity.this);
                             RecyclerView.setAdapter(dietFollowedAdapter);
                         }

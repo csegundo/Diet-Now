@@ -69,6 +69,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
             public void onClick(View v) {
                 Intent intent = new Intent(MyDietsActivity.this, CreateDietActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         //------------------Fin boton new------------------------

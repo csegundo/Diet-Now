@@ -1,5 +1,6 @@
 package com.dietnow.app.ucm.fdi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.utils.GetProductInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +36,7 @@ public class AddManualFood extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference db;
     private StorageReference storageRef;
+    private boolean diet_added,aliment_added;
 
 
 
@@ -48,6 +52,8 @@ public class AddManualFood extends AppCompatActivity {
         name = findViewById(R.id.addName);
         kcal = findViewById(R.id.addKcal);
         grams = findViewById(R.id.addGrams);
+        diet_added = false;
+        aliment_added = false;
         actualDiet = getIntent().getExtras().getString("did");
 
         auth        = FirebaseAuth.getInstance();
@@ -85,16 +91,42 @@ public class AddManualFood extends AppCompatActivity {
                         pname = hexString.toString();
 
                         Aliment aliment = new Aliment(name.getText().toString(), Double.parseDouble(grams.getText().toString()), Double.parseDouble(kcal.getText().toString()));
-                        db.child("aliments").child(pname).setValue(aliment);
-                        db.child("diets").child(actualDiet).child("aliments").child(pname).setValue(aliment);
+
+                        db.child("diets").child(actualDiet).child("aliments").child(pname).setValue(aliment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                diet_added = true;
+                                update_and_refresh();
+                            }
+                        });
+
+                        db.child("aliments").child(pname).setValue(aliment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                aliment_added = true;
+                                update_and_refresh();
+
+                            }
+                        });
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
+
         });
 
+
+    }
+
+    private void update_and_refresh(){
+        if(diet_added && aliment_added){
+            finish();
+            Intent intent = new Intent(AddManualFood.this, CreateDietActivity.class);
+            intent.putExtra("did",actualDiet);
+            startActivity(intent);
+        }
 
     }
 }
