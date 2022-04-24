@@ -15,6 +15,9 @@ import com.dietnow.app.ucm.fdi.adapters.AllUsersAdapter;
 import com.dietnow.app.ucm.fdi.adapters.MyDietsAdapter;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -71,6 +74,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
         //------------------Fin boton new------------------------
     }
     private void getDiet(){
+        /*
         bd.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -94,6 +98,34 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
 
             }
         });
+
+         */
+        bd.child("diets").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot ds : task.getResult().getChildren()) {
+                    String titulo = ds.child("title").getValue().toString();
+                    Boolean active = ds.child("active").getValue(Boolean.class);
+                    String descripcion = ds.child("description").getValue().toString();
+                    String user = ds.child("user").getValue().toString();
+                    Diet us = new Diet(descripcion,titulo);
+                    us.setId(ds.child("id").getValue().toString());
+                    if(active && user.equals(CurrentUser)) {
+                        dietList.add(us);
+                    }
+                }
+                MyDietsAdapter = new MyDietsAdapter(dietList,MyDietsActivity.this);
+                RecyclerView.setAdapter(MyDietsAdapter);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureMyDietsAc: ","");
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @Override

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,10 +88,22 @@ public class MainActivity extends AppCompatActivity {
                             User user = task.getResult().getValue(User.class);
                             updateUI(user);
                         }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("OnFailureMainActivity: ","");
+                            e.printStackTrace();
+                        }
                     });
                 } else{
                     updateUI(null);
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureLogin: ","");
+                e.printStackTrace();
             }
         });
     }

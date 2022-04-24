@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -22,6 +23,9 @@ import android.widget.TextView;
 
 import com.dietnow.app.ucm.fdi.adapters.AllUsersAdapter;
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -67,6 +71,7 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
     }
 
     private void getUser(){
+        /*
         bd.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -86,6 +91,29 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+        */
+        bd.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot ds : task.getResult().getChildren()) {
+                    String email = ds.child("email").getValue().toString();
+                    Boolean active = ds.child("active").getValue(Boolean.class);
+                    String name = ds.child("name").getValue().toString();
+                    User us = new User(email, name);
+                    if(active == true) {
+                        userList.add(us);
+                    }
+                }
+                AllUsersAdapter = new AllUsersAdapter(userList,AllUserActivity.this);
+                RecyclerView.setAdapter(AllUsersAdapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureAllUser: ","");
+                e.printStackTrace();
             }
         });
     }

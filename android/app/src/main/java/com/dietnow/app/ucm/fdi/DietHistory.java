@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.dietnow.app.ucm.fdi.adapters.PublishedDietAdapter;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -107,6 +110,7 @@ public class DietHistory extends AppCompatActivity {
 
     private void getDiet(){
         // ver que dieta es la actual para no meterla en la lista de dietas anteriores
+        /*
         bd.child("users").child(auth.getUid()).child("diet").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -133,6 +137,41 @@ public class DietHistory extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
+        });
+        */
+        bd.child("users").child(auth.getUid()).child("diet").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                dietId = task.getResult().getValue(String.class);
+                bd.child("diet_history").child(auth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for (DataSnapshot ds : task.getResult().getChildren()) {
+                            for (Diet d : Dietas) {
+                                if (d.getId().equals(ds.getKey()) && !dietId.equals(d.getId())) {
+                                    dietList.add(d);
+                                }
+                            }
+                        }
+
+                        historyDietAdapter = new PublishedDietAdapter(dietList, dietId, DietHistory.this);
+                        RecyclerView.setAdapter(historyDietAdapter);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("OnFailureDietHistory: ","");
+                        e.printStackTrace();
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureDietHistory: ","");
+                e.printStackTrace();
+            }
         });
     }
 

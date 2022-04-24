@@ -1,6 +1,7 @@
 package com.dietnow.app.ucm.fdi;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 import com.dietnow.app.ucm.fdi.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,6 +55,7 @@ public class CurrentDietGraphic extends AppCompatActivity {
     private void generateGraphicChart(){
         graphic      = findViewById(R.id.dietchart);
         //APIlib.getInstance().setActiveAnyChartView(steps);
+        /*
         db.child("diet_history").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -112,6 +116,69 @@ public class CurrentDietGraphic extends AppCompatActivity {
 
             }
         });
+        */
+        db.child("diet_history").child(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                Cartesian cartesian = AnyChart.line();
+                cartesian.animation(true);
+
+                cartesian.crosshair().enabled(true);
+                cartesian.crosshair()
+                        .yLabel(true)
+                        // TODO ystroke
+                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+                cartesian.title("Mi grafica");
+
+                cartesian.yAxis(0).title("Numero de calorias");
+                cartesian.xAxis(0).title("Dia");
+                cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+
+                List<DataEntry> seriesData = new ArrayList<>();
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+
+
+                    //String pasos = ds.getValue().toString();
+
+                    //String fecha = ds.getKey();
+                    //seriesData.add(new UserProfileActivity.CustomDataEntry(fecha, Integer.valueOf(pasos)));
+                    //seriesData.add(new CustomDataEntry(fecha, Integer.valueOf(pasos)));
+                }
+
+                Set set = Set.instantiate();
+                set.data(seriesData);
+                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+
+                Line series1 = cartesian.line(series1Mapping);
+                series1.name("Progreso");
+                series1.hovered().markers().enabled(true);
+                series1.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series1.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
+
+                cartesian.legend().enabled(true);
+                cartesian.legend().fontSize(13d);
+                cartesian.legend().padding(0d, 0d, 10d, 0d);
+
+                //steps.setChart(cartesian);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureCrrntGraph: ","");
+                e.printStackTrace();
+            }
+        });
+
     }
 
 

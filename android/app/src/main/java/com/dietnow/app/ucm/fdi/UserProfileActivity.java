@@ -134,6 +134,12 @@ public class UserProfileActivity extends AppCompatActivity {
                     setProfileImage();
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureUserProfile: ","");
+                e.printStackTrace();
+            }
         });
 
         // Cambiar la imagen del usuario: gallery/docs
@@ -258,6 +264,34 @@ public class UserProfileActivity extends AppCompatActivity {
     private void DietHistory(){
         Intent intent = new Intent(UserProfileActivity.this, DietHistory.class);
         ArrayList<Diet> array = new ArrayList<>();
+        db.child("diets").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot ds2 : task.getResult().getChildren()) {
+                    String titulo = ds2.child("title").getValue().toString();
+                    HashMap<String, Boolean> visit = ds2.child("visits").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
+                    HashMap<String, Boolean> rating = ds2.child("rating").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
+                    Boolean active = ds2.child("active").getValue(Boolean.class);
+                    String descripcion = ds2.child("description").getValue().toString();
+                    boolean published = ds2.child("published").getValue(Boolean.class);
+                    String id = ds2.getKey();
+                    Diet us = new Diet(descripcion, titulo, visit, rating);
+                    us.setId(ds2.child("id").getValue().toString());
+                    array.add(us);
+                }
+
+                intent.putExtra("Dietas", array);
+                startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureUserProfile: ","");
+                e.printStackTrace();
+            }
+        });
+
+        /*
         db.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -283,6 +317,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
+
+         */
     }
 
     @Override
@@ -507,6 +543,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private void generateStepsChart(){
         steps      = findViewById(R.id.dietchart);
         //APIlib.getInstance().setActiveAnyChartView(steps);
+        /*
         db.child("pasos").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -564,11 +601,74 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
+
+         */
+
+        db.child("pasos").child(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Cartesian cartesian = AnyChart.line();
+                cartesian.animation(true);
+
+                cartesian.crosshair().enabled(true);
+                cartesian.crosshair()
+                        .yLabel(true)
+                        // TODO ystroke
+                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+                cartesian.title("Mis pasos");
+
+                cartesian.yAxis(0).title("Numero de pasos");
+                cartesian.xAxis(0).title("Dia");
+                cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+
+                List<DataEntry> seriesData = new ArrayList<>();
+
+                for(DataSnapshot ds : task.getResult().getChildren()){
+                    String pasos = ds.getValue().toString();
+
+                    String fecha = ds.getKey();
+                    seriesData.add(new CustomDataEntry(fecha, Integer.valueOf(pasos)));
+                }
+
+                Set set = Set.instantiate();
+                set.data(seriesData);
+                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+
+                Line series1 = cartesian.line(series1Mapping);
+                series1.name("Progreso");
+                series1.hovered().markers().enabled(true);
+                series1.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series1.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
+
+                cartesian.legend().enabled(true);
+                cartesian.legend().fontSize(13d);
+                cartesian.legend().padding(0d, 0d, 10d, 0d);
+
+                steps.setChart(cartesian);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureUserProfile: ","");
+                e.printStackTrace();
+            }
+        });
+
     }
 
     private void generateWeightsChart(){
         weights    = findViewById(R.id.weightsChart);
 
+        /*
         db.child("weights").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -624,6 +724,67 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+         */
+
+        db.child("weights").child(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Cartesian cartesianWeight = AnyChart.line();
+                cartesianWeight.animation(true);
+
+
+                cartesianWeight.crosshair().enabled(true);
+                cartesianWeight.crosshair()
+                        .yLabel(true)
+                        // TODO ystroke
+                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+                cartesianWeight.tooltip().positionMode(TooltipPositionMode.POINT);
+
+                cartesianWeight.title("Mis pesos");
+
+                cartesianWeight.yAxis(0).title("Peso en kg");
+                cartesianWeight.xAxis(0).title("Dia");
+                cartesianWeight.xAxis(0).labels().padding(2d, 2d, 2d, 2d);
+
+                List<DataEntry> weightData = new ArrayList<>();
+
+                for(DataSnapshot ds : task.getResult().getChildren()){
+                    String peso = ds.getValue().toString();
+                    String fecha = ds.getKey();
+                    weightData.add(new CustomDataEntry(fecha, Double.parseDouble(peso)));
+                }
+
+                Set set = Set.instantiate();
+                set.data(weightData);
+                Mapping series = set.mapAs("{ x: 'x', value: 'value' }");
+
+                Line series1 = cartesianWeight.line(series);
+                series1.name("Progreso");
+                series1.hovered().markers().enabled(true);
+                series1.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series1.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
+
+                cartesianWeight.legend().enabled(true);
+                cartesianWeight.legend().fontSize(13d);
+                cartesianWeight.legend().padding(0d, 0d, 10d, 0d);
+
+                weights.setChart(cartesianWeight);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureUserProfileW: ","");
+                e.printStackTrace();
             }
         });
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,6 +20,9 @@ import com.dietnow.app.ucm.fdi.adapters.DietFollowedAdapter;
 import com.dietnow.app.ucm.fdi.adapters.MyDietsAdapter;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -162,10 +166,11 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                     dietId=snapshot.getValue(String.class);
-                    db.child("diets").child(snapshot.getValue().toString()).child("aliments").addValueEventListener(new ValueEventListener() {
+
+                    db.child("diets").child(snapshot.getValue().toString()).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot ds : snapshot.getChildren()) {
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            for (DataSnapshot ds : task.getResult().getChildren()) {
                                 Aliment aliment = ds.getValue(Aliment.class);
                                 aliment.setId(ds.getKey());
                                 alimentList.add(aliment);
@@ -174,10 +179,11 @@ public class DietInfoActivity extends AppCompatActivity {
                             dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId, DietInfoActivity.this);
                             RecyclerView.setAdapter(dietFollowedAdapter);
                         }
-
+                    }).addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("OnFailureDietInfo: ","");
+                            e.printStackTrace();
                         }
                     });
                 //}

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import com.dietnow.app.ucm.fdi.model.comments.Comment;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -103,11 +105,18 @@ public class DietComments extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.created_comment_diet_successfully), Toast.LENGTH_SHORT).show();
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureDietComments: ","");
+                e.printStackTrace();
+            }
         });
     }
 
 
     private void getComments(){
+        /*
         db.child("comments").child(actualDiet).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -125,6 +134,27 @@ public class DietComments extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+         */
+        db.child("comments").child(actualDiet).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for(DataSnapshot ds : task.getResult().getChildren()){
+                    Comment comment = ds.getValue(Comment.class);
+                    comment.setId(ds.getKey());
+                    commentList.add(comment);
+                }
+
+                commentsAdapter = new CommentsAdapter(commentList,DietComments.this, actualDiet);
+                RecyclerView.setAdapter(commentsAdapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureDietComments: ","");
+                e.printStackTrace();
             }
         });
     }

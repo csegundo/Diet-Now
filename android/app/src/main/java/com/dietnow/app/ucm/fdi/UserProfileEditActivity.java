@@ -184,6 +184,12 @@ public class UserProfileEditActivity extends AppCompatActivity {
                     setProfileImage();
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureUserProfile: ","");
+                e.printStackTrace();
+            }
         });
 
         // Guardar los campos

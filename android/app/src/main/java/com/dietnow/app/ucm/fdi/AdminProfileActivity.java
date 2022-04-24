@@ -104,6 +104,12 @@ public class AdminProfileActivity extends AppCompatActivity {
                 age.setText(user.getAge() + " " + age.getText().toString());
                 setAdminProfileImage();
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureAdminProfile: ","");
+                e.printStackTrace();
+            }
         });
 
         // Cambiar la imagen del usuario: gallery/docs
@@ -268,6 +274,12 @@ public class AdminProfileActivity extends AppCompatActivity {
 
                     // cierra sesion y vuelve al login
                     logout();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureAdminProfile: ","");
+                    e.printStackTrace();
                 }
             });
         }

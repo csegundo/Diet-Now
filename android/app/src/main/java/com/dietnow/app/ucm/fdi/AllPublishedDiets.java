@@ -16,6 +16,9 @@ import com.dietnow.app.ucm.fdi.adapters.MyDietsAdapter;
 import com.dietnow.app.ucm.fdi.adapters.PublishedDietAdapter;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.model.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -62,6 +65,7 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
 
     }
     private void getDiet(){
+        /*
         bd.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -88,6 +92,36 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
 
             }
         });
+        */
+
+        bd.child("diets").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot ds : task.getResult().getChildren()) {
+                    String titulo = ds.child("title").getValue().toString();
+
+                    HashMap<String, Boolean> visit = ds.child("visits").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
+                    HashMap<String, Boolean> rating = ds.child("rating").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
+                    Boolean active = ds.child("active").getValue(Boolean.class);
+                    String descripcion = ds.child("description").getValue().toString();
+                    boolean published = ds.child("published").getValue(Boolean.class);
+                    Diet us = new Diet(descripcion, titulo, visit, rating);
+                    us.setId(ds.child("id").getValue().toString());
+                    if(active && published) {
+                        dietList.add(us);
+                    }
+                }
+                PublishedDietAdapter = new PublishedDietAdapter(dietList,"",AllPublishedDiets.this);
+                RecyclerView.setAdapter(PublishedDietAdapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureAllPublishedDiets: ","");
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @Override

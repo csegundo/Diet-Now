@@ -318,10 +318,10 @@ public class ViewDietActivity extends AppCompatActivity {
     }
 
     private void getAliment(){
-        db.child("diets").child(actualDiet).child("aliments").addValueEventListener(new ValueEventListener() {
+        db.child("diets").child(actualDiet).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for(DataSnapshot ds : task.getResult().getChildren()){
                     Aliment aliment = ds.getValue(Aliment.class);
                     aliment.setId(ds.getKey());
                     if(aliment.isActive() ){
@@ -332,12 +332,15 @@ public class ViewDietActivity extends AppCompatActivity {
                 alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
                 RecyclerView.setAdapter(alimentsAdapter);
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureViewDiet: ","");
+                e.printStackTrace();
 
             }
         });
+
     }
 
     private void getDocuments(){

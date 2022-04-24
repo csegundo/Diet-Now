@@ -166,7 +166,14 @@ public class CreateDietActivity extends AppCompatActivity {
                     description.setText(actual.getDescription());
                     uDietId.setText(actual.getUser());
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureCreateDiet: ","");
+                    e.printStackTrace();
+                }
             });
+            /*
             db.child("diets").child(dietId).child("aliments").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -184,6 +191,27 @@ public class CreateDietActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
+                }
+            });
+            */
+            db.child("diets").child(dietId).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    for(DataSnapshot ds : task.getResult().getChildren()){
+                        Aliment aliment = ds.getValue(Aliment.class);
+                        aliment.setId(ds.getKey());
+                        if(aliment.isActive() && !alimentList.contains(ds.getKey())){
+                            alimentList.add(aliment);
+                        }
+                    }
+                    AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
+                    RecyclerView.setAdapter(AlimentsAdapter);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureCreateDiet: ","");
+                    e.printStackTrace();
                 }
             });
         }
