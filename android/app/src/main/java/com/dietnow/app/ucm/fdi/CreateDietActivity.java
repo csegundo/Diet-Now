@@ -116,7 +116,6 @@ public class CreateDietActivity extends AppCompatActivity {
             addFood.setVisibility(View.GONE);
             alimentsLabel.setVisibility(View.GONE);
             DocsRecyclerView.setVisibility(View.GONE);
-
         } else{
             upload.setVisibility(View.VISIBLE);
             DocsRecyclerView.setVisibility(View.VISIBLE);
@@ -207,6 +206,7 @@ public class CreateDietActivity extends AppCompatActivity {
             db.child("diets").child(dietId).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    alimentList.clear();
                     for(DataSnapshot ds : task.getResult().getChildren()){
                         Aliment aliment = ds.getValue(Aliment.class);
                         aliment.setId(ds.getKey());
@@ -277,19 +277,25 @@ public class CreateDietActivity extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         String autoId = dietId != null ? dietId : db.child("diets").push().getKey();
         String uId = dietId == null ? currentUser.getUid() : uDietId.getText().toString();
-
-        // guardar la dieta
         toCreate.setId(autoId);
         toCreate.setUser(uId);
-        db.child("diets").child(autoId).setValue(toCreate).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                finish();
-                Intent intent = new Intent(CreateDietActivity.this, MyDietsActivity.class);
-                startActivity(intent);
-            }
-        });
 
+        // crear dieta
+        if(actualDiet == null){
+            db.child("diets").child(autoId).setValue(toCreate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    finish();
+                    Intent intent = new Intent(CreateDietActivity.this, MyDietsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else{
+            // editar dieta
+            progress.setVisibility(View.GONE);
+            db.child("diets").child(autoId).child("title").setValue(title.getText().toString());
+            db.child("diets").child(autoId).child("description").setValue(description.getText().toString());
+        }
     }
 
     private void updateUI(Boolean success){

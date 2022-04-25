@@ -171,8 +171,6 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
         /**
-         * Trigger por si un admin edita el perfil del usuario
-         *
          * Se ejecuta el onDataChange():
          *      cuando se entra a la vista
          *      cuando un admin edita el perfil del usuario logeado

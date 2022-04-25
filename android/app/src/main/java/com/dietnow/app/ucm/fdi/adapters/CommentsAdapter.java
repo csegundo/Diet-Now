@@ -143,7 +143,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                                 notifyDataSetChanged();
                                 //notifyItemRangeRemoved(holder.getAdapterPosition(),allComments.size());
                                 holder.itemView.setVisibility(View.GONE);
-
                                  */
                             }
                         });

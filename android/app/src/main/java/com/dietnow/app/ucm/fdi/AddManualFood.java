@@ -38,8 +38,6 @@ public class AddManualFood extends AppCompatActivity {
     private StorageReference storageRef;
     private boolean diet_added,aliment_added;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +103,6 @@ public class AddManualFood extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 aliment_added = true;
                                 update_and_refresh();
-
                             }
                         });
 
@@ -117,14 +114,13 @@ public class AddManualFood extends AppCompatActivity {
 
         });
 
-
     }
 
     private void update_and_refresh(){
         if(diet_added && aliment_added){
             finish();
             Intent intent = new Intent(AddManualFood.this, CreateDietActivity.class);
-            intent.putExtra("did",actualDiet);
+            intent.putExtra("did", actualDiet);
             startActivity(intent);
         }
 

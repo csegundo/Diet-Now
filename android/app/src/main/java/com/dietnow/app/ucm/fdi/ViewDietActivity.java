@@ -294,6 +294,8 @@ public class ViewDietActivity extends AppCompatActivity {
             status.setText(R.string.unpublished_diet);
             status.setTextColor(Color.parseColor("#DC1414"));
         }
+
+        Toast.makeText(getApplicationContext(), getResources().getString(publish ? R.string.published_success : R.string.unpublished_success), Toast.LENGTH_SHORT).show();
     }
 
     private void showDeleteModalAndConfirm(String dietId){

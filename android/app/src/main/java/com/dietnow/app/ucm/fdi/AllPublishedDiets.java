@@ -65,10 +65,10 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
 
     }
     private void getDiet(){
-        /*
         bd.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dietList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String titulo = ds.child("title").getValue().toString();
 
@@ -89,11 +89,11 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("OnFailureAllPublished: ",error.toString());
             }
         });
-        */
 
+        /*
         bd.child("diets").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -121,7 +121,7 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
                 e.printStackTrace();
             }
         });
-
+        */
     }
 
     @Override

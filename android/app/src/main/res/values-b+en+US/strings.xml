@@ -185,4 +185,6 @@
     <string name="comments">Comments</string>
     <string name="login_failed_inactive">User is deleted</string>
     <string name="active">Active</string>
+    <string name="unpublished_success">Unpublished diet</string>
+    <string name="published_success">Published diet</string>
 </resources>

@@ -108,14 +108,6 @@ public class DietComments extends AppCompatActivity {
         Comment c = new Comment(auth.getUid(), comment.getText().toString(), created);
         c.setId(commentId);
 
-        /*
-        db.child("comments").child(actualDiet).child(commentId).setValue(c).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.created_comment_diet_successfully), Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
         db.child("comments").child(actualDiet).child(commentId).setValue(c).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -134,15 +126,14 @@ public class DietComments extends AppCompatActivity {
 
 
     private void getComments(){
-        /*
         db.child("comments").child(actualDiet).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                commentList.clear();
                 for(DataSnapshot ds : snapshot.getChildren()){
                     Comment comment = ds.getValue(Comment.class);
                     comment.setId(ds.getKey());
                     commentList.add(comment);
-                    //System.out.println(comment);
                 }
 
                 commentsAdapter = new CommentsAdapter(commentList,DietComments.this, actualDiet);
@@ -151,11 +142,10 @@ public class DietComments extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("OnCancelDietComments: ",error.toString());
             }
         });
-
-         */
+        /*
         db.child("comments").child(actualDiet).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -177,5 +167,6 @@ public class DietComments extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+        */
     }
 }

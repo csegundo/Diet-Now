@@ -38,6 +38,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
     private ArrayList<Diet> dietList;
     private FloatingActionButton newDietBtn;
     private String CurrentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //----------------Variables-------------------
@@ -75,10 +76,10 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
         //------------------Fin boton new------------------------
     }
     private void getDiet(){
-        /*
         bd.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dietList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String titulo = ds.child("title").getValue().toString();
                     Boolean active = ds.child("active").getValue(Boolean.class);
@@ -96,11 +97,11 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("OnFailureMyDietsAc: ", error.toString());
             }
         });
 
-         */
+        /*
         bd.child("diets").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -126,7 +127,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
                 e.printStackTrace();
             }
         });
-
+         */
     }
 
     @Override
