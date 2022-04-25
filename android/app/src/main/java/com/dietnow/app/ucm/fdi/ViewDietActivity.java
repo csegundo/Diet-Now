@@ -356,7 +356,7 @@ public class ViewDietActivity extends AppCompatActivity {
                     Pair<String, String> doc = new Pair<>(item.getName(), docUrl);
                     docList.add(doc);
                 }
-                docsAdapter = new DietDocsAdapter(docList, ViewDietActivity.this, actualDiet);
+                docsAdapter = new DietDocsAdapter(docList, ViewDietActivity.this, actualDiet, false);
                 docTable.setAdapter(docsAdapter);
             }
         }).addOnFailureListener(new OnFailureListener() {

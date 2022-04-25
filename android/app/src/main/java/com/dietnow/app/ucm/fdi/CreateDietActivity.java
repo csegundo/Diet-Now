@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.dietnow.app.ucm.fdi.adapters.AlimentsAdapter;
 import com.dietnow.app.ucm.fdi.adapters.AllUsersAdapter;
+import com.dietnow.app.ucm.fdi.adapters.DietDocsAdapter;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.model.diet.Diet;
 import com.dietnow.app.ucm.fdi.model.user.User;
@@ -41,6 +43,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -71,7 +74,10 @@ public class CreateDietActivity extends AppCompatActivity {
     //adapters
     private AlimentsAdapter AlimentsAdapter;
     private RecyclerView RecyclerView;
+    private RecyclerView DocsRecyclerView;
     private ArrayList<Aliment> alimentList;
+    private ArrayList<Pair<String, String>> docList;
+    private DietDocsAdapter docsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,17 +105,22 @@ public class CreateDietActivity extends AppCompatActivity {
         addFood     = findViewById(R.id.addFood);
         alimentsLabel = findViewById(R.id.dietAlimentsLabel);
         RecyclerView    = findViewById(R.id.AllAlimentsRecycler);
+        DocsRecyclerView    = findViewById(R.id.AllDocsRecycler);
         upload      = findViewById(R.id.btnUploadDoc);
         uDietId     = findViewById(R.id.uDietId);
 
+        docList = new ArrayList<Pair<String, String>>();
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DocsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if(actualDiet == null){
             addFood.setVisibility(View.GONE);
             alimentsLabel.setVisibility(View.GONE);
+            DocsRecyclerView.setVisibility(View.GONE);
 
         } else{
             upload.setVisibility(View.VISIBLE);
+            DocsRecyclerView.setVisibility(View.VISIBLE);
             docsRef = storageRef.child("diets").child(actualDiet); // referencia exclusivamente para docs de dietas (nivel mas bajo)
         }
         isEditOrCreateDiet(actualDiet);
@@ -214,6 +225,51 @@ public class CreateDietActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             });
+
+            storageRef.child("diets/" + this.actualDiet).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                @Override
+                public void onSuccess(ListResult listResult) {
+                    for (StorageReference item : listResult.getItems()) {
+                        String docUrl = item.toString().replace("gs://", "");
+                        docUrl = "https://firebasestorage.googleapis.com/v0/b/" + item.getBucket();
+                        docUrl += "/o/diets%2F" + actualDiet + "%2F" + item.getName(); // la ruta [/diets/<id>/<name>.pdf] encodea las '/' == '%2F'
+                        docUrl += "?alt=media"; // añadir este parametro para que se visualice el PDF
+                        // si se necesita permisos para leer (en nuestras reglas no es el caso) habria que poner otro parametro "token"
+                        Pair<String, String> doc = new Pair<>(item.getName(), docUrl);
+                        docList.add(doc);
+                    }
+                    docsAdapter = new DietDocsAdapter(docList, CreateDietActivity.this, actualDiet, true);
+                    DocsRecyclerView.setAdapter(docsAdapter);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureListDocs: ","");
+                    e.printStackTrace();
+                }
+            });
+
+            db.child("diets").child(dietId).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    for(DataSnapshot ds : task.getResult().getChildren()){
+                        Aliment aliment = ds.getValue(Aliment.class);
+                        aliment.setId(ds.getKey());
+                        if(aliment.isActive() && !alimentList.contains(ds.getKey())){
+                            alimentList.add(aliment);
+                        }
+                    }
+                    AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
+                    RecyclerView.setAdapter(AlimentsAdapter);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureCreateDiet: ","");
+                    e.printStackTrace();
+                }
+            });
+
         }
     }
 
