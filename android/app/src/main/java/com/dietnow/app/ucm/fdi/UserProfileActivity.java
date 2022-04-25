@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,28 +121,6 @@ public class UserProfileActivity extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         this.uid = currentUser.getUid();
 
-        db.child("users").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    User user = task.getResult().getValue(User.class);
-                    name.setText(user.getName().trim() + " " + user.getLastname().trim());
-                    age.setText(user.getAge() + " " + age.getText().toString());
-                    email.setText(user.getEmail());
-                    date.setText(date.getText().toString() + ": " + user.getStart_date());
-                    getSupportActionBar().setTitle(R.string.label_user_view_profile);
-
-                    setProfileImage();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("OnFailureUserProfile: ","");
-                e.printStackTrace();
-            }
-        });
-
         // Cambiar la imagen del usuario: gallery/docs
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,17 +134,17 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
                 builder.setTitle(R.string.profile_add)
-                        .setItems(R.array.profile_settings_add, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case 0: AddStep(); break;
-                                    case 1: AddWeight(); break;
-                                    default: break;
-                                }
+                    .setItems(R.array.profile_settings_add, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case 0: AddStep(); break;
+                                case 1: AddWeight(); break;
+                                default: break;
                             }
-                        })
-                        .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.delete_alert_no_opt, null).show();
             }
         });
 
@@ -188,6 +167,32 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfileActivity.this, CurrentDietGraphic.class);
                 startActivity(intent);
+            }
+        });
+
+        /**
+         * Trigger por si un admin edita el perfil del usuario
+         *
+         * Se ejecuta el onDataChange():
+         *      cuando se entra a la vista
+         *      cuando un admin edita el perfil del usuario logeado
+         */
+        db.child("users").child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                setProfileImage();
+                getSupportActionBar().setTitle(R.string.label_user_view_profile);
+
+                User u = snapshot.getValue(User.class);
+                name.setText(u.getName() + " " + u.getLastname());
+                email.setText(u.getEmail());
+                age.setText(u.getAge().toString() + " " + getResources().getString(R.string.years));
+                date.setText(getResources().getString(R.string.createdAccount) + " " + u.getStart_date());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("OnFailureUserProfile: ",error.toString());
             }
         });
     }

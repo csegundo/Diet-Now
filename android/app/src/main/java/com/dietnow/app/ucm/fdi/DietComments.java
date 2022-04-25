@@ -16,6 +16,7 @@ import com.dietnow.app.ucm.fdi.adapters.AlimentViewOnlyAdapter;
 import com.dietnow.app.ucm.fdi.adapters.CommentsAdapter;
 import com.dietnow.app.ucm.fdi.model.comments.Comment;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
+import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -78,13 +79,28 @@ public class DietComments extends AppCompatActivity {
             }
         });
 
-
+        initializeComponents();
         getComments();
     }
 
     /**
      * FUNCIONES
      */
+    private void initializeComponents(){
+        FirebaseUser user = auth.getCurrentUser();
+        db.child("users").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                User u = task.getResult().getValue(User.class);
+
+                if(!actualDiet.equals(u.getDiet())){
+                    comment.setVisibility(View.GONE);
+                    commentBtn.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
     private void uploadComment(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
         String created = dateFormat.format(new Date());

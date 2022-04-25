@@ -38,7 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-
 public class AllUserActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private FirebaseAuth auth;
@@ -47,6 +46,7 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
     private RecyclerView RecyclerView;
     private DatabaseReference bd;
     private ArrayList<User> userList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //----------------Variables--------------------
@@ -71,30 +71,26 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
     }
 
     private void getUser(){
-        /*
         bd.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String email = ds.child("email").getValue().toString();
-                        Boolean active = ds.child("active").getValue(Boolean.class);
-                        String name = ds.child("name").getValue().toString();
-                        User us = new User(email, name);
-                        if(active == true) {
-                            userList.add(us);
-                        }
-                    }
+                userList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String email = ds.child("email").getValue().toString();
+                    Boolean active = ds.child("active").getValue(Boolean.class);
+                    String name = ds.child("name").getValue().toString();
+                    User us = new User(email, name);
+                    // Se añaden todos los usuarios pq se puede cambiar el status
+                    userList.add(us);
+                }
                 AllUsersAdapter = new AllUsersAdapter(userList,AllUserActivity.this);
                 RecyclerView.setAdapter(AllUsersAdapter);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
-        */
-
+        /*
         bd.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -117,6 +113,7 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
                 e.printStackTrace();
             }
         });
+         */
     }
 
     @Override

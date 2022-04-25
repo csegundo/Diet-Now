@@ -1,7 +1,12 @@
 package com.dietnow.app.ucm.fdi;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.dietnow.app.ucm.fdi.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +29,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * LoginActivity - Establece el inicio de sesion del usuario en la aplicación
@@ -77,34 +91,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login(String email, String rawPassword){
-        auth.signInWithEmailAndPassword(email, rawPassword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        Query query = db.child("users").orderByChild("email").equalTo(email);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    FirebaseUser currentUser = auth.getCurrentUser();
-                    db.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            User user = task.getResult().getValue(User.class);
-                            updateUI(user);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("OnFailureMainActivity: ","");
-                            e.printStackTrace();
-                        }
-                    });
-                } else{
-                    updateUI(null);
+            public void onDataChange(@NonNull DataSnapshot snapshot){
+                if(snapshot.exists()){
+                    User emailUser = snapshot.getChildren().iterator().next().getValue(User.class);
+
+                    if(emailUser != null && emailUser.getActive()){
+                        auth.signInWithEmailAndPassword(email, rawPassword).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    FirebaseUser currentUser = auth.getCurrentUser();
+                                    db.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            User user = task.getResult().getValue(User.class);
+                                            updateUI(user);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("OnFailureMainActivity: ","");
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                } else{
+                                    updateUI(null);
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("OnFailureLogin: ","");
+                                e.printStackTrace();
+                            }
+                        });
+                    } else{
+                        progress.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_failed_inactive), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("OnFailureLogin: ","");
-                e.printStackTrace();
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 

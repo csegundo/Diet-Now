@@ -60,6 +60,7 @@ public class ViewDietActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference db;
     private StorageReference storageRef;
+    private Boolean showCommentsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class ViewDietActivity extends AppCompatActivity {
         like         = findViewById(R.id.likeButton);
         dislike      = findViewById(R.id.dislikeButton);
         comments     = findViewById(R.id.commentsButton);
+        this.showCommentsBtn = false;
 
         alimentList = new ArrayList<Aliment>();
         docList = new ArrayList<Pair<String, String>>();
@@ -105,28 +107,11 @@ public class ViewDietActivity extends AppCompatActivity {
         getDocuments();
         setVisit();
 
-        //check if it is an admin
-        FirebaseUser user = auth.getCurrentUser();
-        db.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                if (!user.getRole().equalsIgnoreCase("ADMIN")){
-                    comments.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
         db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Diet d = snapshot.getValue(Diet.class);
-                if(d.getRating()!=null){
+                if(d.getRating() != null){
                     Boolean contains_key = d.getRating().containsKey(auth.getUid());
 
                     if(contains_key){
@@ -138,16 +123,11 @@ public class ViewDietActivity extends AppCompatActivity {
                         }
                     }
                 }
-
-
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
-
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,7 +181,6 @@ public class ViewDietActivity extends AppCompatActivity {
      * Metodos/funciones auxiliares
      */
 
-
     private void setVisit(){
         db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -222,6 +201,7 @@ public class ViewDietActivity extends AppCompatActivity {
     private void toggleFollowDiet(String dietId, boolean publish){
         FirebaseUser user = auth.getCurrentUser();
 
+        /*
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -251,8 +231,40 @@ public class ViewDietActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+        */
+        db.child("users").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                User actual = task.getResult().getValue(User.class);
+                if(actual.getDiet()!=null){
 
+                    if(actual.getDiet().equalsIgnoreCase(dietId)){
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertFollowingDiet), Toast.LENGTH_LONG).show();
+                    }else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ViewDietActivity.this);
+                        builder.setTitle(R.string.alertFollowDiet)
+                            .setItems(R.array.yes_no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == 0){
+                                        followDiet(dietId);
+                                    }
+                                }
+                            })
+                            .setNegativeButton(R.string.delete_alert_no_opt, null).show();
+                    }
+
+                }else{
+                    followDiet(dietId);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureViewDiet: ","");
+                e.printStackTrace();
             }
         });
     }
@@ -373,7 +385,7 @@ public class ViewDietActivity extends AppCompatActivity {
                 // How to return this value?
                 FirebaseUser currentUser = auth.getCurrentUser();
                 Diet actual = dataSnapshot.getValue(Diet.class);
-
+                showCommentsBtn = showCommentsBtn || actual.isPublished();
 
                 Integer likes = 0, dislikes = 0;
                 HashMap<String, Boolean> rating = actual.getRating();
@@ -396,6 +408,13 @@ public class ViewDietActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User u = snapshot.getValue(User.class);
                         publishedBy.setText(publishedBy.getText().toString() + " " + u.getName() + " " + u.getLastname());
+                        showCommentsBtn = showCommentsBtn || u.getRole().equalsIgnoreCase("ADMIN");
+
+                        if(!showCommentsBtn){
+                            comments.setVisibility(View.GONE);
+                        } else{
+                            comments.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     @Override
@@ -417,7 +436,7 @@ public class ViewDietActivity extends AppCompatActivity {
                             if(u.getDiet()!=null && u.getDiet().equalsIgnoreCase(dietId)){
                                 follow.setColorFilter(Color.YELLOW);
                             }
-                        }else{
+                        } else{
                             dietActionsLabel.setVisibility(View.VISIBLE);
                             publish.setVisibility(View.VISIBLE);
                             unpublish.setVisibility(View.VISIBLE);
@@ -428,9 +447,7 @@ public class ViewDietActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
 
                 if(actual.isPublished()){

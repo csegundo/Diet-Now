@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/AlimentName"
-        android:layout_width="300dp"
+        android:layout_width="231dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
@@ -28,7 +28,7 @@
     <TextView
         android:id="@+id/AlimentKal"
 
-        android:layout_width="300dp"
+        android:layout_width="232dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="55dp"
@@ -43,6 +43,16 @@
         android:layout_marginLeft="330dp"
         android:layout_marginTop="25dp"
         android:text="@string/view_diet"
+        android:textSize="10dp"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <Button
+        android:id="@+id/myDietEditBtn"
+        android:layout_width="71dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="255dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/edit"
         android:textSize="10dp"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 

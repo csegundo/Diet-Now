@@ -54,18 +54,17 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
 
     public AllUsersAdapter(ArrayList<User> dataSet,Context context) {
         localDataSet = dataSet;
-        allUser =new ArrayList<>();
+        allUser = new ArrayList<>();
         allUser.addAll(localDataSet);
-        this.context=context;
-        db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        this.context = context;
+        db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.user_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.user_item, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -100,7 +99,6 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 showDeleteAlert(holder);
-
             }
 
         });
@@ -115,7 +113,7 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             String parseEditID = snapshot.getValue().toString();
-                            editID[0] = parseEditID.substring(1,parseEditID.indexOf("="));
+                            editID[0] = parseEditID.substring(1, parseEditID.indexOf("="));
                             intent.putExtra("uid", editID[0]);
                             context.startActivity(intent);
                         }
@@ -129,14 +127,14 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
         });
 
         final String[] parseImgID = new String[1];
-        DatabaseReference db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
+        //DatabaseReference db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         Query query = db.child("users").orderByChild("email").equalTo(holder.email.getText().toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     String rawimg = snapshot.getValue().toString();
-                    parseImgID[0] = rawimg.substring(1,rawimg.indexOf("="));
+                    parseImgID[0] = rawimg.substring(1, rawimg.indexOf("="));
 
                     String fileName = "profile_" + parseImgID[0] + ".jpg";
                     StorageReference storage = FirebaseStorage.getInstance().getReference();

@@ -84,7 +84,6 @@ public class CreateDietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_diet);
 
-
         actualDiet = null;
         if(getIntent().getExtras() != null){
             actualDiet = getIntent().getExtras().getString("did");

@@ -13,8 +13,10 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +70,7 @@ public class UserProfileEditActivity extends AppCompatActivity {
     private HashMap<String, String> data;
     private StorageReference storageRef;
     private Retrofit retrofit;
+    private Switch status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,7 @@ public class UserProfileEditActivity extends AppCompatActivity {
         lastname    = findViewById(R.id.editTextLastname);
         email       = findViewById(R.id.editTextEmail);
         age         = findViewById(R.id.editTextAge);
+        status      = findViewById(R.id.editUserStatus);
         password    = findViewById(R.id.editTextPassword); // siempre vacio y solo se guarda si !empty()
         imageUser   = findViewById(R.id.imageUser);
 
@@ -175,11 +179,13 @@ public class UserProfileEditActivity extends AppCompatActivity {
                     lastname.setText(user.getLastname());
                     email.setText(user.getEmail());
                     age.setText(String.valueOf(user.getAge()));
+                    status.setChecked(user.getActive());
                     data.put("name", user.getName());
                     data.put("lastname", user.getLastname());
                     data.put("email", user.getEmail());
                     data.put("age", String.valueOf(user.getAge()));
                     data.put("password", user.getPassword());
+                    data.put("active", user.getActive() ? "yes" : "no");
 
                     setProfileImage();
                 }
@@ -189,6 +195,13 @@ public class UserProfileEditActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.d("OnFailureUserProfile: ","");
                 e.printStackTrace();
+            }
+        });
+
+        status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
             }
         });
 
@@ -224,6 +237,12 @@ public class UserProfileEditActivity extends AppCompatActivity {
                             String rawPassword = password.getText().toString();
                             if(!rawPassword.isEmpty() && !BCrypt.checkpw(rawPassword, data.get(key))){
                                 updateAdminFields("password", password.getText().toString(), actualUserId);
+                            }
+                            break;
+                        case "active":
+                            Boolean isActive = status.isChecked(), oldValue = data.get("active") == "yes";
+                            if((isActive && !oldValue) || (oldValue && !isActive)){
+                                db.child("users").child(actualUserId).child("active").setValue(isActive);
                             }
                             break;
                         default: break;

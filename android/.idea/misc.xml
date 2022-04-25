@@ -37,7 +37,7 @@
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_all_published_diets.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_all_user.xml" value="0.25625" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_camera.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_create_diet.xml" value="0.33" />
+        <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_create_diet.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_diet_comments.xml" value="0.25625" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_diet_history.xml" value="0.25625" />
         <entry key="..\:/Users/Golden/Desktop/TFG-code/Diet-Now/android/app/src/main/res/layout/activity_diet_info.xml" value="0.17831813576494426" />
@@ -80,6 +80,7 @@
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/activity_view_diet.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/comment_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/current_diet_graphic.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/layout/diet_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/menu/user_profile_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlo/Documents/GitProjects/DietNow/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3828125" />
         <entry key="..\:/Users/victo/StudioProjects/Diet-Now/android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3828125" />

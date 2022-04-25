@@ -183,4 +183,7 @@
     <string name="profile_updated_sucesfully">Perfil actualizado correctamente</string>
     <string name="editComment">Actualizar</string>
     <string name="comment_updated_succesfully">Comentario actualizado correctament</string>
+    <string name="comments">Comentarios</string>
+    <string name="login_failed_inactive">Usuario eliminado</string>
+    <string name="active">Activo</string>
 </resources>

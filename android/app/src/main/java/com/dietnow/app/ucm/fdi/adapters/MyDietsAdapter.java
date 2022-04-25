@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dietnow.app.ucm.fdi.CreateDietActivity;
 import com.dietnow.app.ucm.fdi.MainActivity;
 import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.ViewDietActivity;
@@ -42,9 +44,7 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
     @Override
     public MyDietsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.diet_item, viewGroup, false);
-
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.diet_item, viewGroup, false);
         return new MyDietsAdapter.ViewHolder(view);
     }
 
@@ -82,8 +82,14 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
                 context.startActivity(intent);
             }
         });
-
-
+        holder.editDieta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CreateDietActivity.class);
+                intent.putExtra("did", holder.id.getText().toString());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -96,8 +102,8 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
         private final TextView titulo;
         private final TextView descripcion;
         private final MaterialButton verDieta;
+        private final Button editDieta;
         private final TextView id;
-
 
         public ViewHolder(View view) {
             super(view);
@@ -106,11 +112,8 @@ public class MyDietsAdapter extends RecyclerView.Adapter<MyDietsAdapter.ViewHold
             titulo =  view.findViewById(R.id.AlimentName);
             descripcion =  view.findViewById(R.id.AlimentKal);
             verDieta = view.findViewById(R.id.myDietShowBtn);
+            editDieta = view.findViewById(R.id.myDietEditBtn);
             id =  view.findViewById(R.id.barcodeAliment);
-
-
-
-
         }
     }
 }
