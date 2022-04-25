@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dietnow.app.ucm.fdi.DietInfoActivity;
@@ -23,7 +26,10 @@ import com.dietnow.app.ucm.fdi.R;
 import com.dietnow.app.ucm.fdi.model.diet.Aliment;
 import com.dietnow.app.ucm.fdi.model.diet.NutritionalInfo;
 import com.dietnow.app.ucm.fdi.utils.GetAllProductInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -72,14 +80,13 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.diet_followed_aliment_item, viewGroup, false);
 
-
-
         return new DietFollowedAdapter.ViewHolder(view);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
         if(!can_edit){
             holder.checkBox.setVisibility(View.GONE);
             holder.info_cantidad.setVisibility(View.GONE);
@@ -89,54 +96,144 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         holder.info_cantidad.setText("0");
         holder.aliment_barcode.setText(localDataSet.get(position).getId());
 
-        db.child("diets").child(dietID).child("aliments").child(localDataSet.get(position).getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                holder.totalGR.setText(snapshot.child("grams").getValue(Long.class).toString() +" gr");
+        if(can_edit){
+            /*
+            db.child("diets").child(dietID).child("aliments").child(localDataSet.get(position).getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    holder.totalGR.setText(snapshot.child("grams").getValue(Long.class).toString() +" gr");
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-        db.child("diet_history").child(auth.getUid()).child(dietID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                DateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
-                String strDate = dateFormat.format(new Date());
-                HashMap<String, Integer> map_grams_counter = new HashMap<String, Integer>();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    String strDate_info[] = strDate.split(" ");
-                    String db_date[] = ds.getKey().split(" ");
-                    if (strDate_info[0].equalsIgnoreCase(db_date[0])) {
-                        System.out.println(ds.toString());
-                        for(DataSnapshot ds2 :ds.getChildren()) {
-                            Integer counter = map_grams_counter.get(ds2.getKey());
-                            if (counter != null) { //ya esta ese id en el mapa
-                                Integer total = counter + Integer.parseInt(ds.child(ds2.getKey()).getValue().toString());
-                                map_grams_counter.put(ds2.getKey(), total);
-                            } else {
-                                map_grams_counter.put(ds2.getKey(), Integer.parseInt(ds2.getValue().toString()));
+                }
+            });
+            */
+            db.child("diets").child(dietID).child("aliments").child(localDataSet.get(position).getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    holder.totalGR.setText(task.getResult().child("grams").getValue(Long.class).toString() +" gr");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureAdapter: ","");
+                    e.printStackTrace();
+                }
+            });
+            /*
+            db.child("diet_history").child(auth.getUid()).child(dietID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    DateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
+                    String strDate = dateFormat.format(new Date());
+                    HashMap<String, Integer> map_grams_counter = new HashMap<String, Integer>();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        String strDate_info[] = strDate.split(" ");
+                        String db_date[] = ds.getKey().split(" ");
+                        if (strDate_info[0].equalsIgnoreCase(db_date[0])) {
+                            //System.out.println(ds.toString());
+                            for(DataSnapshot ds2 :ds.getChildren()) {
+                                Integer counter = map_grams_counter.get(ds2.getKey());
+                                if (counter != null) { //ya esta ese id en el mapa
+                                    Integer total = counter + Integer.parseInt(ds.child(ds2.getKey()).getValue().toString());
+                                    map_grams_counter.put(ds2.getKey(), total);
+                                } else {
+                                    map_grams_counter.put(ds2.getKey(), Integer.parseInt(ds2.getValue().toString()));
+                                }
                             }
                         }
                     }
+
+                    if(map_grams_counter.get(holder.aliment_barcode.getText().toString()) == null){
+                        holder.llevasGR.setText("0");
+                    }else{
+                        holder.llevasGR.setText(map_grams_counter.get(holder.aliment_barcode.getText().toString()).toString());
+                    }
                 }
 
-                if(map_grams_counter.get(holder.aliment_barcode.getText().toString()) == null){
-                    holder.llevasGR.setText("0");
-                }else{
-                    holder.llevasGR.setText(map_grams_counter.get(holder.aliment_barcode.getText().toString()).toString());
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
-            }
+            });
+            */
+            db.child("diet_history").child(auth.getUid()).child(dietID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    LocalDate currentDate = LocalDate.now();
+                    String strDate = currentDate.format(DateTimeFormatter.ofPattern("MM-dd-HH"));
+                    System.out.println("----------");
+                    System.out.println(strDate);
+                    System.out.println("----------");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    HashMap<String, Integer> map_grams_counter = new HashMap<String, Integer>();
+                    for (DataSnapshot ds : task.getResult().getChildren()) {
+                        String strDate_info[] = strDate.split(" ");
+                        String db_date[] = ds.getKey().split(" ");
+                        if (strDate_info[0].equalsIgnoreCase(db_date[0])) {
+                            for(DataSnapshot ds2 :ds.getChildren()) {
+                                Integer counter = map_grams_counter.get(ds2.getKey());
+                                if (counter != null) { //ya esta ese id en el mapa
+                                    Integer total = counter + Integer.parseInt(ds.child(ds2.getKey()).getValue().toString());
+                                    map_grams_counter.put(ds2.getKey(), total);
+                                } else {
+                                    map_grams_counter.put(ds2.getKey(), Integer.parseInt(ds2.getValue().toString()));
+                                }
+                            }
+                        }
+                    }
 
-            }
-        });
+                    if(map_grams_counter.get(holder.aliment_barcode.getText().toString()) == null){
+                        holder.llevasGR.setText("0");
+                    }else{
+                        holder.llevasGR.setText(map_grams_counter.get(holder.aliment_barcode.getText().toString()).toString());
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureCreateDiet: ","");
+                    e.printStackTrace();
+                }
+            });
+        }else{
+            Double d = localDataSet.get(position).getGrams_consumed();
+            holder.llevasGR.setText(d.toString());
+            /*
+            db.child("diets").child(dietID).child("aliments").child(localDataSet.get(position).getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    holder.totalGR.setText(snapshot.child("grams").getValue(Long.class).toString() +" gr");
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+             */
+
+            db.child("diets").child(dietID).child("aliments").child(localDataSet.get(position).getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    holder.totalGR.setText(task.getResult().child("grams").getValue(Long.class).toString() +" gr");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureAdapter: ","");
+                    e.printStackTrace();
+                }
+            });
+
+        }
+
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,10 +251,11 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
         if(!alimentList_toInsert.isEmpty()) {
             for (Pair<String, ViewHolder> data : alimentList_toInsert) {
                 db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        DateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
-                        String strDate = dateFormat.format(new Date());
+                        LocalDate currentDate = LocalDate.now();
+                        String strDate = currentDate.format(DateTimeFormatter.ofPattern("MM-dd-HH"));
                         db.child("diet_history").child(auth.getUid()).child(snapshot.getValue().toString()).child(strDate).child(data.first).setValue(Integer.parseInt(data.second.info_cantidad.getText().toString()));
                     }
 
@@ -167,7 +265,7 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                     }
                 });
             }
-            alimentList_toInsert.clear();
+            //alimentList_toInsert.clear();
         }
         else{
             Toast.makeText(context, context.getResources().getString(R.string.alertSaveAliment), Toast.LENGTH_LONG).show();

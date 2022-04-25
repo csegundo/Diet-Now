@@ -298,14 +298,17 @@ public class DietInfoActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private LocalDate getDate (int wanted_day_position){
         LocalDate currentDate = LocalDate.now();
+        currentDate.format(DateTimeFormatter.ofPattern("MM-dd-HH"));
         LocalDate wanted_date;
 
         int current_day_position = currentDate.getDayOfWeek().getValue();
+
 
         if(current_day_position > wanted_day_position){
             wanted_date = currentDate.minusDays(current_day_position - wanted_day_position);
         }else{
             wanted_date = currentDate.plusDays(wanted_day_position - current_day_position);
+
         }
 
         return wanted_date;
@@ -314,78 +317,87 @@ public class DietInfoActivity extends AppCompatActivity {
 
 
     private void getDietFromOtherDay(String wanted_day){
-        db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        db.child("diet_history").child(auth.getUid()).child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dietId= snapshot.getValue(String.class);
-
-                db.child("diet_history").child(auth.getUid()).child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Aliment aliment ;
-                        HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>(original_aliments);// para no alterar el otro mapa original que tiene los alimentos por defecto de la dieta
-                        for (DataSnapshot ds: task.getResult().getChildren()){
-                            if(wanted_day.equalsIgnoreCase(ds.getKey().toString().split(" ")[0])){
-                                for(DataSnapshot ds2 :ds.getChildren()){
-                                    aliment = local_copy.get(ds2.getKey().toString());
-                                    aliment.setGrams_consumed(0);
-                                    aliment.setGrams_consumed(aliment.getGrams_consumed()+ds2.getValue(double.class));
-                                    local_copy.put( ds2.getKey().toString(),aliment);
-                                }
-                            }
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Aliment aliment ;
+                HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>(original_aliments);// para no alterar el otro mapa original que tiene los alimentos por defecto de la dieta
+                for (DataSnapshot ds: task.getResult().getChildren()){
+                    /*
+                    System.out.println("-------------------");
+                    System.out.println("DSKEY   : "+ ds.getKey().toString().split(" ")[0].toString());
+                    System.out.println("WANTEDAY : "+ wanted_day);
+                    System.out.println("-------------------");
+                    */
+                    if(wanted_day.equalsIgnoreCase(ds.getKey().toString().split(" ")[0])){
+                        for(DataSnapshot ds2 :ds.getChildren()){
+                            aliment = local_copy.get(ds2.getKey().toString());
+                            aliment.setGrams_consumed(0);
+                            aliment.setGrams_consumed(aliment.getGrams_consumed()+ds2.getValue(double.class));
+                            local_copy.put( ds2.getKey().toString(),aliment);
                         }
-
-                        ArrayList<Aliment> local_array = new ArrayList<>();
-                        for (Aliment a :local_copy.values()){ // para pasarle al adapter una lista con los alimentos que ha consumido ese dia, convierte el hasmap a un array list
-                            local_array.add(a);
-                        }
-                        dietFollowedAdapter = new DietFollowedAdapter(local_array,dietId,false, DietInfoActivity.this);
-                        RecyclerView.setAdapter(dietFollowedAdapter);
-
                     }
-                });
-            }
+                }
 
+                ArrayList<Aliment> local_array = new ArrayList<>();
+                for (Aliment a :local_copy.values()){ // para pasarle al adapter una lista con los alimentos que ha consumido ese dia, convierte el hasmap a un array list
+                    local_array.add(a);
+                }
+                System.out.println("-----------");
+                System.out.println("EL TAMAÑO DEL ARRAY DE ALIMENTOS DE ESE DIA ES ");
+                System.out.println(local_array.size());
+                System.out.println("---------------");
+                local_copy.clear();
+                dietFollowedAdapter = new DietFollowedAdapter(local_array,dietId,false, DietInfoActivity.this);
+                RecyclerView.setAdapter(dietFollowedAdapter);
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onFailure(@NonNull Exception e) {
 
             }
         });
+
+
+
     }
 
     private void getAliments(){
         alimentList.clear();
-        db.child("users").child(auth.getUid()).child("diet").addListenerForSingleValueEvent(new ValueEventListener() {
+        db.child("users").child(auth.getUid()).child("diet").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    dietId=snapshot.getValue(String.class);
-
-                    db.child("diets").child(snapshot.getValue().toString()).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            for (DataSnapshot ds : task.getResult().getChildren()) {
-                                Aliment aliment = ds.getValue(Aliment.class);
-                                aliment.setId(ds.getKey());
-                                alimentList.add(aliment);
-                                original_aliments.put(ds.getKey(),aliment);
-                            }
-
-                            dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId,true, DietInfoActivity.this);
-                            RecyclerView.setAdapter(dietFollowedAdapter);
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                dietId=task.getResult().getValue(String.class);
+                db.child("diets").child(task.getResult().getValue().toString()).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for (DataSnapshot ds : task.getResult().getChildren()) {
+                            Aliment aliment = ds.getValue(Aliment.class);
+                            aliment.setId(ds.getKey());
+                            alimentList.add(aliment);
+                            original_aliments.put(ds.getKey(),aliment);
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("OnFailureDietInfo: ","");
-                            e.printStackTrace();
-                        }
-                    });
-                //}
+
+                        dietFollowedAdapter = new DietFollowedAdapter(alimentList,dietId,true, DietInfoActivity.this);
+                        RecyclerView.setAdapter(dietFollowedAdapter);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("OnFailureDietInfo: ","");
+                        e.printStackTrace();
+                    }
+                });
+
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureDietHistory: ","");
+                e.printStackTrace();
             }
         });
 
