@@ -188,4 +188,5 @@
     <string name="active">Activo</string>
     <string name="unpublished_success">Dieta despublicada</string>
     <string name="published_success">Dieta publicada</string>
+    <string name="aliment_data_saved">Datos del alimentos actualizados</string>
 </resources>

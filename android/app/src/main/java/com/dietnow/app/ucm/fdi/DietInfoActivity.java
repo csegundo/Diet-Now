@@ -47,6 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class DietInfoActivity extends AppCompatActivity {
 
@@ -160,6 +161,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 dietFollowedAdapter.guardar();
             }
         });
+
         monday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,9 +262,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
-
 
     private void colorButtons(){
         for(Button b : listaBotones){
@@ -314,45 +314,45 @@ public class DietInfoActivity extends AppCompatActivity {
         return wanted_date;
     }
 
-
     private void getDietFromOtherDay(String wanted_day){
-
         db.child("diet_history").child(auth.getUid()).child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                Aliment aliment ;
-                //original_aliments;
-                //HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>();
-                HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>();// para no alterar el otro mapa original que tiene los alimentos por defecto de la dieta
-                local_copy.putAll(original_aliments);
-                for (DataSnapshot ds: task.getResult().getChildren()){
+                // para no alterar el otro mapa original que tiene los alimentos por defecto de la dieta
+                HashMap<String, Aliment> local_copy = new HashMap<String, Aliment>();
+                for(Map.Entry<String, Aliment> entry : original_aliments.entrySet()){
+                    Aliment mapAliment = entry.getValue();
+                    Aliment newAliment = new Aliment(mapAliment.getName(), mapAliment.getGrams(), mapAliment.getKcal());
+                    newAliment.setId(mapAliment.getId());
+                    local_copy.put(entry.getKey(), newAliment);
+                }
 
-                    System.out.println("-------------------");
-                    System.out.println("DSKEY   : "+ ds.getKey().toString().split(" ")[0].toString());
-                    System.out.println("WANTEDAY : "+ wanted_day);
-                    System.out.println("-------------------");
+                for (DataSnapshot ds : task.getResult().getChildren()){
+                    if(wanted_day.equalsIgnoreCase(ds.getKey().split(" ")[0].trim())){
+                        for (DataSnapshot ds2 : ds.getChildren()){
+                            System.out.println("ACTUALIZO EL ALIMENTO " + ds2.getKey().trim() + " CON GRAMOS " + ds2.getValue(double.class));
+                            Aliment aliment = local_copy.get(ds2.getKey().trim());
+                            System.out.println("ORIGINAL " + original_aliments.get(ds2.getKey().trim()).toString());
+                            System.out.println("COPY " + local_copy.get(ds2.getKey().trim()).toString());
 
-                    if(wanted_day.equalsIgnoreCase(ds.getKey().toString().split(" ")[0])){
-                        System.out.println("ENTRAAAAAAAAAAAAAA");
-                        for(DataSnapshot ds2 :ds.getChildren()){
-                            aliment = local_copy.get(ds2.getKey().trim());
                             Double d = aliment.getGrams_consumed() + ds2.getValue(double.class);
                             aliment.setGrams_consumed(d);
-                            local_copy.replace(ds2.getKey(),aliment);
+                            local_copy.put(ds2.getKey().trim(), aliment);
+
                         }
                     }
                 }
 
                 ArrayList<Aliment> local_array = new ArrayList<>();
-                for (Aliment a :local_copy.values()){ // para pasarle al adapter una lista con los alimentos que ha consumido ese dia, convierte el hasmap a un array list
+                for (Aliment a : local_copy.values()){ // para pasarle al adapter una lista con los alimentos que ha consumido ese dia, convierte el hasmap a un array list
                     local_array.add(a);
                 }
-                local_copy.clear();
+
+                Log.d("HASHMAP 1", original_aliments.toString());
+                Log.d("HASHMAP 2", local_copy.toString());
                 dietFollowedAdapter = new DietFollowedAdapter(local_array,dietId,false, DietInfoActivity.this);
                 RecyclerView.setAdapter(dietFollowedAdapter);
-
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

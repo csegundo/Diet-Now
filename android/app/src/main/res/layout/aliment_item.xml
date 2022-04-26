@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/RemoveAliment"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="105dp">
 
     <TextView
         android:id="@+id/barcodeAliment"
@@ -18,12 +18,14 @@
 
     <EditText
         android:id="@+id/AlimentName"
-        android:layout_width="133dp"
+        android:layout_width="196dp"
         android:layout_height="35dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         android:singleLine="true"
         android:text="Titulo"
         android:textSize="13dp" />
@@ -33,7 +35,9 @@
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="45dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         android:inputType="number"
         android:text="Grams"
         android:textSize="13dp" />
@@ -43,22 +47,34 @@
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="75dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         android:text="kcal"
         android:textSize="13dp" />
 
     <ImageButton
         android:id="@+id/deleteAlimentBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@color/purple_500"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="350dp"
         android:layout_marginTop="35dp"
         app:srcCompat="@drawable/ic_delete" />
 
     <ImageButton
         android:id="@+id/viewAlimentDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@color/purple_500"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="290dp"
         android:layout_marginTop="35dp"
         app:srcCompat="@drawable/ic_view" />
@@ -73,7 +89,6 @@
 
     <TextView
         android:id="@+id/textView14"
-
         android:layout_width="28dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="71dp"
@@ -82,11 +97,16 @@
 
     <ImageButton
         android:id="@+id/EditGrButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@color/purple_500"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="230dp"
         android:layout_marginTop="35dp"
-        app:srcCompat="@drawable/ic_edit" />
+        app:srcCompat="@drawable/ic_baseline_save_as_16" />
 
 
 </androidx.cardview.widget.CardView>

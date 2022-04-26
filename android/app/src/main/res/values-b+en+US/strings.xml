@@ -187,4 +187,5 @@
     <string name="active">Active</string>
     <string name="unpublished_success">Unpublished diet</string>
     <string name="published_success">Published diet</string>
+    <string name="aliment_data_saved">Aliment data updated successfully</string>
 </resources>

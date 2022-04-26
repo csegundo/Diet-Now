@@ -46,8 +46,6 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
     private FirebaseAuth auth;
     private String diet_id;
 
-
-
     public AlimentsAdapter(ArrayList<Aliment> dataSet, Context context,String diet_id) {
         this.diet_id =diet_id;
         localDataSet = dataSet;
@@ -57,21 +55,15 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
     }
 
-
     @Override
     public AlimentsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.aliment_item, viewGroup, false);
-
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.aliment_item, viewGroup, false);
         return new AlimentsAdapter.ViewHolder(view);
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-
         holder.id.setText(localDataSet.get(position).getId());
         holder.titulo.setText(localDataSet.get(position).getName());
         holder.kcal.setText(String.valueOf(localDataSet.get(position).getKcal()));
@@ -127,16 +119,21 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
-               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("name").setValue((holder.titulo.getText().toString()));
-               db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
+                System.out.println("ID " + holder.id.getText().toString());
+                System.out.println("NAME " + holder.titulo.getText().toString());
+                System.out.println("GRAMS " + holder.grams.getText().toString());
+                System.out.println("KCAL " + holder.kcal.getText().toString());
+                db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
+                db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("name").setValue((holder.titulo.getText().toString()));
+                db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
 
-               db.child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
-               db.child("aliments").child(holder.id.getText().toString()).child("name").setValue((holder.titulo.getText().toString()));
-               db.child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
+                db.child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
+                db.child("aliments").child(holder.id.getText().toString()).child("name").setValue((holder.titulo.getText().toString()));
+                db.child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));
+
+                Toast.makeText(context, context.getResources().getString(R.string.aliment_data_saved), Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     @Override

@@ -182,10 +182,13 @@ public class CreateDietActivity extends AppCompatActivity {
                 Diet d = snapshot.getValue(Diet.class);
                 title.setText(d.getTitle());
                 description.setText(d.getDescription());
-                for(DataSnapshot snapshot2:snapshot.child("aliments").getChildren() ){
-                    alimentList.add(snapshot2.getValue(Aliment.class));
+                for(DataSnapshot ds : snapshot.child("aliments").getChildren() ){
+                    Aliment toAdd = ds.getValue(Aliment.class);
+                    toAdd.setId(ds.getKey());
+                    alimentList.add(toAdd);
                 }
 
+                System.out.println("ALIMENTOS DE LA DIETA " + alimentList.toString());
                 AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
                 RecyclerView.setAdapter(AlimentsAdapter);
             }
