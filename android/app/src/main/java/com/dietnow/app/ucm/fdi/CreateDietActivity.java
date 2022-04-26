@@ -66,6 +66,8 @@ public class CreateDietActivity extends AppCompatActivity {
     private String actualDiet;
     private FloatingActionButton addFood;
     private TextView alimentsLabel, uDietId;
+    private Boolean description_inserted = false;
+    private Boolean title_inserted = false;
 
     private FirebaseAuth auth;
     private DatabaseReference db;
@@ -112,16 +114,22 @@ public class CreateDietActivity extends AppCompatActivity {
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
         DocsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
         if(actualDiet == null){
             addFood.setVisibility(View.GONE);
             alimentsLabel.setVisibility(View.GONE);
             DocsRecyclerView.setVisibility(View.GONE);
         } else{
+            getDiet();
             upload.setVisibility(View.VISIBLE);
             DocsRecyclerView.setVisibility(View.VISIBLE);
             docsRef = storageRef.child("diets").child(actualDiet); // referencia exclusivamente para docs de dietas (nivel mas bajo)
         }
+
         isEditOrCreateDiet(actualDiet);
+
+
 
         // Acciones de los componentes
         create.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +173,28 @@ public class CreateDietActivity extends AppCompatActivity {
         });
     }
 
+
+    private void getDiet(){
+        db.child("diets").child(actualDiet).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                alimentList.clear();
+                Diet d = snapshot.getValue(Diet.class);
+                title.setText(d.getTitle());
+                description.setText(d.getDescription());
+                for(DataSnapshot snapshot2:snapshot.child("aliments").getChildren() ){
+                    alimentList.add(snapshot2.getValue(Aliment.class));
+                }
+
+                AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
+                RecyclerView.setAdapter(AlimentsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
     private void isEditOrCreateDiet(String dietId){
         if(dietId != null){
             db.child("diets").child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -182,27 +212,8 @@ public class CreateDietActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             });
+
             /*
-            db.child("diets").child(dietId).child("aliments").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot ds : snapshot.getChildren()){
-                        Aliment aliment = ds.getValue(Aliment.class);
-                        aliment.setId(ds.getKey());
-                        if(aliment.isActive() && !alimentList.contains(ds.getKey())){
-                            alimentList.add(aliment);
-                        }
-                    }
-                    AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
-                    RecyclerView.setAdapter(AlimentsAdapter);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-            */
             db.child("diets").child(dietId).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -216,7 +227,7 @@ public class CreateDietActivity extends AppCompatActivity {
                     }
                     AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
                     RecyclerView.setAdapter(AlimentsAdapter);
-                }
+            }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -224,6 +235,7 @@ public class CreateDietActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             });
+            */
 
             storageRef.child("diets/" + this.actualDiet).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
                 @Override
@@ -248,26 +260,7 @@ public class CreateDietActivity extends AppCompatActivity {
                 }
             });
 
-            db.child("diets").child(dietId).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    for(DataSnapshot ds : task.getResult().getChildren()){
-                        Aliment aliment = ds.getValue(Aliment.class);
-                        aliment.setId(ds.getKey());
-                        if(aliment.isActive() && !alimentList.contains(ds.getKey())){
-                            alimentList.add(aliment);
-                        }
-                    }
-                    AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
-                    RecyclerView.setAdapter(AlimentsAdapter);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("OnFailureCreateDiet: ","");
-                    e.printStackTrace();
-                }
-            });
+
 
         }
     }
@@ -285,17 +278,49 @@ public class CreateDietActivity extends AppCompatActivity {
             db.child("diets").child(autoId).setValue(toCreate).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    finish();
+                    //finish();
                     Intent intent = new Intent(CreateDietActivity.this, MyDietsActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             });
         } else{
             // editar dieta
             progress.setVisibility(View.GONE);
-            db.child("diets").child(autoId).child("title").setValue(title.getText().toString());
-            db.child("diets").child(autoId).child("description").setValue(description.getText().toString());
+            db.child("diets").child(autoId).child("title").setValue(title.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    db.child("diets").child(autoId).child("description").setValue(description.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            update_and_refresh();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("OnFailureCreateDiet: ","");
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("OnFailureCreateDiet: ","");
+                    e.printStackTrace();
+                }
+            });
+
         }
+    }
+
+    private void update_and_refresh(){
+
+       // Toast.makeText(getApplicationContext(), getResources().getString(com.dietnow.app.ucm.fdi.R.string.ads), Toast.LENGTH_SHORT).show();
+        finish();
+
+
+
     }
 
     private void updateUI(Boolean success){
@@ -334,6 +359,8 @@ public class CreateDietActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     private void uploadDocument(){
         if(filePath != null){

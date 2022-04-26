@@ -119,9 +119,6 @@ public class AddManualFood extends AppCompatActivity {
     private void update_and_refresh(){
         if(diet_added && aliment_added){
             finish();
-            Intent intent = new Intent(AddManualFood.this, CreateDietActivity.class);
-            intent.putExtra("did", actualDiet);
-            startActivity(intent);
         }
 
     }

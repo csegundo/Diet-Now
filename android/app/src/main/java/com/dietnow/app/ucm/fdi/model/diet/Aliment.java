@@ -18,6 +18,18 @@ public class Aliment {
     @Exclude
     private double grams_consumed;
 
+    @Override
+    public String toString() {
+        return "Aliment{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", active=" + active +
+                ", grams=" + grams +
+                ", kcal=" + kcal +
+                ", grams_consumed=" + grams_consumed +
+                '}';
+    }
+
     public Aliment(String name, double grams, double kcal) {
         this.name = name;
         this.grams = grams;

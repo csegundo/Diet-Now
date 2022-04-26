@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/RemoveAliment"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="150dp">
 
     <TextView
         android:id="@+id/barcodeAliment"
@@ -43,9 +43,9 @@
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="80dp"
-        android:textSize="13dp"
-        android:text="kcal" />
+        android:layout_marginTop="90dp"
+        android:text="kcal"
+        android:textSize="13dp" />
 
     <ImageButton
         android:id="@+id/deleteAlimentBtn"

@@ -107,6 +107,8 @@ public class ViewDietActivity extends AppCompatActivity {
         getDocuments();
         setVisit();
 
+        getDiet();
+
         db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -181,6 +183,29 @@ public class ViewDietActivity extends AppCompatActivity {
      * Metodos/funciones auxiliares
      */
 
+
+    private void getDiet(){
+        db.child("diets").child(actualDiet).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                alimentList.clear();
+                Diet d = snapshot.getValue(Diet.class);
+                name.setText(d.getTitle());
+                description.setText(d.getDescription());
+                for(DataSnapshot snapshot2:snapshot.child("aliments").getChildren() ){
+                    alimentList.add(snapshot2.getValue(Aliment.class));
+                }
+
+                alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
+                RecyclerView.setAdapter(alimentsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+
     private void setVisit(){
         db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -201,39 +226,6 @@ public class ViewDietActivity extends AppCompatActivity {
     private void toggleFollowDiet(String dietId, boolean publish){
         FirebaseUser user = auth.getCurrentUser();
 
-        /*
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User actual = snapshot.child("users").child(user.getUid()).getValue(User.class);
-
-                if(actual.getDiet()!=null){
-
-                    if(actual.getDiet().equalsIgnoreCase(dietId)){
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertFollowingDiet), Toast.LENGTH_LONG).show();
-                    }else{
-                        AlertDialog.Builder builder = new AlertDialog.Builder(ViewDietActivity.this);
-                        builder.setTitle(R.string.alertFollowDiet)
-                                .setItems(R.array.yes_no, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if(which == 0){
-                                            followDiet(dietId);
-                                        }
-                                    }
-                                })
-                                .setNegativeButton(R.string.delete_alert_no_opt, null).show();
-                    }
-
-                }else{
-                    followDiet(dietId);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-        */
         db.child("users").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

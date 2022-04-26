@@ -146,7 +146,8 @@ public class DietInfoActivity extends AppCompatActivity {
             }
         });
 
-        LocalDate currentDate = LocalDate.now();
+
+        LocalDateTime  currentDate = LocalDateTime.now();
         DayOfWeek day = currentDate.getDayOfWeek();
         String dayName = day.name().toLowerCase(Locale.ROOT);
         this.dayName = dayName;
@@ -166,7 +167,7 @@ public class DietInfoActivity extends AppCompatActivity {
                if(!dayName.equalsIgnoreCase("monday")){
                    monday.setBackgroundColor(Color.DKGRAY);
                    guardar.setVisibility(View.GONE);
-                   getDietFromOtherDay(getDate(1).toString());
+                   getDietFromOtherDay(getDate(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")).split(" ")[0]);
                }else{
                    guardar.setVisibility(View.VISIBLE);
                    getAliments();
@@ -181,7 +182,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 if(!dayName.equalsIgnoreCase("tuesday")){
                     tuesday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
-                    getDietFromOtherDay(getDate(2).toString());
+                    getDietFromOtherDay(getDate(2).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")).split(" ")[0]);
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -195,7 +196,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 if(!dayName.equalsIgnoreCase("wednesday")){
                     wednesday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
-                    getDietFromOtherDay(getDate(3).toString());
+                    getDietFromOtherDay(getDate(3).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")).split(" ")[0]);
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -209,7 +210,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 if(!dayName.equalsIgnoreCase("thursday")){
                     thursday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
-                    getDietFromOtherDay(getDate(4).toString());
+                    getDietFromOtherDay(getDate(4).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")).split(" ")[0]);
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -223,7 +224,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 if(!dayName.equalsIgnoreCase("friday")){
                     friday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
-                    getDietFromOtherDay(getDate(5).toString());
+                    getDietFromOtherDay(getDate(5).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")).split(" ")[0]);
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -237,7 +238,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 if(!dayName.equalsIgnoreCase("saturday")){
                     saturday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
-                    getDietFromOtherDay(getDate(6).toString());
+                    getDietFromOtherDay(getDate(6).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")).split(" ")[0]);
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -252,7 +253,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 if(!dayName.equalsIgnoreCase("sunday")){
                     sunday.setBackgroundColor(Color.DKGRAY);
                     guardar.setVisibility(View.GONE);
-                    getDietFromOtherDay(getDate(7).toString());
+                    getDietFromOtherDay(getDate(7).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")).split(" ")[0]);
                 }else{
                     guardar.setVisibility(View.VISIBLE);
                     getAliments();
@@ -296,10 +297,9 @@ public class DietInfoActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private LocalDate getDate (int wanted_day_position){
-        LocalDate currentDate = LocalDate.now();
-        currentDate.format(DateTimeFormatter.ofPattern("MM-dd-HH"));
-        LocalDate wanted_date;
+    private LocalDateTime getDate (int wanted_day_position){
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime wanted_date;
 
         int current_day_position = currentDate.getDayOfWeek().getValue();
 
@@ -312,30 +312,34 @@ public class DietInfoActivity extends AppCompatActivity {
         }
 
         return wanted_date;
-
     }
 
 
     private void getDietFromOtherDay(String wanted_day){
 
         db.child("diet_history").child(auth.getUid()).child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 Aliment aliment ;
-                HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>(original_aliments);// para no alterar el otro mapa original que tiene los alimentos por defecto de la dieta
+                //original_aliments;
+                //HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>();
+                HashMap<String,Aliment> local_copy = new HashMap<String, Aliment>();// para no alterar el otro mapa original que tiene los alimentos por defecto de la dieta
+                local_copy.putAll(original_aliments);
                 for (DataSnapshot ds: task.getResult().getChildren()){
-                    /*
+
                     System.out.println("-------------------");
                     System.out.println("DSKEY   : "+ ds.getKey().toString().split(" ")[0].toString());
                     System.out.println("WANTEDAY : "+ wanted_day);
                     System.out.println("-------------------");
-                    */
+
                     if(wanted_day.equalsIgnoreCase(ds.getKey().toString().split(" ")[0])){
+                        System.out.println("ENTRAAAAAAAAAAAAAA");
                         for(DataSnapshot ds2 :ds.getChildren()){
-                            aliment = local_copy.get(ds2.getKey().toString());
-                            aliment.setGrams_consumed(0);
-                            aliment.setGrams_consumed(aliment.getGrams_consumed()+ds2.getValue(double.class));
-                            local_copy.put( ds2.getKey().toString(),aliment);
+                            aliment = local_copy.get(ds2.getKey().trim());
+                            Double d = aliment.getGrams_consumed() + ds2.getValue(double.class);
+                            aliment.setGrams_consumed(d);
+                            local_copy.replace(ds2.getKey(),aliment);
                         }
                     }
                 }
@@ -344,10 +348,6 @@ public class DietInfoActivity extends AppCompatActivity {
                 for (Aliment a :local_copy.values()){ // para pasarle al adapter una lista con los alimentos que ha consumido ese dia, convierte el hasmap a un array list
                     local_array.add(a);
                 }
-                System.out.println("-----------");
-                System.out.println("EL TAMAÑO DEL ARRAY DE ALIMENTOS DE ESE DIA ES ");
-                System.out.println(local_array.size());
-                System.out.println("---------------");
                 local_copy.clear();
                 dietFollowedAdapter = new DietFollowedAdapter(local_array,dietId,false, DietInfoActivity.this);
                 RecyclerView.setAdapter(dietFollowedAdapter);
@@ -366,7 +366,6 @@ public class DietInfoActivity extends AppCompatActivity {
     }
 
     private void getAliments(){
-        alimentList.clear();
         db.child("users").child(auth.getUid()).child("diet").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -374,6 +373,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 db.child("diets").child(task.getResult().getValue().toString()).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        alimentList.clear();
                         for (DataSnapshot ds : task.getResult().getChildren()) {
                             Aliment aliment = ds.getValue(Aliment.class);
                             aliment.setId(ds.getKey());

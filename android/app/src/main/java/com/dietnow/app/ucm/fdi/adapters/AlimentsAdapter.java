@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +71,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
         holder.id.setText(localDataSet.get(position).getId());
         holder.titulo.setText(localDataSet.get(position).getName());
         holder.kcal.setText(String.valueOf(localDataSet.get(position).getKcal()));
@@ -77,17 +80,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 String aliment_id = localDataSet.get(position).getId();
-                db.child("diets").child(diet_id).child("aliments").child(aliment_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        System.out.println("Borra el alimento de la dieta");
-                        /*
-                        Intent intent = new Intent(context, CreateDietActivity.class);
-                        intent.putExtra("did", holder.id.getText().toString());
-                        context.startActivity(intent);
-                        */
-                    }
-                });
+                db.child("diets").child(diet_id).child("aliments").child(aliment_id).removeValue();
             }
         });
         holder.fullInfo.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +147,7 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView titulo;
-        private final TextView kcal;
+        private final EditText kcal;
         private final TextView grams;
         private final TextView id;
         private final ImageButton delete;
