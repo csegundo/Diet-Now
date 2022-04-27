@@ -91,7 +91,60 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login(String email, String rawPassword){
+
         Query query = db.child("users").orderByChild("email").equalTo(email);
+        /*
+        query.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    User emailUser = task.getResult().getChildren().iterator().next().getValue(User.class);
+
+                    if(emailUser != null && emailUser.getActive()){
+                        auth.signInWithEmailAndPassword(email, rawPassword).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    FirebaseUser currentUser = auth.getCurrentUser();
+                                    db.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            User user = task.getResult().getValue(User.class);
+                                            updateUI(user);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("OnFailureMainActivity: ","");
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                } else{
+                                    updateUI(null);
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("OnFailureLogin: ","");
+                                e.printStackTrace();
+                            }
+                        });
+                    } else{
+                        progress.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_failed_inactive), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+         */
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot){
@@ -138,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
+
+
     }
 
     // redirige a la home o muestra error de inicio de sesion

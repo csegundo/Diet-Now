@@ -105,66 +105,7 @@ public class UserProfileEditActivity extends AppCompatActivity {
 
         // se obtiene la info del usuario para rellenar los campos
         FirebaseUser currentUser = auth.getCurrentUser();
-        /*
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String uidParams = parametros.getString("uid");
-                User user = dataSnapshot.child("users").child(uidParams).getValue(User.class);
-                Log.d("USER FROM DB", user.toString());
 
-                date.setText(date.getText().toString() + ": " + user.getStart_date());
-                name.setText(user.getName());
-                lastname.setText(user.getLastname());
-                email.setText(user.getEmail());
-                age.setText(String.valueOf(user.getAge()));
-                data.put("name", user.getName());
-                data.put("lastname", user.getLastname());
-                data.put("email", user.getEmail());
-                data.put("age", String.valueOf(user.getAge()));
-                data.put("password", user.getPassword());
-
-                storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
-                String fileName = "profile_" + uidParams + ".jpg";
-                storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Executor executor = Executors.newSingleThreadExecutor();
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        executor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    InputStream in = new java.net.URL(uri.toString()).openStream();
-                                    Bitmap bitmap = BitmapFactory.decodeStream(in);
-                                    handler.post(new Runnable() { // making changes in UI
-                                        @Override
-                                        public void run() {
-                                            imageUser.setImageBitmap(bitmap);
-                                        }
-                                    });
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    imageUser.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
-                                }
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        imageUser.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("TAG", "UserPost:onCancelled", databaseError.toException());
-            }
-        };
-        db.addValueEventListener(postListener);
-        */
 
         String uidParams = parametros.getString("uid");
         db.child("users").child(uidParams).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

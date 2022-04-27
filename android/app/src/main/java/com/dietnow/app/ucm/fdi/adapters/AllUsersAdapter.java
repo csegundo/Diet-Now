@@ -200,8 +200,7 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                                     String parseid = snapshot.getValue().toString();
                                     parseid = parseid.substring(1,parseid.indexOf("="));
                                     DatabaseReference s = snapshot.getRef().child(parseid);
-                                    s.removeValue();
-                                    //falta borrar en el auth
+                                    s.child("active").setValue(false);
                                 }
                             }
 

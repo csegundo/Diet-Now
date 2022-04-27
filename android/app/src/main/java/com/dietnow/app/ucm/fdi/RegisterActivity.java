@@ -23,8 +23,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -126,24 +130,49 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     }
 
     private void register(User user, String rawPassword){
-        auth.createUserWithEmailAndPassword(user.getEmail(), rawPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        Query query = mDatabase.child("users").orderByChild("email").equalTo(user.getEmail());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    FirebaseUser firebaseUser = auth.getCurrentUser();
-                    mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
-                    updateUI(true);
-                } else{
-                    updateUI(false);
+            public void onDataChange(@NonNull DataSnapshot snapshot){
+                if(snapshot.exists()){
+                    User emailUser = snapshot.getChildren().iterator().next().getValue(User.class);
+                    progressBar.setVisibility(View.GONE);
+                    if(emailUser.getActive()){
+                        Toast.makeText(getApplicationContext(),
+                                getResources().getString(R.string.register_exists),
+                                Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                getResources().getString(R.string.register_exists_failed),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    auth.createUserWithEmailAndPassword(user.getEmail(), rawPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                FirebaseUser firebaseUser = auth.getCurrentUser();
+                                mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
+                                updateUI(true);
+                            } else{
+                                updateUI(false);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("OnFailureRegisActivity:","");
+                            e.printStackTrace();
+                        }
+                    });
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("OnFailureRegisActivity:","");
-                e.printStackTrace();
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
+
     }
 
     // redirige al login o muestra error de registro
@@ -155,12 +184,15 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 
             progressBar.setVisibility(View.INVISIBLE);
 
+            finish();
             Intent intent = new Intent(RegisterActivity.this, UserPageActivity.class);
             startActivity(intent);
         } else{
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.register_failed),
                     Toast.LENGTH_LONG).show();
+
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 

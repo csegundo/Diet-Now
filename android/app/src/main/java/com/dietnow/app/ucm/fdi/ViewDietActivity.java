@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ViewDietActivity extends AppCompatActivity {
 
@@ -99,6 +100,7 @@ public class ViewDietActivity extends AppCompatActivity {
 
         alimentList = new ArrayList<Aliment>();
         docList = new ArrayList<Pair<String, String>>();
+        FirebaseUser user = auth.getCurrentUser();
 
         initializeComponentsWithData(this.actualDiet);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -109,27 +111,24 @@ public class ViewDietActivity extends AppCompatActivity {
 
         getDiet();
 
-        db.child("diets").child(actualDiet).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        /*
+        db.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Diet d = snapshot.getValue(Diet.class);
-                if(d.getRating() != null){
-                    Boolean contains_key = d.getRating().containsKey(auth.getUid());
+                User actual = snapshot.getValue(User.class);
+                if(actualDiet.equals(actual.getDiet())){
 
-                    if(contains_key){
-                        Boolean info = d.getRating().get(auth.getUid());
-                        if(info){
-                            like.setColorFilter(Color.GREEN);
-                        }else{
-                            dislike.setColorFilter(Color.RED);
-                        }
-                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
+        */
+
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,11 +192,25 @@ public class ViewDietActivity extends AppCompatActivity {
                 name.setText(d.getTitle());
                 description.setText(d.getDescription());
                 for(DataSnapshot snapshot2:snapshot.child("aliments").getChildren() ){
-                    alimentList.add(snapshot2.getValue(Aliment.class));
+                    Aliment toAdd = snapshot2.getValue(Aliment.class);
+                    toAdd.setId(snapshot2.getKey());
+                    alimentList.add(toAdd);
                 }
-
+                int counterLikes = 0, counterDislikes = 0;
+                if(d.getRating()!= null){
+                    for(Map.Entry<String,Boolean> map : d.getRating().entrySet()){
+                        if(map.getValue()){
+                            counterLikes++;
+                        }else{
+                            counterDislikes++;
+                        }
+                    }
+                }
+                nLikes.setText(String.valueOf(counterLikes));
+                nDislikes.setText(String.valueOf(counterDislikes));
                 alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
                 RecyclerView.setAdapter(alimentsAdapter);
+
             }
 
             @Override
@@ -225,7 +238,6 @@ public class ViewDietActivity extends AppCompatActivity {
 
     private void toggleFollowDiet(String dietId, boolean publish){
         FirebaseUser user = auth.getCurrentUser();
-
         db.child("users").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -271,7 +283,7 @@ public class ViewDietActivity extends AppCompatActivity {
                 String created = dateFormat.format(new Date());
                 //TODO PROVISIONAL ,VER CAPTURA
                 db.child("diet_history").child(user.getUid()).child(dietId).setValue(created);
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+                follow.setColorFilter(Color.YELLOW);
             }
         });
 

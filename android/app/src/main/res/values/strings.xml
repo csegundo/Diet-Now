@@ -189,4 +189,6 @@
     <string name="unpublished_success">Dieta despublicada</string>
     <string name="published_success">Dieta publicada</string>
     <string name="aliment_data_saved">Datos del alimentos actualizados</string>
+    <string name="register_exists">Este email ya ha sido registrado</string>
+    <string name="register_exists_failed">Este email ha sido dado de baja contacta con un administrador</string>
 </resources>

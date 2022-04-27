@@ -188,4 +188,6 @@
     <string name="unpublished_success">Unpublished diet</string>
     <string name="published_success">Published diet</string>
     <string name="aliment_data_saved">Aliment data updated successfully</string>
+    <string name="register_exists">This email has been alredy registered</string>
+    <string name="register_exists_failed">This email has been unsubscribed , please contact with an administrator</string>
 </resources>

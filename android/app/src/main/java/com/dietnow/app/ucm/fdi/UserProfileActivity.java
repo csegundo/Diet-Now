@@ -294,34 +294,7 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        db.child("diets").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds2 : snapshot.getChildren()) {
-                    String titulo = ds2.child("title").getValue().toString();
-                    HashMap<String, Boolean> visit = ds2.child("visits").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
-                    HashMap<String, Boolean> rating = ds2.child("rating").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
-                    Boolean active = ds2.child("active").getValue(Boolean.class);
-                    String descripcion = ds2.child("description").getValue().toString();
-                    boolean published = ds2.child("published").getValue(Boolean.class);
-                    String id = ds2.getKey();
-                    Diet us = new Diet(descripcion, titulo, visit, rating);
-                    us.setId(ds2.child("id").getValue().toString());
-                    array.add(us);
-                }
 
-                intent.putExtra("Dietas", array);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-         */
     }
 
     @Override
