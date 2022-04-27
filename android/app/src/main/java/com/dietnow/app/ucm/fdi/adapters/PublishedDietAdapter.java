@@ -2,6 +2,7 @@ package com.dietnow.app.ucm.fdi.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,14 +41,16 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
     private DatabaseReference db;
     private FirebaseAuth auth;
     private String diet_id;
+    private Boolean isAdmin;
 
-    public PublishedDietAdapter(ArrayList<Diet> dataSet, String dietId, Context context) {
+    public PublishedDietAdapter(ArrayList<Diet> dataSet, String dietId, Context context, Boolean isAdmin) {
         localDataSet = dataSet;
         allDiet = new ArrayList<>();
         allDiet.addAll(localDataSet);
         this.context = context;
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
         this.diet_id = dietId;
+        this.isAdmin = isAdmin;
     }
 
     // Create new views (invoked by the layout manager)
@@ -63,7 +66,7 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
     public void filtrado(String filtro){
         int length=filtro.length();
         localDataSet.clear();
-        if(length==0){
+        if(length == 0){
             localDataSet.addAll(allDiet);
         }
         else{
@@ -93,6 +96,15 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
                 }
             }
 
+            String statusStr = context.getResources().getString(localDataSet.get(position).isPublished() ? R.string.published_diet : R.string.unpublished_diet);
+            holder.status.setText(statusStr);
+            holder.status.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+
+            if(localDataSet.get(position).isPublished()){
+                holder.status.setTextColor(Color.parseColor("#4CAF50"));
+            } else{
+                holder.status.setTextColor(Color.parseColor("#DC1414"));
+            }
             holder.titulo.setText(localDataSet.get(position).getTitle());
             holder.descripcion.setText(localDataSet.get(position).getDescription());
             holder.id.setText(localDataSet.get(position).getId());
@@ -106,11 +118,9 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
                     context.startActivity(intent);
                 }
             });
-        }else{
+        } else{
 
         }
-
-
     }
 
     @Override
@@ -126,6 +136,7 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
         private final TextView id;
         private final TextView visit;
         private final TextView likes;
+        private final TextView status;
 
         public ViewHolder(View view) {
             super(view);
@@ -137,6 +148,7 @@ public class PublishedDietAdapter extends RecyclerView.Adapter<PublishedDietAdap
             id =  view.findViewById(R.id.PDietId);
             visit =  view.findViewById(R.id.pNVisitDiet);
             likes =  view.findViewById(R.id.pNlikesDiet);
+            status =  view.findViewById(R.id.dietItemStatus);
         }
     }
 }

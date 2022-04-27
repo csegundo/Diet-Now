@@ -208,6 +208,8 @@ public class ViewDietActivity extends AppCompatActivity {
                 }
                 nLikes.setText(String.valueOf(counterLikes));
                 nDislikes.setText(String.valueOf(counterDislikes));
+                alimentsLbl.setText(getResources().getString(R.string.food) + " (" + alimentList.size() + ")");
+
                 alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
                 RecyclerView.setAdapter(alimentsAdapter);
 
@@ -281,7 +283,6 @@ public class ViewDietActivity extends AppCompatActivity {
             public void onSuccess(Void unused) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("y-M-d H:m:s");
                 String created = dateFormat.format(new Date());
-                //TODO PROVISIONAL ,VER CAPTURA
                 db.child("diet_history").child(user.getUid()).child(dietId).setValue(created);
                 follow.setColorFilter(Color.YELLOW);
             }
@@ -290,16 +291,31 @@ public class ViewDietActivity extends AppCompatActivity {
     }
 
     private void toggleDietPublication(String dietId, boolean publish){
-        db.child("diets").child(dietId).child("published").setValue(publish);
+        // CONDICIONAR a publish
         if(publish){
-            status.setText(R.string.published_diet);
-            status.setTextColor(Color.parseColor("#4CAF50"));
+            db.child("diets").child(dietId).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        if(Boolean.parseBoolean(String.valueOf(task.getResult().getChildrenCount() > 0))){
+                            db.child("diets").child(dietId).child("published").setValue(true);
+                            status.setText(R.string.published_diet);
+                            status.setTextColor(Color.parseColor("#4CAF50"));
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.published_success), Toast.LENGTH_SHORT).show();
+                        } else{
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.publish_no_aliments), Toast.LENGTH_SHORT).show();
+                        }
+                    } else{
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.publish_no_aliments), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         } else{
+            db.child("diets").child(dietId).child("published").setValue(false);
             status.setText(R.string.unpublished_diet);
             status.setTextColor(Color.parseColor("#DC1414"));
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.unpublished_success), Toast.LENGTH_SHORT).show();
         }
-
-        Toast.makeText(getApplicationContext(), getResources().getString(publish ? R.string.published_success : R.string.unpublished_success), Toast.LENGTH_SHORT).show();
     }
 
     private void showDeleteModalAndConfirm(String dietId){
@@ -346,7 +362,6 @@ public class ViewDietActivity extends AppCompatActivity {
                         alimentList.add(aliment);
                     }
                 }
-                alimentsLbl.setText(alimentsLbl.getText().toString() + " (" + alimentList.size() + ")");
                 alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
                 RecyclerView.setAdapter(alimentsAdapter);
             }

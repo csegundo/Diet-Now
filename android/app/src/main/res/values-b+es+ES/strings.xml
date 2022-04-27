@@ -190,4 +190,9 @@
     <string name="aliment_data_saved">Datos del alimentos actualizados</string>
     <string name="register_exists">Este email ya ha sido registrado</string>
     <string name="register_exists_failed">Este email ha sido dado de baja contacta con un administrador</string>
+    <string name="publish_no_aliments">La dieta debe tener al menos 1 alimento para ser publicada</string>
+    <string name="other_actions">Otras acciones</string>
+    <string name="diets_actions">Acciones sobre dietas</string>
+    <string name="users_actions">Acciones sobre usuarios</string>
+    <string name="admin_all_diets">Todas las dietas del sistema</string>
 </resources>

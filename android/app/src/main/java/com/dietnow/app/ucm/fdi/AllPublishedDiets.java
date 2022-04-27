@@ -68,6 +68,34 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
         bd.child("diets").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                bd.child("users").child(auth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        User uSession = task.getResult().getValue(User.class);
+                        Boolean isAdmin = uSession.getRole().equalsIgnoreCase("ADMIN");
+
+                        dietList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String titulo = ds.child("title").getValue().toString();
+
+                            HashMap<String, Boolean> visit = ds.child("visits").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
+                            HashMap<String, Boolean> rating = ds.child("rating").getValue(new GenericTypeIndicator<HashMap<String, Boolean>>(){});
+                            Boolean active = ds.child("active").getValue(Boolean.class);
+                            String descripcion = ds.child("description").getValue().toString();
+                            boolean published = ds.child("published").getValue(Boolean.class);
+                            Diet us = new Diet(descripcion, titulo, visit, rating);
+                            us.setId(ds.child("id").getValue().toString());
+                            us.setPublished(published);
+                            if((active && published) || isAdmin) {
+                                dietList.add(us);
+                            }
+                        }
+                        Log.d("DIETAS A MOSTRAR", dietList.toString());
+                        PublishedDietAdapter = new PublishedDietAdapter(dietList,"",AllPublishedDiets.this, isAdmin);
+                        RecyclerView.setAdapter(PublishedDietAdapter);
+                    }
+                });
+                /*
                 dietList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String titulo = ds.child("title").getValue().toString();
@@ -85,6 +113,7 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
                 }
                 PublishedDietAdapter = new PublishedDietAdapter(dietList,"",AllPublishedDiets.this);
                 RecyclerView.setAdapter(PublishedDietAdapter);
+                */
             }
 
             @Override
@@ -131,9 +160,7 @@ public class AllPublishedDiets extends AppCompatActivity implements SearchView.O
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
         PublishedDietAdapter.filtrado(newText);
-
         return false;
     }
 

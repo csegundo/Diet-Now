@@ -27,11 +27,10 @@
 
     <TextView
         android:id="@+id/PDietDesc"
-
         android:layout_width="247dp"
-        android:layout_height="46dp"
+        android:layout_height="61dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
         android:inputType="textMultiLine"
         android:text="Descripcion" />
@@ -40,8 +39,7 @@
         android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="95dp"
-
+        android:layout_marginTop="97dp"
         android:background="?android:attr/listDivider"
         android:foreground="@color/purple_700" />
 
@@ -60,7 +58,7 @@
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:layout_marginLeft="275dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="55dp"
         android:text="TextView"
         android:textDirection="rtl" />
 
@@ -69,7 +67,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginLeft="315dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="55dp"
         app:srcCompat="@drawable/ic_like_24" />
 
 
@@ -78,7 +76,7 @@
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:layout_marginLeft="340dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="55dp"
         android:text="TextView"
         android:textDirection="rtl" />
 
@@ -87,9 +85,18 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginLeft="380dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="55dp"
         android:background="#7C7373"
         app:srcCompat="@drawable/ic_view" />
+
+    <TextView
+        android:id="@+id/dietItemStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="75dp"
+        android:text="status"
+        android:textStyle="bold" />
 
 
 </androidx.cardview.widget.CardView>

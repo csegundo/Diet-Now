@@ -154,7 +154,7 @@ public class DietHistory extends AppCompatActivity {
                             }
                         }
 
-                        historyDietAdapter = new PublishedDietAdapter(dietList, dietId, DietHistory.this);
+                        historyDietAdapter = new PublishedDietAdapter(dietList, dietId, DietHistory.this, false);
                         RecyclerView.setAdapter(historyDietAdapter);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

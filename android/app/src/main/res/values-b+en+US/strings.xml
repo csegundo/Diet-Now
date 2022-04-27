@@ -190,4 +190,9 @@
     <string name="aliment_data_saved">Aliment data updated successfully</string>
     <string name="register_exists">This email has been alredy registered</string>
     <string name="register_exists_failed">This email has been unsubscribed , please contact with an administrator</string>
+    <string name="publish_no_aliments">The diet must have at least 1 food to be published</string>
+    <string name="other_actions">Other actions</string>
+    <string name="diets_actions">Actions on diets</string>
+    <string name="users_actions">Actions on users</string>
+    <string name="admin_all_diets">All diets</string>
 </resources>

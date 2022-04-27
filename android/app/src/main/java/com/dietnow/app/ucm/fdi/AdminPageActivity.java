@@ -23,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AdminPageActivity extends AppCompatActivity {
 
-    private Button creardieta,perfil,dietasCreadas,dietasPub,crearUser,modUser;
+    private Button creardieta, perfil, dietasCreadas, dietasPub, crearUser, modUser;
     private Button logout;
     private FirebaseAuth auth;
 

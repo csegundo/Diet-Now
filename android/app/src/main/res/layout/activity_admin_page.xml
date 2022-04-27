@@ -7,74 +7,108 @@
     tools:context=".AdminPageActivity">
 
     <Button
-        android:id="@+id/adminCrearDietaBtn"
+        android:id="@+id/adminCrearUser"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:text="@string/create_diet"
-        app:layout_constraintBottom_toTopOf="@+id/adminDietasPublicadasBtn"
+        android:layout_marginTop="12dp"
+        android:text="@string/create_user"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.911" />
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/other_actions"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adminMisDietasBtn" />
 
     <Button
         android:id="@+id/adminPerfilBtn"
         android:layout_width="300dp"
         android:layout_height="60dp"
+        android:layout_marginTop="8dp"
         android:text="@string/my_profile"
-        app:layout_constraintBottom_toTopOf="@+id/adminCrearDietaBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.886" />
-
-    <Button
-        android:id="@+id/adminMisDietasBtn"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:text="@string/my_diets_created"
-        app:layout_constraintBottom_toTopOf="@+id/adminCrearUser"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.965" />
-
-    <Button
-        android:id="@+id/adminDietasPublicadasBtn"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:text="@string/published_diets"
-        app:layout_constraintBottom_toTopOf="@+id/adminMisDietasBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943" />
-
-    <Button
-        android:id="@+id/adminCrearUser"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:text="@string/create_user"
-        app:layout_constraintBottom_toTopOf="@+id/adminModUser"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957" />
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <Button
         android:id="@+id/adminModUser"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="480dp"
+        android:layout_marginTop="8dp"
         android:text="@string/all_users"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adminCrearUser" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/diets_actions"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adminModUser" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="@string/users_actions"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/adminDietasPublicadasBtn"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/admin_all_diets"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adminCrearDietaBtn" />
+
+    <Button
+        android:id="@+id/adminMisDietasBtn"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/my_diets_created"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adminDietasPublicadasBtn" />
+
+    <Button
+        android:id="@+id/adminCrearDietaBtn"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/create_diet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
