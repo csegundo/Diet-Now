@@ -195,4 +195,6 @@
     <string name="diets_actions">Acciones sobre dietas</string>
     <string name="users_actions">Acciones sobre usuarios</string>
     <string name="admin_all_diets">Todas las dietas del sistema</string>
+    <string name="create_diet_empty_values">Debes de introducir el título y la descripción de la dieta</string>
+    <string name="aliements_updated_succesfully">Consumo de alimentos actualizado correctamente</string>
 </resources>

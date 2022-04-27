@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="133dp">
 
     <TextView
         android:id="@+id/PDietId"
@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/PDietTitulo"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
@@ -30,7 +30,7 @@
         android:layout_width="247dp"
         android:layout_height="61dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="55dp"
         android:layout_marginBottom="10dp"
         android:inputType="textMultiLine"
         android:text="Descripcion" />
@@ -39,9 +39,10 @@
         android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="97dp"
+        android:layout_marginTop="130dp"
         android:background="?android:attr/listDivider"
-        android:foreground="@color/purple_700" />
+        android:foreground="@color/purple_700"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/PDietShowBtn"

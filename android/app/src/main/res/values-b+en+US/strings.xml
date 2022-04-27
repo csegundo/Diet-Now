@@ -195,4 +195,6 @@
     <string name="diets_actions">Actions on diets</string>
     <string name="users_actions">Actions on users</string>
     <string name="admin_all_diets">All diets</string>
+    <string name="create_diet_empty_values">You must write the title and the description of the diet</string>
+    <string name="aliements_updated_succesfully">Aliment comsuption updated  succesfully</string>
 </resources>

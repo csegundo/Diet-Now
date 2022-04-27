@@ -101,33 +101,7 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
             }
         });
 
-        /*
-        bd.child("diets").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for (DataSnapshot ds : task.getResult().getChildren()) {
-                    String titulo = ds.child("title").getValue().toString();
-                    Boolean active = ds.child("active").getValue(Boolean.class);
-                    String descripcion = ds.child("description").getValue().toString();
-                    String user = ds.child("user").getValue().toString();
-                    Diet us = new Diet(descripcion,titulo);
-                    us.setId(ds.child("id").getValue().toString());
-                    if(active && user.equals(CurrentUser)) {
-                        dietList.add(us);
-                    }
-                }
-                MyDietsAdapter = new MyDietsAdapter(dietList,MyDietsActivity.this);
-                RecyclerView.setAdapter(MyDietsAdapter);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("OnFailureMyDietsAc: ","");
-                e.printStackTrace();
-            }
-        });
-         */
     }
 
     @Override

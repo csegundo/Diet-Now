@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
@@ -114,9 +115,11 @@ public class DietInfoActivity extends AppCompatActivity {
         listaBotones.add(saturday);
         listaBotones.add(sunday);
 
-
+        //listener();
         getAliments();
         getDietInfo();
+
+
 
         AbandonDiet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +162,7 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dietFollowedAdapter.guardar();
+                Toast.makeText(getApplicationContext(), getResources().getString(com.dietnow.app.ucm.fdi.R.string.aliements_updated_succesfully), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -314,6 +318,21 @@ public class DietInfoActivity extends AppCompatActivity {
         return wanted_date;
     }
 
+    private void listener(){
+        db.child("diet_history").child(auth.getUid()).child(dietId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getAliments();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     private void getDietFromOtherDay(String wanted_day){
         db.child("diet_history").child(auth.getUid()).child(dietId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -349,8 +368,6 @@ public class DietInfoActivity extends AppCompatActivity {
                     local_array.add(a);
                 }
 
-                Log.d("HASHMAP 1", original_aliments.toString());
-                Log.d("HASHMAP 2", local_copy.toString());
                 dietFollowedAdapter = new DietFollowedAdapter(local_array,dietId,false, DietInfoActivity.this);
                 RecyclerView.setAdapter(dietFollowedAdapter);
             }

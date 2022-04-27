@@ -112,23 +112,6 @@ public class ViewDietActivity extends AppCompatActivity {
         getDiet();
 
 
-        /*
-        db.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User actual = snapshot.getValue(User.class);
-                if(actualDiet.equals(actual.getDiet())){
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        */
-
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,29 +172,32 @@ public class ViewDietActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 alimentList.clear();
                 Diet d = snapshot.getValue(Diet.class);
-                name.setText(d.getTitle());
-                description.setText(d.getDescription());
-                for(DataSnapshot snapshot2:snapshot.child("aliments").getChildren() ){
-                    Aliment toAdd = snapshot2.getValue(Aliment.class);
-                    toAdd.setId(snapshot2.getKey());
-                    alimentList.add(toAdd);
-                }
-                int counterLikes = 0, counterDislikes = 0;
-                if(d.getRating()!= null){
-                    for(Map.Entry<String,Boolean> map : d.getRating().entrySet()){
-                        if(map.getValue()){
-                            counterLikes++;
-                        }else{
-                            counterDislikes++;
+                if(d != null){
+                    name.setText(d.getTitle());
+                    description.setText(d.getDescription());
+                    for(DataSnapshot snapshot2:snapshot.child("aliments").getChildren() ){
+                        Aliment toAdd = snapshot2.getValue(Aliment.class);
+                        toAdd.setId(snapshot2.getKey());
+                        alimentList.add(toAdd);
+                    }
+                    int counterLikes = 0, counterDislikes = 0;
+                    if(d.getRating()!= null){
+                        for(Map.Entry<String,Boolean> map : d.getRating().entrySet()){
+                            if(map.getValue()){
+                                counterLikes++;
+                            }else{
+                                counterDislikes++;
+                            }
                         }
                     }
-                }
-                nLikes.setText(String.valueOf(counterLikes));
-                nDislikes.setText(String.valueOf(counterDislikes));
-                alimentsLbl.setText(getResources().getString(R.string.food) + " (" + alimentList.size() + ")");
+                    nLikes.setText(String.valueOf(counterLikes));
+                    nDislikes.setText(String.valueOf(counterDislikes));
+                    alimentsLbl.setText(getResources().getString(R.string.food) + " (" + alimentList.size() + ")");
 
-                alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
-                RecyclerView.setAdapter(alimentsAdapter);
+                    alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
+                    RecyclerView.setAdapter(alimentsAdapter);
+                }
+
 
             }
 
@@ -336,8 +322,7 @@ public class ViewDietActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                            Intent intent = new Intent(ViewDietActivity.this, MyDietsActivity.class);
-                            startActivity(intent);
+                           finish();
                         }
                     });
 
@@ -429,13 +414,7 @@ public class ViewDietActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User u = snapshot.getValue(User.class);
                         publishedBy.setText(publishedBy.getText().toString() + " " + u.getName() + " " + u.getLastname());
-                        showCommentsBtn = showCommentsBtn || u.getRole().equalsIgnoreCase("ADMIN");
 
-                        if(!showCommentsBtn){
-                            comments.setVisibility(View.GONE);
-                        } else{
-                            comments.setVisibility(View.VISIBLE);
-                        }
                     }
 
                     @Override
@@ -447,6 +426,12 @@ public class ViewDietActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User u = snapshot.getValue(User.class);
+                        showCommentsBtn = showCommentsBtn || u.getRole().equalsIgnoreCase("ADMIN");
+                        if(!showCommentsBtn){
+                            comments.setVisibility(View.GONE);
+                        } else{
+                            comments.setVisibility(View.VISIBLE);
+                        }
                         if(!currentUser.getUid().equalsIgnoreCase(actual.getUser()) && !u.getRole().equalsIgnoreCase("ADMIN")){
                             dietActionsLabel.setVisibility(View.GONE);
                             publish.setVisibility(View.GONE);
