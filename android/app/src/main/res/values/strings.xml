@@ -198,4 +198,8 @@
     <string name="admin_all_diets">Todas las dietas del sistema</string>
     <string name="create_diet_empty_values">Debes de introducir el título y la descripción de la dieta</string>
     <string name="aliements_updated_succesfully">Consumo de alimentos actualizado correctamente</string>
+    <string name="unsubscribe_diet">Ya no sigues ninguna dieta</string>
+    <string name="diet_like">Le has dado like a la dieta</string>
+    <string name="diet_dislike">Le has dado dislike a la dieta</string>
+    <string name="diet_information">Información de la dieta</string>
 </resources>

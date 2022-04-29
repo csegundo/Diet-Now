@@ -118,10 +118,6 @@ public class DietFollowedAdapter extends RecyclerView.Adapter<DietFollowedAdapte
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     LocalDateTime currentDate = LocalDateTime.now();
                     String strDate = currentDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-                    System.out.println("----------");
-                    System.out.println(strDate);
-                    System.out.println("----------");
-
                     HashMap<String, Integer> map_grams_counter = new HashMap<String, Integer>();
                     for (DataSnapshot ds : task.getResult().getChildren()) {
                         String strDate_info[] = strDate.split(" ");

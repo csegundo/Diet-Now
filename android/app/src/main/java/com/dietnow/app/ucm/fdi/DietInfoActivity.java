@@ -73,7 +73,7 @@ public class DietInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet_info);
-        getSupportActionBar().setTitle("Informacion de la dieta");
+        getSupportActionBar().setTitle(R.string.diet_information);
 
         // Atributos Firebase
         auth        = FirebaseAuth.getInstance();
@@ -125,6 +125,8 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 db.child("users").child(auth.getUid()).child("diet").removeValue();
+                Toast.makeText(getApplicationContext(), getResources().getString(com.dietnow.app.ucm.fdi.R.string.unsubscribe_diet), Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
@@ -132,12 +134,14 @@ public class DietInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 toggleDietRating(true);
+                Toast.makeText(getApplicationContext(), getResources().getString(com.dietnow.app.ucm.fdi.R.string.diet_like), Toast.LENGTH_SHORT).show();
             }
         });
         dislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleDietRating(false);
+                Toast.makeText(getApplicationContext(), getResources().getString(com.dietnow.app.ucm.fdi.R.string.diet_dislike), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -350,10 +354,7 @@ public class DietInfoActivity extends AppCompatActivity {
                 for (DataSnapshot ds : task.getResult().getChildren()){
                     if(wanted_day.equalsIgnoreCase(ds.getKey().split(" ")[0].trim())){
                         for (DataSnapshot ds2 : ds.getChildren()){
-                            System.out.println("ACTUALIZO EL ALIMENTO " + ds2.getKey().trim() + " CON GRAMOS " + ds2.getValue(double.class));
                             Aliment aliment = local_copy.get(ds2.getKey().trim());
-                            System.out.println("ORIGINAL " + original_aliments.get(ds2.getKey().trim()).toString());
-                            System.out.println("COPY " + local_copy.get(ds2.getKey().trim()).toString());
 
                             Double d = aliment.getGrams_consumed() + ds2.getValue(double.class);
                             aliment.setGrams_consumed(d);

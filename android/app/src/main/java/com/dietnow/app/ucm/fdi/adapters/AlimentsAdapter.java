@@ -119,10 +119,6 @@ public class AlimentsAdapter extends RecyclerView.Adapter<AlimentsAdapter.ViewHo
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("ID " + holder.id.getText().toString());
-                System.out.println("NAME " + holder.titulo.getText().toString());
-                System.out.println("GRAMS " + holder.grams.getText().toString());
-                System.out.println("KCAL " + holder.kcal.getText().toString());
                 db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("kcal").setValue(Double.parseDouble(holder.kcal.getText().toString()));
                 db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("name").setValue((holder.titulo.getText().toString()));
                 db.child("diets").child(diet_id).child("aliments").child(holder.id.getText().toString()).child("grams").setValue(Double.parseDouble(holder.grams.getText().toString()));

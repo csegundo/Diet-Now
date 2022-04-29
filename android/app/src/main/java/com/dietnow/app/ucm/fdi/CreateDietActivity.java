@@ -246,9 +246,6 @@ public class CreateDietActivity extends AppCompatActivity {
     // guardar la dieta en dieta y usuarios (dentro del callback para que si falla no haya que borrar la dieta)
     private void uploadDietToFirebase(Diet toCreate, String dietId){
         FirebaseUser currentUser = auth.getCurrentUser();
-        System.out.println(toCreate.getTitle().length());
-        System.out.println(toCreate.getDescription().length());
-        System.out.println(toCreate.toString());
         if(toCreate.getTitle().length()==0 && toCreate.getTitle().isEmpty() && toCreate.getDescription().length()==0 && toCreate.getDescription().isEmpty()){
             Toast.makeText(getApplicationContext(), getResources().getString(com.dietnow.app.ucm.fdi.R.string.create_diet_empty_values), Toast.LENGTH_SHORT).show();
             progress.setVisibility(View.GONE);

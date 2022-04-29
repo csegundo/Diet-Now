@@ -197,4 +197,8 @@
     <string name="admin_all_diets">All diets</string>
     <string name="create_diet_empty_values">You must write the title and the description of the diet</string>
     <string name="aliements_updated_succesfully">Aliment comsuption updated  succesfully</string>
+    <string name="unsubscribe_diet">You are not following any diet</string>
+    <string name="diet_like">You have liked the diet</string>
+    <string name="diet_dislike">You have disliked the diet</string>
+    <string name="diet_information">Diet information</string>
 </resources>

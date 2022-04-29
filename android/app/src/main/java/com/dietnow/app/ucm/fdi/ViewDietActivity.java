@@ -67,7 +67,7 @@ public class ViewDietActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_diet);
-        getSupportActionBar().setTitle("Ver dieta");
+        getSupportActionBar().setTitle(R.string.view_diet);
 
         // parametros intent
         actualDiet  = getIntent().getExtras().getString("did");

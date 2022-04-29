@@ -141,8 +141,6 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                     storage.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            System.out.println("Entra en el onSucces");
-                            // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
                             Executor executor = Executors.newSingleThreadExecutor();
                             Handler handler = new Handler(Looper.getMainLooper());
                             executor.execute(new Runnable() {
@@ -167,9 +165,6 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            System.out.println("Entra en el onFailure");
-                            System.out.println("------------------------");
-
                             holder.image.setImageResource(R.drawable.ic_person_128_black); // imagen predeterminada
                         }
                     });
