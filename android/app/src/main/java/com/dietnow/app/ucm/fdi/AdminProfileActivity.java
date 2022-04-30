@@ -58,7 +58,7 @@ public class AdminProfileActivity extends AppCompatActivity {
     // Necesario para saber cuando el usuario ya ha elegido una imagen de la galeria
     private static final Integer PICK_IMAGE = 1;
 
-    private TextView name, age;
+    private TextView name, age, email, date, sysUsers, sysDiets;
     private Button settings;
     private ImageView image;
     private Uri filePath;
@@ -80,10 +80,14 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         // inicializar los elementos
         //settings   = findViewById(com.dietnow.app.ucm.fdi.R.id.settings);
-        name       = findViewById(com.dietnow.app.ucm.fdi.R.id.profileName);
-        age        = findViewById(com.dietnow.app.ucm.fdi.R.id.profileAge);
-        image      = (ImageView) findViewById(com.dietnow.app.ucm.fdi.R.id.profileImage);
-        change     = findViewById(com.dietnow.app.ucm.fdi.R.id.profileChangeImg);
+        name       = findViewById(R.id.profileName);
+        email      = findViewById(R.id.adminEmailLbl);
+        date       = findViewById(R.id.adminDateMember);
+        sysDiets   = findViewById(R.id.adminSysDiets);
+        sysUsers   = findViewById(R.id.adminSysUsers);
+        age        = findViewById(R.id.profileAge);
+        image      = (ImageView) findViewById(R.id.profileImage);
+        change     = findViewById(R.id.profileChangeImg);
         //addStepsBtn= findViewById(com.dietnow.app.ucm.fdi.R.id.addStepsBtn);
 
         // inicializar Google Firebase
@@ -102,6 +106,8 @@ public class AdminProfileActivity extends AppCompatActivity {
                 User user = task.getResult().getValue(User.class);
                 name.setText(user.getName().trim() + " " + user.getLastname().trim());
                 age.setText(user.getAge() + " " + age.getText().toString());
+                email.setText(user.getEmail());
+                date.setText(date.getText().toString() + ": " + user.getStart_date());
                 setAdminProfileImage();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -109,6 +115,21 @@ public class AdminProfileActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.d("OnFailureAdminProfile: ","");
                 e.printStackTrace();
+            }
+        });
+
+        db.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Integer nUsers = Integer.parseInt(String.valueOf(task.getResult().getChildrenCount()));
+                sysUsers.setText(sysUsers.getText().toString() + ": " + nUsers);
+            }
+        });
+        db.child("diets").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Integer nDiets = Integer.parseInt(String.valueOf(task.getResult().getChildrenCount()));
+                sysDiets.setText(sysDiets.getText().toString() + ": " + nDiets);
             }
         });
 
@@ -298,5 +319,4 @@ public class AdminProfileActivity extends AppCompatActivity {
         intent.putExtra("uid", uid);
         startActivity(intent);
     }
-
 }

@@ -201,4 +201,10 @@
     <string name="diet_like">You have liked the diet</string>
     <string name="diet_dislike">You have disliked the diet</string>
     <string name="diet_information">Diet information</string>
+    <string name="removed_final_doc">File deleted</string>
+    <string name="change_profile_img">Change image</string>
+    <string name="admin_sys_info">System info</string>
+    <string name="admin_account_info">Personal information</string>
+    <string name="admin_sys_users">Users which you admin</string>
+    <string name="admin_sys_diets">Diets which you admin</string>
 </resources>

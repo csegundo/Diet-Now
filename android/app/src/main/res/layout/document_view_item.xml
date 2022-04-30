@@ -18,7 +18,7 @@
         android:layout_height="37dp"
         android:layout_marginLeft="305dp"
         android:layout_marginTop="5dp"
-        app:srcCompat="@android:drawable/ic_menu_view" />
+        app:srcCompat="@android:drawable/stat_sys_download" />
 
     <ImageButton
         android:id="@+id/downlaodDoc"
@@ -26,5 +26,6 @@
         android:layout_height="37dp"
         android:layout_marginLeft="350dp"
         android:layout_marginTop="5dp"
+        android:visibility="gone"
         app:srcCompat="@android:drawable/stat_sys_download" />
 </androidx.cardview.widget.CardView>

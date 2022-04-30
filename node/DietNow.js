@@ -10,9 +10,9 @@ module.exports = {
                     response = JSON.parse(response);
                     // DATOS POR CADA 100g
                     let product = {
-                        'name' : response.product.generic_name || 'Product',
+                        'name' : (response.product && response.product.generic_name) || 'Product',
                         'active' : true,
-                        'kcal' : response.product.nutriments['energy-kcal'] || 0,
+                        'kcal' : (response.product && response.product.nutriments['energy-kcal']) || 0,
                         'grams' : 100.0
                     };
                     callback(product);

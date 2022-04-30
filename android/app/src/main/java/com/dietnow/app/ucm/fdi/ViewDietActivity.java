@@ -106,12 +106,8 @@ public class ViewDietActivity extends AppCompatActivity {
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
         docTable.setLayoutManager(new LinearLayoutManager(this));
         getAliment();
-        getDocuments();
         setVisit();
-
         getDiet();
-
-
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,9 +192,9 @@ public class ViewDietActivity extends AppCompatActivity {
 
                     alimentsAdapter = new AlimentViewOnlyAdapter(alimentList,ViewDietActivity.this,actualDiet);
                     RecyclerView.setAdapter(alimentsAdapter);
+
+                    getDocuments();
                 }
-
-
             }
 
             @Override
@@ -365,6 +361,7 @@ public class ViewDietActivity extends AppCompatActivity {
         storageRef.child("diets/" + this.actualDiet).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
+                docList.clear();
                 for (StorageReference item : listResult.getItems()) {
                     String docUrl = item.toString().replace("gs://", "");
                     docUrl = "https://firebasestorage.googleapis.com/v0/b/" + item.getBucket();
@@ -414,7 +411,6 @@ public class ViewDietActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User u = snapshot.getValue(User.class);
                         publishedBy.setText(publishedBy.getText().toString() + " " + u.getName() + " " + u.getLastname());
-
                     }
 
                     @Override

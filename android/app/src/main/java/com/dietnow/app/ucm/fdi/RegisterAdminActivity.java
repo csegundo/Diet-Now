@@ -205,8 +205,7 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
                     getResources().getString(R.string.register_succesful),
                     Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(RegisterAdminActivity.this, MainActivity.class);
-            startActivity(intent);
+            finish();
         } else{
             Toast.makeText(getApplicationContext(),
                     errorMessage != null ? errorMessage : getResources().getString(R.string.register_failed),
@@ -218,7 +217,6 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String genre = parent.getItemAtPosition(position).toString();
-
         String role = parent.getItemAtPosition(position).toString();
 
     }

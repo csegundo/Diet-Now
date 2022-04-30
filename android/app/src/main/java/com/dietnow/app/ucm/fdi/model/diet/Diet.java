@@ -17,7 +17,7 @@ public class Diet implements Serializable {
     private String id;
     private String description, title, date, user;
     private HashMap<String, Boolean> visits, rating;
-    private double kcal;
+    //private double kcal;
     private boolean active, published;
 
     public Diet(){}
@@ -40,7 +40,7 @@ public class Diet implements Serializable {
         this.description = description;
         this.visits = visits;
         this.rating = rating;
-        this.kcal = kcal;
+        //this.kcal = kcal;
         this.active = active;
         this.published = published;
         this.date = created;
@@ -55,7 +55,7 @@ public class Diet implements Serializable {
         result.put("rating", rating);
         result.put("titulo", title);
         result.put("publicado", published);
-        result.put("kcal", kcal);
+        //result.put("kcal", kcal);
 
         return result;
     }
@@ -99,7 +99,7 @@ public class Diet implements Serializable {
     public void setRating(HashMap<String, Boolean> rating) {
         this.rating = rating;
     }
-
+    /*
     public double getKcal() {
         return kcal;
     }
@@ -107,7 +107,7 @@ public class Diet implements Serializable {
     public void setKcal(double kcal) {
         this.kcal = kcal;
     }
-
+    */
     public boolean isActive() {
         return active;
     }
@@ -150,7 +150,7 @@ public class Diet implements Serializable {
                 ", user='" + user + '\'' +
                 ", visits=" + visits +
                 ", rating=" + rating +
-                ", kcal=" + kcal +
+                //", kcal=" + kcal +
                 ", active=" + active +
                 ", published=" + published +
                 '}';

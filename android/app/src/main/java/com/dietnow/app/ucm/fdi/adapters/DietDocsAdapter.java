@@ -17,6 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +59,7 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
         allDocs.addAll(localDataSet);
         this.context = context;
         db = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
-        this.delete=delete;
+        this.delete = delete;
     }
 
 
@@ -68,8 +69,7 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
         View view;
         if(delete){
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.document_delete_item, viewGroup, false);
-        }
-        else {
+        } else {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.document_view_item, viewGroup, false);
         }
         return new DietDocsAdapter.ViewHolder(view,delete);
@@ -87,6 +87,7 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
                     context.startActivity(browserIntent);
                 }
             });
+            /*
             holder.download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,14 +96,13 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
                     new DownloadFileFromURL().execute(docUrl);
                 }
             });
-        }
-        else{
+            */
+        } else{
             holder.download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     strRef = FirebaseStorage.getInstance().getReference();
-                    docsRef    = strRef.child("diets");
+                    docsRef = strRef.child("diets");
 
                     StorageReference storageRef = strRef.child("diets/" + diet_id);
 
@@ -113,16 +113,9 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
                     desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            /*
-                            //eliminar visualmente
-                                allComments.remove(holder.getAdapterPosition());
-                                notifyItemRemoved(holder.getAdapterPosition());
-                                notifyItemRangeChanged(holder.getAdapterPosition(),allComments.size());
-                                notifyDataSetChanged();
-                                //notifyItemRangeRemoved(holder.getAdapterPosition(),allComments.size());
-                                holder.itemView.setVisibility(View.GONE);
-
-                                 */
+                            db.child("diets").child(diet_id).child("active").setValue(false);
+                            db.child("diets").child(diet_id).child("active").setValue(true);
+                            Toast.makeText(context, context.getResources().getString(R.string.removed_final_doc), Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -154,18 +147,15 @@ public class DietDocsAdapter extends RecyclerView.Adapter<DietDocsAdapter.ViewHo
             super(view);
             // Define click listener for the ViewHolder's View
             if(delete){
-                docName =  view.findViewById(R.id.docNameDel);
-                download =  view.findViewById(R.id.deleteDoc);
-                see=null;
-            }
-            else
-            {
+                docName = view.findViewById(R.id.docNameDel);
+                download = view.findViewById(R.id.deleteDoc);
+                see = null;
+            } else{
                 docName =  view.findViewById(R.id.docName);
                 see =  view.findViewById(R.id.viewDoc);
-                download =  view.findViewById(R.id.downlaodDoc);
+                //download =  view.findViewById(R.id.downlaodDoc);
+                download = null;
             }
-
-
         }
     }
 

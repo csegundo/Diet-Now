@@ -116,8 +116,6 @@ public class CreateDietActivity extends AppCompatActivity {
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
         DocsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-
         if(actualDiet == null){
             upload.setVisibility(View.GONE);
             addFood.setVisibility(View.GONE);
@@ -132,8 +130,6 @@ public class CreateDietActivity extends AppCompatActivity {
         }
 
         isEditOrCreateDiet(actualDiet);
-
-
 
         // Acciones de los componentes
         create.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +173,6 @@ public class CreateDietActivity extends AppCompatActivity {
         });
     }
 
-
     private void getDiet(){
         db.child("diets").child(actualDiet).addValueEventListener(new ValueEventListener() {
             @Override
@@ -193,6 +188,8 @@ public class CreateDietActivity extends AppCompatActivity {
                 }
                 AlimentsAdapter = new AlimentsAdapter(alimentList,CreateDietActivity.this,actualDiet);
                 RecyclerView.setAdapter(AlimentsAdapter);
+
+                getDocuments();
             }
 
             @Override
@@ -218,39 +215,44 @@ public class CreateDietActivity extends AppCompatActivity {
                 }
             });
 
-            storageRef.child("diets/" + this.actualDiet).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                @Override
-                public void onSuccess(ListResult listResult) {
-                    for (StorageReference item : listResult.getItems()) {
-                        String docUrl = item.toString().replace("gs://", "");
-                        docUrl = "https://firebasestorage.googleapis.com/v0/b/" + item.getBucket();
-                        docUrl += "/o/diets%2F" + actualDiet + "%2F" + item.getName(); // la ruta [/diets/<id>/<name>.pdf] encodea las '/' == '%2F'
-                        docUrl += "?alt=media"; // añadir este parametro para que se visualice el PDF
-                        // si se necesita permisos para leer (en nuestras reglas no es el caso) habria que poner otro parametro "token"
-                        Pair<String, String> doc = new Pair<>(item.getName(), docUrl);
-                        docList.add(doc);
-                    }
-                    docsAdapter = new DietDocsAdapter(docList, CreateDietActivity.this, actualDiet, true);
-                    DocsRecyclerView.setAdapter(docsAdapter);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("OnFailureListDocs: ","");
-                    e.printStackTrace();
-                }
-            });
+            getDocuments();
         }
+    }
+
+    private void getDocuments(){
+        storageRef.child("diets/" + this.actualDiet).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                docList.clear();
+                for (StorageReference item : listResult.getItems()) {
+                    String docUrl = item.toString().replace("gs://", "");
+                    docUrl = "https://firebasestorage.googleapis.com/v0/b/" + item.getBucket();
+                    docUrl += "/o/diets%2F" + actualDiet + "%2F" + item.getName(); // la ruta [/diets/<id>/<name>.pdf] encodea las '/' == '%2F'
+                    docUrl += "?alt=media"; // añadir este parametro para que se visualice el PDF
+                    // si se necesita permisos para leer (en nuestras reglas no es el caso) habria que poner otro parametro "token"
+                    Pair<String, String> doc = new Pair<>(item.getName(), docUrl);
+                    docList.add(doc);
+                }
+                docsAdapter = new DietDocsAdapter(docList, CreateDietActivity.this, actualDiet, true);
+                DocsRecyclerView.setAdapter(docsAdapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureListDocs: ","");
+                e.printStackTrace();
+            }
+        });
     }
 
     // guardar la dieta en dieta y usuarios (dentro del callback para que si falla no haya que borrar la dieta)
     private void uploadDietToFirebase(Diet toCreate, String dietId){
         FirebaseUser currentUser = auth.getCurrentUser();
-        if(toCreate.getTitle().length()==0 && toCreate.getTitle().isEmpty() && toCreate.getDescription().length()==0 && toCreate.getDescription().isEmpty()){
+        if(toCreate.getTitle().isEmpty() || toCreate.getDescription().isEmpty()){
             Toast.makeText(getApplicationContext(), getResources().getString(com.dietnow.app.ucm.fdi.R.string.create_diet_empty_values), Toast.LENGTH_SHORT).show();
             progress.setVisibility(View.GONE);
             return;
-        }else{
+        } else{
             String autoId = dietId != null ? dietId : db.child("diets").push().getKey();
             String uId = dietId == null ? currentUser.getUid() : uDietId.getText().toString();
             toCreate.setId(autoId);
@@ -299,7 +301,6 @@ public class CreateDietActivity extends AppCompatActivity {
         finish();
     }
 
-
     // this function is triggered when user selects the image from the imageChooser
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -318,8 +319,6 @@ public class CreateDietActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     private void uploadDocument(){
         if(filePath != null){
@@ -349,6 +348,10 @@ public class CreateDietActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.uploaded_final_doc), Toast.LENGTH_SHORT).show();
+                    if(actualDiet != null){
+                        db.child("diets").child(actualDiet).child("active").setValue(false);
+                        db.child("diets").child(actualDiet).child("active").setValue(true);
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

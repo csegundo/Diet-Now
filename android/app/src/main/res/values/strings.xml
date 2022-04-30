@@ -202,4 +202,10 @@
     <string name="diet_like">Le has dado like a la dieta</string>
     <string name="diet_dislike">Le has dado dislike a la dieta</string>
     <string name="diet_information">Información de la dieta</string>
+    <string name="removed_final_doc">Archivo eliminado</string>
+    <string name="change_profile_img">Cambiar imagen</string>
+    <string name="admin_sys_info">Información del sistema</string>
+    <string name="admin_account_info">Información personal</string>
+    <string name="admin_sys_users">Número de usuario que administras</string>
+    <string name="admin_sys_diets">Número de dietas que administras</string>
 </resources>

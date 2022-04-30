@@ -102,11 +102,17 @@ public class UserProfileEditActivity extends AppCompatActivity {
         password    = findViewById(R.id.editTextPassword); // siempre vacio y solo se guarda si !empty()
         imageUser   = findViewById(R.id.imageUser);
 
+        // Mostrar u ocultar campos
+        FirebaseUser currentUser = auth.getCurrentUser();
+        db.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                User actual = task.getResult().getValue(User.class);
+                status.setVisibility(actual.getRole().equalsIgnoreCase("ADMIN") ? View.VISIBLE : View.GONE);
+            }
+        });
 
         // se obtiene la info del usuario para rellenar los campos
-        FirebaseUser currentUser = auth.getCurrentUser();
-
-
         String uidParams = parametros.getString("uid");
         db.child("users").child(uidParams).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
