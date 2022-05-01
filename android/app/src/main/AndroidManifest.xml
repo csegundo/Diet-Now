@@ -82,11 +82,11 @@
         <activity
             android:name=".DietInfoActivity"
             android:exported="false"
-            android:label="Dieta seguida" />
+            android:label="@string/followed_diet" />
         <activity
             android:name=".CurrentDietGraphic"
             android:exported="false"
-            android:label="Grafico dieta actual" />
+            android:label="@string/current_diet_graphic" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

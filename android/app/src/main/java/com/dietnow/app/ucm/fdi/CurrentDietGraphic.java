@@ -20,8 +20,10 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 import com.dietnow.app.ucm.fdi.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +32,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class CurrentDietGraphic extends AppCompatActivity {
@@ -38,6 +42,7 @@ public class CurrentDietGraphic extends AppCompatActivity {
     private AnyChartView graphic;
     private DatabaseReference db;
     private FirebaseAuth auth;
+    private String diet_id;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +51,13 @@ public class CurrentDietGraphic extends AppCompatActivity {
         auth       = FirebaseAuth.getInstance();
         db         = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
 
+
+        diet_id  = getIntent().getExtras().getString("diet_id");
+
         generateGraphicChart();
+        APIlib.getInstance().setActiveAnyChartView(graphic);
+        // parametros intent
+
         //APIlib.getInstance().setActiveAnyChartView(steps);
 
     }
@@ -54,12 +65,10 @@ public class CurrentDietGraphic extends AppCompatActivity {
 
     private void generateGraphicChart(){
         graphic      = findViewById(R.id.dietchart);
-        //APIlib.getInstance().setActiveAnyChartView(steps);
-        /*
-        db.child("diet_history").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+        db.child("diet_history").child(auth.getCurrentUser().getUid()).child(diet_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
                 Cartesian cartesian = AnyChart.line();
                 cartesian.animation(true);
 
@@ -71,22 +80,33 @@ public class CurrentDietGraphic extends AppCompatActivity {
 
                 cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
-                cartesian.title("Mi grafica");
+                cartesian.title(getResources().getString(R.string.my_graphic));
 
-                cartesian.yAxis(0).title("Numero de calorias");
-                cartesian.xAxis(0).title("Dia");
+                cartesian.yAxis(0).title("kcal");
+                cartesian.xAxis(0).title(getResources().getString(R.string.day));
                 cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
                 List<DataEntry> seriesData = new ArrayList<>();
 
-                for(DataSnapshot ds : snapshot.getChildren()){
+                HashMap<String,Double>map = new HashMap<String, Double>();
 
+                for(DataSnapshot ds : task.getResult().getChildren()) {
+                    String date = ds.getKey().split(" ")[0].trim();
+                    Double total = 0.0;
+                    for(DataSnapshot ds2 :ds.getChildren()){
+                        total += ds2.getValue(Double.class);
+                    }
+                    if(map.containsKey(date)){
+                        Double d = map.get(date) + total;
+                        map.put(date,d);
+                    }else{
+                        map.put(date,total);
+                    }
 
-                    //String pasos = ds.getValue().toString();
+                }
 
-                    //String fecha = ds.getKey();
-                    //seriesData.add(new UserProfileActivity.CustomDataEntry(fecha, Integer.valueOf(pasos)));
-                    //seriesData.add(new CustomDataEntry(fecha, Integer.valueOf(pasos)));
+                for(Map.Entry<String, Double> entry : map.entrySet()){
+                    seriesData.add(new CurrentDietGraphic.CustomDataEntry(entry.getKey(), entry.getValue()));
                 }
 
                 Set set = Set.instantiate();
@@ -94,7 +114,7 @@ public class CurrentDietGraphic extends AppCompatActivity {
                 Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
 
                 Line series1 = cartesian.line(series1Mapping);
-                series1.name("Progreso");
+                series1.name(getResources().getString(R.string.progress));
                 series1.hovered().markers().enabled(true);
                 series1.hovered().markers()
                         .type(MarkerType.CIRCLE)
@@ -109,15 +129,18 @@ public class CurrentDietGraphic extends AppCompatActivity {
                 cartesian.legend().fontSize(13d);
                 cartesian.legend().padding(0d, 0d, 10d, 0d);
 
-                //steps.setChart(cartesian);
+                graphic.setChart(cartesian);
             }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onFailure(@NonNull Exception e) {
+                Log.d("OnFailureCrrntGraph: ","");
+                e.printStackTrace();
             }
         });
-        */
-        db.child("diet_history").child(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+
+        /*
+        db.child("diet_history").child(auth.getCurrentUser().getUid()).child(diet_id).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 Cartesian cartesian = AnyChart.line();
@@ -139,14 +162,21 @@ public class CurrentDietGraphic extends AppCompatActivity {
 
                 List<DataEntry> seriesData = new ArrayList<>();
 
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                HashMap<String,Double>map = new HashMap<String, Double>();
 
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String date = ds.getKey().split(" ")[0].trim();
+                    if(map.containsKey(date)){
+                        Double d = map.get(date) + Double.parseDouble(String.valueOf(ds.child("cantidad")));
+                        map.put(date,d);
+                    }else{
+                        map.put(date,Double.parseDouble(String.valueOf(ds.child("cantidad"))));
+                    }
 
-                    //String pasos = ds.getValue().toString();
+                }
 
-                    //String fecha = ds.getKey();
-                    //seriesData.add(new UserProfileActivity.CustomDataEntry(fecha, Integer.valueOf(pasos)));
-                    //seriesData.add(new CustomDataEntry(fecha, Integer.valueOf(pasos)));
+                for(Map.Entry<String, Double> entry : map.entrySet()){
+                    seriesData.add(new CurrentDietGraphic.CustomDataEntry(entry.getKey(), entry.getValue()));
                 }
 
                 Set set = Set.instantiate();
@@ -169,7 +199,7 @@ public class CurrentDietGraphic extends AppCompatActivity {
                 cartesian.legend().fontSize(13d);
                 cartesian.legend().padding(0d, 0d, 10d, 0d);
 
-                //steps.setChart(cartesian);
+                graphic.setChart(cartesian);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -178,7 +208,7 @@ public class CurrentDietGraphic extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-
+        */
     }
 
 

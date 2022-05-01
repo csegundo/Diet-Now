@@ -212,4 +212,6 @@
     <string name="progress">Progreso</string>
     <string name="chart_my_weights">Mis pesos</string>
     <string name="weights">Pesos</string>
+    <string name="current_diet_graphic">Gráfico dieta actual</string>
+    <string name="my_graphic">Mi gráfica</string>
 </resources>

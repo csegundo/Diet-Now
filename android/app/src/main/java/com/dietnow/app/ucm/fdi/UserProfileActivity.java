@@ -86,7 +86,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private ImageView image;
     private Uri filePath;
     private Button change, current_diet_graphic;
-    private String uid;
+    private String uid, diet_id;
     private DatabaseReference db;
     private FirebaseAuth auth;
     private FirebaseStorage storage;
@@ -111,6 +111,7 @@ public class UserProfileActivity extends AppCompatActivity {
         change     = findViewById(R.id.profileChangeImg);
         selectorStepsWeight  = findViewById(R.id.selectorStepsWeight);
         current_diet_graphic = findViewById(R.id.current_diet_history);
+        diet_id = "";
 
         // inicializar Google Firebase
         auth       = FirebaseAuth.getInstance();
@@ -165,6 +166,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfileActivity.this, CurrentDietGraphic.class);
+                intent.putExtra("diet_id",diet_id);
                 startActivity(intent);
             }
         });
@@ -185,6 +187,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 email.setText(u.getEmail());
                 age.setText(u.getAge().toString() + " " + getResources().getString(R.string.years));
                 date.setText(getResources().getString(R.string.createdAccount) + " " + u.getStart_date());
+
+                diet_id = u.getDiet();
             }
 
             @Override

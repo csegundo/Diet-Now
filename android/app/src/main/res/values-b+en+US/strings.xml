@@ -106,8 +106,8 @@
     <string name="alertFollowingDiet">Are you already following this diet?</string>
     <string name="createdAccount">Member since</string>
     <string name="comment_diet">Comment</string>
-    <string name="current_diet_history">Current diet graphic</string>
-    <string name="graphic_diet_text_title">Current diet graphic</string>
+    <string name="current_diet_history">Current diet chart</string>
+    <string name="graphic_diet_text_title">Current diet chart</string>
     <string name="add_manual_food_byText">Add a product manually</string>
     <string name="nameAdd">Name</string>
     <string name="kcalAdd">Kcal per 100g</string>
@@ -212,4 +212,6 @@
     <string name="progress">Progress</string>
     <string name="chart_my_weights">My weights</string>
     <string name="weights">Weights</string>
+    <string name="current_diet_graphic">Current diet chart</string>
+    <string name="my_graphic">My chart</string>
 </resources>
