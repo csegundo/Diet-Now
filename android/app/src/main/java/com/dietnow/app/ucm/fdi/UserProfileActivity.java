@@ -150,17 +150,16 @@ public class UserProfileActivity extends AppCompatActivity {
 
         selectorStepsWeight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if(isChecked){
                     generateStepsChart();
                     APIlib.getInstance().setActiveAnyChartView(steps);
-                }
-                else{
+                } else{
                     generateWeightsChart();
                     APIlib.getInstance().setActiveAnyChartView(weights);
-
                 }
             }
         });
+        selectorStepsWeight.setChecked(true);
 
         current_diet_graphic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -517,69 +516,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void generateStepsChart(){
-        steps      = findViewById(R.id.dietchart);
-        //APIlib.getInstance().setActiveAnyChartView(steps);
-        /*
-        db.child("pasos").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                Cartesian cartesian = AnyChart.line();
-                cartesian.animation(true);
-
-                cartesian.crosshair().enabled(true);
-                cartesian.crosshair()
-                        .yLabel(true)
-                        // TODO ystroke
-                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
-
-                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-
-                cartesian.title("Mis pasos");
-
-                cartesian.yAxis(0).title("Numero de pasos");
-                cartesian.xAxis(0).title("Dia");
-                cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-
-                List<DataEntry> seriesData = new ArrayList<>();
-
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    String pasos = ds.getValue().toString();
-
-                    String fecha = ds.getKey();
-                    seriesData.add(new CustomDataEntry(fecha, Integer.valueOf(pasos)));
-                }
-
-                Set set = Set.instantiate();
-                set.data(seriesData);
-                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-
-                Line series1 = cartesian.line(series1Mapping);
-                series1.name("Progreso");
-                series1.hovered().markers().enabled(true);
-                series1.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series1.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                cartesian.legend().enabled(true);
-                cartesian.legend().fontSize(13d);
-                cartesian.legend().padding(0d, 0d, 10d, 0d);
-
-                steps.setChart(cartesian);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-         */
-
+        steps = findViewById(R.id.dietchart);
         db.child("pasos").child(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -594,10 +531,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
-                cartesian.title("Mis pasos");
+                cartesian.title(getResources().getString(R.string.chart_my_steps));
 
-                cartesian.yAxis(0).title("Numero de pasos");
-                cartesian.xAxis(0).title("Dia");
+                cartesian.yAxis(0).title(getResources().getString(R.string.steps));
+                cartesian.xAxis(0).title(getResources().getString(R.string.day));
                 cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
                 List<DataEntry> seriesData = new ArrayList<>();
@@ -614,7 +551,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
 
                 Line series1 = cartesian.line(series1Mapping);
-                series1.name("Progreso");
+                series1.name(getResources().getString(R.string.progress));
                 series1.hovered().markers().enabled(true);
                 series1.hovered().markers()
                         .type(MarkerType.CIRCLE)
@@ -630,6 +567,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 cartesian.legend().padding(0d, 0d, 10d, 0d);
 
                 steps.setChart(cartesian);
+                steps.setVisibility(View.VISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -642,76 +580,13 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void generateWeightsChart(){
-        weights    = findViewById(R.id.weightsChart);
-
-        /*
-        db.child("weights").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                Cartesian cartesianWeight = AnyChart.line();
-                cartesianWeight.animation(true);
-
-
-                cartesianWeight.crosshair().enabled(true);
-                cartesianWeight.crosshair()
-                        .yLabel(true)
-                        // TODO ystroke
-                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
-
-                cartesianWeight.tooltip().positionMode(TooltipPositionMode.POINT);
-
-                cartesianWeight.title("Mis pesos");
-
-                cartesianWeight.yAxis(0).title("Peso en kg");
-                cartesianWeight.xAxis(0).title("Dia");
-                cartesianWeight.xAxis(0).labels().padding(2d, 2d, 2d, 2d);
-
-                List<DataEntry> weightData = new ArrayList<>();
-
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    String peso = ds.getValue().toString();
-                    String fecha = ds.getKey();
-                    weightData.add(new CustomDataEntry(fecha, Double.parseDouble(peso)));
-                }
-
-                Set set = Set.instantiate();
-                set.data(weightData);
-                Mapping series = set.mapAs("{ x: 'x', value: 'value' }");
-
-                Line series1 = cartesianWeight.line(series);
-                series1.name("Progreso");
-                series1.hovered().markers().enabled(true);
-                series1.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series1.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                cartesianWeight.legend().enabled(true);
-                cartesianWeight.legend().fontSize(13d);
-                cartesianWeight.legend().padding(0d, 0d, 10d, 0d);
-
-                weights.setChart(cartesianWeight);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-         */
-
+        weights = findViewById(R.id.weightsChart);
         db.child("weights").child(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 Cartesian cartesianWeight = AnyChart.line();
                 cartesianWeight.animation(true);
 
-
                 cartesianWeight.crosshair().enabled(true);
                 cartesianWeight.crosshair()
                         .yLabel(true)
@@ -720,10 +595,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 cartesianWeight.tooltip().positionMode(TooltipPositionMode.POINT);
 
-                cartesianWeight.title("Mis pesos");
+                cartesianWeight.title(getResources().getString(R.string.chart_my_weights));
 
-                cartesianWeight.yAxis(0).title("Peso en kg");
-                cartesianWeight.xAxis(0).title("Dia");
+                cartesianWeight.yAxis(0).title(getResources().getString(R.string.weights) + " (kg)");
+                cartesianWeight.xAxis(0).title(getResources().getString(R.string.day));
                 cartesianWeight.xAxis(0).labels().padding(2d, 2d, 2d, 2d);
 
                 List<DataEntry> weightData = new ArrayList<>();
@@ -739,7 +614,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 Mapping series = set.mapAs("{ x: 'x', value: 'value' }");
 
                 Line series1 = cartesianWeight.line(series);
-                series1.name("Progreso");
+                series1.name(getResources().getString(R.string.progress));
                 series1.hovered().markers().enabled(true);
                 series1.hovered().markers()
                         .type(MarkerType.CIRCLE)
@@ -755,6 +630,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 cartesianWeight.legend().padding(0d, 0d, 10d, 0d);
 
                 weights.setChart(cartesianWeight);
+                weights.setVisibility(View.VISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

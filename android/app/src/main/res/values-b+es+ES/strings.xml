@@ -207,4 +207,9 @@
     <string name="admin_account_info">Información personal</string>
     <string name="admin_sys_users">Número de usuario que administras</string>
     <string name="admin_sys_diets">Número de dietas que administras</string>
+    <string name="chart_my_steps">Mis pasos</string>
+    <string name="day">Dia</string>
+    <string name="progress">Progreso</string>
+    <string name="chart_my_weights">Mis pesos</string>
+    <string name="weights">Pesos</string>
 </resources>

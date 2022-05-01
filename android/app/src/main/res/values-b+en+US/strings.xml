@@ -207,4 +207,9 @@
     <string name="admin_account_info">Personal information</string>
     <string name="admin_sys_users">Users which you admin</string>
     <string name="admin_sys_diets">Diets which you admin</string>
+    <string name="chart_my_steps">My steps</string>
+    <string name="day">Day</string>
+    <string name="progress">Progress</string>
+    <string name="chart_my_weights">My weights</string>
+    <string name="weights">Weights</string>
 </resources>
