@@ -6,6 +6,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -115,11 +117,9 @@ public class DietInfoActivity extends AppCompatActivity {
         listaBotones.add(saturday);
         listaBotones.add(sunday);
 
-        //listener();
-        getAliments();
+        //getAliments();
         getDietInfo();
-
-
+        //listener();
 
         AbandonDiet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +153,6 @@ public class DietInfoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         LocalDateTime  currentDate = LocalDateTime.now();
         DayOfWeek day = currentDate.getDayOfWeek();
@@ -272,9 +271,40 @@ public class DietInfoActivity extends AppCompatActivity {
         });
     }
 
+    /* START: Acciones del perfil */
+    /*
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.bb_home:
+                Intent intent = new Intent(DietInfoActivity.this, UserPageActivity.class);
+                startActivity(intent);
+                finish();
+            case R.id.bb_profile:
+
+                break;
+            case R.id.bb_created:
+
+                break;
+            case R.id.bb_published:
+
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.bottom_bar_menu, menu);
+        return true;
+    }
+    */
+    /* END */
+
     private void colorButtons(){
         for(Button b : listaBotones){
-            b.setBackgroundColor(Color.MAGENTA);
+            b.setBackgroundColor(getResources().getColor(R.color.dark_green));
         }
         // coloreo el del dia actual
         switch (dayName){
@@ -299,9 +329,7 @@ public class DietInfoActivity extends AppCompatActivity {
             case "sunday":
                 sunday.setBackgroundColor(Color.LTGRAY);
                 break;
-
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -310,7 +338,6 @@ public class DietInfoActivity extends AppCompatActivity {
         LocalDateTime wanted_date;
 
         int current_day_position = currentDate.getDayOfWeek().getValue();
-
 
         if(current_day_position > wanted_day_position){
             wanted_date = currentDate.minusDays(current_day_position - wanted_day_position);
@@ -334,7 +361,6 @@ public class DietInfoActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void getDietFromOtherDay(String wanted_day){
@@ -378,16 +404,13 @@ public class DietInfoActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
     private void getAliments(){
         db.child("users").child(auth.getUid()).child("diet").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                dietId=task.getResult().getValue(String.class);
+                dietId = task.getResult().getValue(String.class);
                 db.child("diets").child(task.getResult().getValue().toString()).child("aliments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -433,6 +456,7 @@ public class DietInfoActivity extends AppCompatActivity {
                         diet_title.setText(diet.getTitle());
                         diet_description.setText(diet.getDescription());
                         dietId = diet.getId();
+                        listener();
                     }
 
                     @Override

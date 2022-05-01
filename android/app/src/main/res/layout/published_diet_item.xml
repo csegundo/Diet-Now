@@ -41,7 +41,7 @@
         android:layout_height="2dp"
         android:layout_marginTop="130dp"
         android:background="?android:attr/listDivider"
-        android:foreground="@color/purple_700"
+        android:foreground="@color/dark_green"
         android:visibility="visible" />
 
     <Button

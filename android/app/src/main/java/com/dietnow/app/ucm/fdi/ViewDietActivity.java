@@ -161,7 +161,6 @@ public class ViewDietActivity extends AppCompatActivity {
      * Metodos/funciones auxiliares
      */
 
-
     private void getDiet(){
         db.child("diets").child(actualDiet).addValueEventListener(new ValueEventListener() {
             @Override
@@ -307,6 +306,13 @@ public class ViewDietActivity extends AppCompatActivity {
             .setPositiveButton(R.string.delete_alert_yes_opt, new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    db.child("diets").child(dietId).child("active").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finish();
+                        }
+                    });
+                    /*
                     db.child("diets").child(dietId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
@@ -321,7 +327,7 @@ public class ViewDietActivity extends AppCompatActivity {
                            finish();
                         }
                     });
-
+                    */
                 }
             })
             .setNegativeButton(R.string.delete_alert_no_opt, new DialogInterface.OnClickListener(){

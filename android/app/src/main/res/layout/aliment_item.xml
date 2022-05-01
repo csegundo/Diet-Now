@@ -55,7 +55,7 @@
 
     <ImageButton
         android:id="@+id/deleteAlimentBtn"
-        android:background="@color/purple_500"
+        android:background="@color/dark_green"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"
@@ -68,7 +68,7 @@
 
     <ImageButton
         android:id="@+id/viewAlimentDetails"
-        android:background="@color/purple_500"
+        android:background="@color/dark_green"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"
@@ -97,7 +97,7 @@
 
     <ImageButton
         android:id="@+id/EditGrButton"
-        android:background="@color/purple_500"
+        android:background="@color/dark_green"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"

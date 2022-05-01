@@ -215,4 +215,9 @@
     <string name="weights">Pesos</string>
     <string name="current_diet_graphic">Gráfico dieta actual</string>
     <string name="my_graphic">Mi gráfica</string>
+    <string name="bb_home">Menú</string>
+    <string name="bb_profile">Perfil</string>
+    <string name="bb_published">Dietas</string>
+    <string name="bb_created">Creadas</string>
+    <string name="kcal_consumed">Kcal ingeridas</string>
 </resources>

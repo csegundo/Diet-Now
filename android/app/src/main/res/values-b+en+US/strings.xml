@@ -214,4 +214,9 @@
     <string name="weights">Weights</string>
     <string name="current_diet_graphic">Current diet chart</string>
     <string name="my_graphic">My chart</string>
+    <string name="bb_home">Menu</string>
+    <string name="bb_profile">Profile</string>
+    <string name="bb_published">Diets</string>
+    <string name="bb_created">Created</string>
+    <string name="kcal_consumed">Ingested kcal</string>
 </resources>

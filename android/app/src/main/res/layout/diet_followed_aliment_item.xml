@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="90dp">
+    android:layout_height="87dp">
 
     <CheckBox
         android:id="@+id/id_checkBox"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="155dp"
         android:layout_marginTop="30dp"
-        android:text="Llevas:" />
+        android:text="@string/kcal_consumed" />
 
     <TextView
         android:id="@+id/llevasGR"
@@ -87,9 +87,8 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="85dp"
-
         android:background="?android:attr/listDivider"
-        android:foreground="@color/purple_700" />
+        android:foreground="@color/dark_green" />
 
 
 </androidx.cardview.widget.CardView>

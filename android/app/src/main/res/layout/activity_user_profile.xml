@@ -128,19 +128,6 @@
         app:layout_constraintVertical_bias="0.242" />
 
     <com.anychart.AnyChartView
-        android:id="@+id/dietchart"
-        android:layout_width="374dp"
-        android:layout_height="212dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.567"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.448">
-
-    </com.anychart.AnyChartView>
-
-    <com.anychart.AnyChartView
         android:id="@+id/weightsChart"
         android:layout_width="374dp"
         android:layout_height="235dp"
@@ -149,7 +136,7 @@
         app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.911">
+        app:layout_constraintVertical_bias="0.897">
 
     </com.anychart.AnyChartView>
 
@@ -163,10 +150,10 @@
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.245"
         app:maxImageSize="40dp" />
 
     <Button
@@ -183,5 +170,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.242" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/dietchart"
+        android:layout_width="374dp"
+        android:layout_height="212dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.448">
+    </com.anychart.AnyChartView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

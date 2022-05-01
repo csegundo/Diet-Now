@@ -6,19 +6,6 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/diet_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dieta creada por el usuario"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
-
-    <TextView
         android:id="@+id/viewDietDescription"
         android:layout_width="308dp"
         android:layout_height="55dp"
@@ -27,15 +14,28 @@
         android:text="@string/description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintVertical_bias="0.038" />
+
+    <TextView
+        android:id="@+id/diet_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dieta creada por el usuario"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.007" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/diet_followed_aliment"
         android:layout_width="402dp"
-        android:layout_height="270dp"
+        android:layout_height="250dp"
         app:layout_constraintBottom_toTopOf="@+id/GuardarAlimentoDietaBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146">
+        app:layout_constraintVertical_bias="0.128">
 
         <Button
             android:id="@+id/monday_button"
@@ -134,7 +134,7 @@
             android:id="@+id/GuardarAlimentoDietaBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Guardar" />
+            android:text="@string/save" />
 
         <Button
             android:id="@+id/actualDietDislike"
@@ -160,5 +160,16 @@
             android:layout_height="50dp"
             android:text="@string/like" />
     </LinearLayout>
+
+    <!--com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_bar_menu" /-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

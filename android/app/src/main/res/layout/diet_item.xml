@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="110dp">
-
+    android:layout_height="107dp">
 
     <TextView
         android:id="@+id/barcodeAliment"
@@ -51,9 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="105dp"
-
         android:background="?android:attr/listDivider"
-        android:foreground="@color/purple_700" />
+        android:foreground="@color/dark_green" />
 
 
 </androidx.cardview.widget.CardView>

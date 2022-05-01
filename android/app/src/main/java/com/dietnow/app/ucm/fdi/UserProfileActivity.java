@@ -16,8 +16,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -267,6 +269,14 @@ public class UserProfileActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.user_profile_menu, menu);
+        return true;
+    }
+    /* END */
+
     private void DietHistory(){
         Intent intent = new Intent(UserProfileActivity.this, DietHistory.class);
         ArrayList<Diet> array = new ArrayList<>();
@@ -298,12 +308,6 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.user_profile_menu, menu);
-        return true;
     }
 
     // this function is triggered when user selects the image from the imageChooser
@@ -482,7 +486,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
         final TextView meassure =new TextView(UserProfileActivity.this);
         meassure.setText("Kg");
-
 
         LL.setLayoutParams(params);
         LL.addView(integerWeight,numPicerParams);
