@@ -65,10 +65,7 @@ public class AddManualFood extends AppCompatActivity {
                 String bc = barcode.getText().toString();
                 if (!bc.isEmpty()) {
                     GetProductInfo.getInstance().getInfo(bc, actualDiet);
-                    // Redirigir a la edición de la dieta
-                    Intent intent = new Intent(AddManualFood.this, CreateDietActivity.class);
-                    intent.putExtra("did", actualDiet);
-                    startActivity(intent);
+                    finish();
                 }
             }
         });

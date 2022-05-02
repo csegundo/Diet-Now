@@ -112,7 +112,12 @@ public class MyDietsActivity extends AppCompatActivity implements SearchView.OnQ
     @Override
     public boolean onQueryTextChange(String newText) {
         if(newText != null){
-            this.MyDietsAdapter.filtrado(newText);
+            try {
+                this.MyDietsAdapter.filtrado(newText);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return false;
     }

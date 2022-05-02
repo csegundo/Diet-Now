@@ -225,7 +225,7 @@ public class ViewDietActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 User actual = task.getResult().getValue(User.class);
-                if(actual.getDiet()!=null){
+                if(actual.getDiet()!=null && !actual.getDiet().isEmpty()){
 
                     if(actual.getDiet().equalsIgnoreCase(dietId)){
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertFollowingDiet), Toast.LENGTH_LONG).show();
