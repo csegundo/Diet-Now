@@ -219,4 +219,12 @@
     <string name="bb_published">Dietas</string>
     <string name="bb_created">Creadas</string>
     <string name="kcal_consumed">Kcal ingeridas</string>
+    <string name="foreach_100g">Por cada 100g de</string>
+    <string name="fats">Grasas</string>
+    <string name="energetic_value">Valor energético</string>
+    <string name="saturated_fats">de las cuales saturadas</string>
+    <string name="carbohydrates">Hidratos de carbono</string>
+    <string name="sugars">de los cuales azúcares</string>
+    <string name="proteins">Proteínas</string>
+    <string name="salt">Sal</string>
 </resources>

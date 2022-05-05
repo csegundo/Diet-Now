@@ -72,14 +72,14 @@ public class AlimentViewOnlyAdapter extends RecyclerView.Adapter<AlimentViewOnly
                     builder.setTitle(R.string.food_details)
                             //.setMessage("Informacion detallada aqui igual una tabla o algo yo que se")
                             .setMessage(
-                                    "Por cada 100g de " + nutri.getName() + ": \n" +
-                                            "Valor energético:    " + nutri.getKcal() + " kcal \n" +
-                                            "Grasas:    " + nutri.getFat() + "g \n" +
-                                            "   de las cuales saturadas:    " + nutri.getSaturatedFat() + "g \n" +
-                                            "Hidratos de cabrono:    " + nutri.getCarbs() + "g \n" +
-                                            "   de los cuales azúcares:    " + nutri.getSugar() + "g \n" +
-                                            "Proteinas:    " + nutri.getProteins() + "g \n" +
-                                            "Sal:    " + nutri.getSalt() + "g \n"
+                                context.getResources().getString(R.string.foreach_100g) + " " + nutri.getName() + ": \n" +
+                                context.getResources().getString(R.string.energetic_value) + ":    " + nutri.getKcal() + " kcal \n" +
+                                context.getResources().getString(R.string.fats) + ":    " + nutri.getFat() + "g \n" +
+                                "   " + context.getResources().getString(R.string.saturated_fats) + ":    " + nutri.getSaturatedFat() + "g \n" +
+                                context.getResources().getString(R.string.carbohydrates) + ":    " + nutri.getCarbs() + "g \n" +
+                                "   " + context.getResources().getString(R.string.sugars) + ":    " + nutri.getSugar() + "g \n" +
+                                context.getResources().getString(R.string.proteins) + ":    " + nutri.getProteins() + "g \n" +
+                                context.getResources().getString(R.string.salt) + ":    " + nutri.getSalt() + "g \n"
                             )
                             .setNegativeButton(R.string.delete_alert_no_opt, null).show();
                 }
@@ -88,9 +88,8 @@ public class AlimentViewOnlyAdapter extends RecyclerView.Adapter<AlimentViewOnly
                     builder.setTitle(R.string.food_details)
                             //.setMessage("Informacion detallada aqui igual una tabla o algo yo que se")
                             .setMessage(
-                                    "Por cada 100g de " + holder.titulo.getText().toString() + ": \n" +
-                                            "Valor energético:    " + holder.kcal.getText().toString() + "\n"
-
+                                context.getResources().getString(R.string.foreach_100g) + " " + holder.titulo.getText().toString() + ": \n" +
+                                context.getResources().getString(R.string.energetic_value) + ":    " + holder.kcal.getText().toString() + " kcal \n"
                             )
                             .setNegativeButton(R.string.delete_alert_no_opt, null).show();
                 }
