@@ -228,4 +228,5 @@
     <string name="sugars">de los cuales azúcares</string>
     <string name="proteins">Proteínas</string>
     <string name="salt">Sal</string>
+    <string name="not_following_any_diet">Todavía no sigues ninguna dieta, consulta la lista de dietas publicadas.</string>
 </resources>

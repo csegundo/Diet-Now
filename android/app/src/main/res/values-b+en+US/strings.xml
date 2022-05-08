@@ -227,4 +227,5 @@
     <string name="sugars">of which sugars</string>
     <string name="proteins">Proteins</string>
     <string name="salt">Salt</string>
+    <string name="not_following_any_diet">You are not following any diet yet ,check the published diet list</string>
 </resources>
