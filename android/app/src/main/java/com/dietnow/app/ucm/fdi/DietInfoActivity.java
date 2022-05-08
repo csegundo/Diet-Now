@@ -117,9 +117,7 @@ public class DietInfoActivity extends AppCompatActivity {
         listaBotones.add(saturday);
         listaBotones.add(sunday);
 
-        //getAliments();
         getDietInfo();
-        //listener();
 
         AbandonDiet.setOnClickListener(new View.OnClickListener() {
             @Override
