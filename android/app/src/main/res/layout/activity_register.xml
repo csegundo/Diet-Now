@@ -66,28 +66,15 @@
         app:layout_constraintVertical_bias="0.783" />
 
     <Button
-        android:id="@+id/registerLoginBtn"
-        android:layout_width="155dp"
-        android:layout_height="50dp"
-        android:text="@string/login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.169"
-        app:layout_constraintStart_toEndOf="@+id/registerBtn"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.87" />
-
-    <Button
         android:id="@+id/registerBtn"
         android:layout_width="155dp"
         android:layout_height="50dp"
         android:text="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.187"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.87" />
+        app:layout_constraintVertical_bias="0.867" />
 
     <Spinner
         android:id="@+id/registerGenre"

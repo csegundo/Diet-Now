@@ -32,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private Button login;
     private Button register;
     private Spinner genres;
     private EditText email;
@@ -63,15 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         age          = findViewById(R.id.registerAge);
         progressBar  = findViewById(R.id.progressBarAdmin);
 
-        // login button action
-        login = findViewById(R.id.registerLoginBtn);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         // change genre action
         genres = findViewById(R.id.registerGenre);
