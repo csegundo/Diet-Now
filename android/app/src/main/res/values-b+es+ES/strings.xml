@@ -37,7 +37,7 @@
     <string name="genre_no_response">Prefiero no responder</string>
     <string name="register_check_fields">¡Hay algún campo que está vacio!</string>
     <string name="register_check_paaswords">¡Las contraseñas no coinciden!</string>
-    <string name="settings">Settings</string>
+    <string name="settings">Ajustes</string>
     <string name="welcome">Bienvenido/a</string>
     <string name="login_failed">Credenciales incorrectos</string>
     <string name="register_succesful">Cuenta creada correctamente</string>
@@ -189,7 +189,7 @@
     <string name="published_success">Dieta publicada</string>
     <string name="aliment_data_saved">Datos del alimentos actualizados</string>
     <string name="register_exists">Este email ya ha sido registrado</string>
-    <string name="register_exists_failed">Este email ha sido dado de baja contacta con un administrador</string>
+    <string name="register_exists_failed">Este email ha sido dado de baja, contacta con un administrador</string>
     <string name="publish_no_aliments">La dieta debe tener al menos 1 alimento para ser publicada</string>
     <string name="other_actions">Otras acciones</string>
     <string name="diets_actions">Acciones sobre dietas</string>

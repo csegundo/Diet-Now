@@ -177,7 +177,7 @@
     <string name="item_menu_edit_profile">Edit profile</string>
     <string name="alertSaveAliment">Select all aliments you want to save</string>
     <string name="add_steps_label">Enter the number of steps taken in the day</string>
-    <string name="add_weight_label">Add weight for the day</string>
+    <string name="add_weight_label">Update weight</string>
     <string name="add_weight">Add weight</string>
     <string name="profile_updated_sucesfully">Profile updated successfully</string>
     <string name="editComment">Update comment</string>
@@ -196,7 +196,7 @@
     <string name="users_actions">Actions on users</string>
     <string name="admin_all_diets">All diets</string>
     <string name="create_diet_empty_values">You must write the title and the description of the diet</string>
-    <string name="aliements_updated_succesfully">Aliment comsuption updated  succesfully</string>
+    <string name="aliements_updated_succesfully">Aliment comsuption updated succesfully</string>
     <string name="unsubscribe_diet">You are not following any diet</string>
     <string name="diet_like">You have liked the diet</string>
     <string name="diet_dislike">You have disliked the diet</string>
