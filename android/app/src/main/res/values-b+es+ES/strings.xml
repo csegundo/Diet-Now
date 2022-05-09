@@ -57,7 +57,7 @@
     <string name="all_users">Todos los usuarios</string>
     <string name="created_at">Fecha de creación</string>
     <string name="new_password">Nueva contraseña</string>
-    <string name="password_tip">* La contrasña debe tener al menos 6 caracteres</string>
+    <string name="password_tip">* La contraseña debe tener al menos 6 caracteres</string>
     <string name="new_password_tip">* La nueva contraseña reemplazará a la anterior</string>
     <string name="delete_alert_title"> AVISO </string>
     <string name="delete_alert_msg"> ¿Esta seguro de querer eliminar a este usuario? </string>
