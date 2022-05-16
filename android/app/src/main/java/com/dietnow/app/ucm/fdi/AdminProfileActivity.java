@@ -148,7 +148,6 @@ public class AdminProfileActivity extends AppCompatActivity {
         storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                // Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
                 Executor executor = Executors.newSingleThreadExecutor();
                 Handler handler = new Handler(Looper.getMainLooper());
                 executor.execute(new Runnable() {
@@ -293,7 +292,6 @@ public class AdminProfileActivity extends AppCompatActivity {
                     Map<String, Object> userValues = user.toMap();
                     db.child("users").child(authUser.getUid()).updateChildren(userValues);
 
-                    // cierra sesion y vuelve al login
                     logout();
                 }
             }).addOnFailureListener(new OnFailureListener() {

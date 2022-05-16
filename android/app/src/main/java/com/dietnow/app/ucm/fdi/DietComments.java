@@ -145,28 +145,5 @@ public class DietComments extends AppCompatActivity {
                 Log.e("OnCancelDietComments: ",error.toString());
             }
         });
-        /*
-        db.child("comments").child(actualDiet).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                commentList.clear();
-                for(DataSnapshot ds : task.getResult().getChildren()){
-                    Comment comment = ds.getValue(Comment.class);
-                    comment.setId(ds.getKey());
-                    commentList.add(comment);
-                }
-
-                commentsAdapter = new CommentsAdapter(commentList,DietComments.this, actualDiet);
-                RecyclerView.setAdapter(commentsAdapter);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("OnFailureDietComments: ","");
-                e.printStackTrace();
-            }
-        });
-        */
     }
 }

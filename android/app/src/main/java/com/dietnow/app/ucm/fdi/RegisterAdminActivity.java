@@ -160,7 +160,7 @@ public class RegisterAdminActivity extends AppCompatActivity implements AdapterV
             * https://www.jsonschema2pojo.org/
             * */
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:8080/") // https://developer.android.com/studio/run/emulator-networking#networkaddresses
+                    .baseUrl("http://10.0.2.2:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 

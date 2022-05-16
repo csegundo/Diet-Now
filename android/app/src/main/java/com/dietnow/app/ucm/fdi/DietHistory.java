@@ -110,35 +110,6 @@ public class DietHistory extends AppCompatActivity {
 
     private void getDiet(){
         // ver que dieta es la actual para no meterla en la lista de dietas anteriores
-        /*
-        bd.child("users").child(auth.getUid()).child("diet").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dietId = snapshot.getValue(String.class);
-                bd.child("diet_history").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            for(Diet d : Dietas) {
-                                if(d.getId().equals(ds.getKey()) && !dietId.equals(d.getId())){
-                                    dietList.add(d);
-                                }
-                            }
-                        }
-
-                        historyDietAdapter = new PublishedDietAdapter(dietList, dietId, DietHistory.this);
-                        RecyclerView.setAdapter(historyDietAdapter);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-        */
         bd.child("users").child(auth.getUid()).child("diet").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

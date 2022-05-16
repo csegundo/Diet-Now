@@ -47,56 +47,41 @@ public class AdminPageActivity extends AppCompatActivity {
             }
         });
         perfil = findViewById(R.id.adminPerfilBtn);
-
-        // Acciones de los componentes
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(AdminPageActivity.this, AdminProfileActivity.class);
                 startActivity(intent);
             }
         });
         dietasCreadas = findViewById(R.id.adminMisDietasBtn);
-
-        // Acciones de los componentes
         dietasCreadas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(AdminPageActivity.this, MyDietsActivity.class);
                 startActivity(intent);
             }
         });
         dietasPub = findViewById(R.id.adminDietasPublicadasBtn);
-
-        // Acciones de los componentes
         dietasPub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(AdminPageActivity.this, AllPublishedDiets.class);
                 startActivity(intent);
             }
         });
         crearUser = findViewById(R.id.adminCrearUser);
-
-        // Acciones de los componentes
         crearUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(AdminPageActivity.this, RegisterAdminActivity.class);
                 startActivity(intent);
             }
         });
         modUser = findViewById(R.id.adminModUser);
-
-        // Acciones de los componentes
         modUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(AdminPageActivity.this, AllUserActivity.class);
                 startActivity(intent);
             }

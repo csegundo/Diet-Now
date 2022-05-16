@@ -32,9 +32,7 @@ public class UserPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_page);
 
         dieta = findViewById(R.id.dietaBtn);
-
         auth   = FirebaseAuth.getInstance();
-
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
 
         // Acciones de los componentes
@@ -61,40 +59,31 @@ public class UserPageActivity extends AppCompatActivity {
 
                     }
                 });
-
-
             }
         });
+
         perfil = findViewById(R.id.miPerfilBtn);
-
-
-        // Acciones de los componentes
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(UserPageActivity.this, UserProfileActivity.class);
                 startActivity(intent);
             }
         });
-        dietasCreadas = findViewById(R.id.misDietasBtn);
 
-        // Acciones de los componentes
+        dietasCreadas = findViewById(R.id.misDietasBtn);
         dietasCreadas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(UserPageActivity.this, MyDietsActivity.class);
                 startActivity(intent);
             }
         });
-        dietasPub = findViewById(R.id.dietasPublicadasBtn);
 
-        // Acciones de los componentes
+        dietasPub = findViewById(R.id.dietasPublicadasBtn);
         dietasPub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Con Intent podemos "redirigir" al usuario a nueva actividad
                 Intent intent = new Intent(UserPageActivity.this, AllPublishedDiets.class);
                 startActivity(intent);
             }

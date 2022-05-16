@@ -312,22 +312,6 @@ public class ViewDietActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-                    /*
-                    db.child("diets").child(dietId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            storageRef.child("diets/" + dietId).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                                @Override
-                                public void onSuccess(ListResult listResult) {
-                                    for(StorageReference item : listResult.getItems()){
-                                        item.delete();
-                                    }
-                                }
-                            });
-                           finish();
-                        }
-                    });
-                    */
                 }
             })
             .setNegativeButton(R.string.delete_alert_no_opt, new DialogInterface.OnClickListener(){

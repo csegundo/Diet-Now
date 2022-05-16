@@ -90,30 +90,6 @@ public class AllUserActivity extends AppCompatActivity implements SearchView.OnQ
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-        /*
-        bd.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for (DataSnapshot ds : task.getResult().getChildren()) {
-                    String email = ds.child("email").getValue().toString();
-                    Boolean active = ds.child("active").getValue(Boolean.class);
-                    String name = ds.child("name").getValue().toString();
-                    User us = new User(email, name);
-                    if(active == true) {
-                        userList.add(us);
-                    }
-                }
-                AllUsersAdapter = new AllUsersAdapter(userList,AllUserActivity.this);
-                RecyclerView.setAdapter(AllUsersAdapter);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("OnFailureAllUser: ","");
-                e.printStackTrace();
-            }
-        });
-         */
     }
 
     @Override

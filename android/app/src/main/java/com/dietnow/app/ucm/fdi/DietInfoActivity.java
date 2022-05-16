@@ -269,37 +269,6 @@ public class DietInfoActivity extends AppCompatActivity {
         });
     }
 
-    /* START: Acciones del perfil */
-    /*
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.bb_home:
-                Intent intent = new Intent(DietInfoActivity.this, UserPageActivity.class);
-                startActivity(intent);
-                finish();
-            case R.id.bb_profile:
-
-                break;
-            case R.id.bb_created:
-
-                break;
-            case R.id.bb_published:
-
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.clear();
-        getMenuInflater().inflate(R.menu.bottom_bar_menu, menu);
-        return true;
-    }
-    */
-    /* END */
-
     private void colorButtons(){
         for(Button b : listaBotones){
             b.setBackgroundColor(getResources().getColor(R.color.dark_green));

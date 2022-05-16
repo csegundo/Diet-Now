@@ -201,7 +201,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setProfileImage(){
-        storageRef = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
+        storageRef = FirebaseStorage.getInstance().getReference();
         String fileName = "profile_" + uid + ".jpg";
         storageRef.child("images/" + fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -236,16 +236,14 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void uploadStepsToFirebase(Steps toCreate, String UserId){
-        String autoId = UserId ;
-
+        String autoId = UserId;
         // guardar los pasos
         db.child("pasos").child(autoId).child(toCreate.getDate()).setValue(toCreate.getSteps());
     }
 
     private void uploadWeightToFirebase(Weight toCreate, String UserId){
-        String autoId = UserId ;
-
-        // guardar los pasos
+        String autoId = UserId;
+        // guardar los pesos
         db.child("weights").child(autoId).child(toCreate.getDate()).setValue(toCreate.getWeight());
     }
 

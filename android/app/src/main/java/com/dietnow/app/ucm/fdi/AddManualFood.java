@@ -56,7 +56,7 @@ public class AddManualFood extends AppCompatActivity {
 
         auth        = FirebaseAuth.getInstance();
         db          = FirebaseDatabase.getInstance(MainActivity.FIREBASE_DB_URL).getReference();
-        storageRef  = FirebaseStorage.getInstance().getReference(); // crear una instancia a la referencia del almacenamiento
+        storageRef  = FirebaseStorage.getInstance().getReference();
 
         // Acciones de los componentes
         add.setOnClickListener(new View.OnClickListener() {
