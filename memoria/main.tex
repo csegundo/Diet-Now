@@ -1,0 +1,52 @@
+\documentclass{TeFlon}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        TeFloN X
+%        -PASCAL-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+% PARA CAMBIAR EL TITULO SUPERIOR DENTRO DE CADA PAGINA ES EL ULTIMO PARAMETRO
+\incorporarDatos{no}{UCM}{informática}{Ingeniería de Software}{\textit{Dirigido por}\\ Antonio Sarasa Cabezuelo\vspace{2mm}}{2021--2022}{Madrid}{David Fernández Alejo\\ Vitaliy Savchenko\\ Carlos Segundo Nieto\\ Víctor Velasco Arjona}{Aplicación Android para gestionar la dieta de un deportista}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 1 - TFG
+\tituloTFG
+\input{Data/titleEs}
+\input{Data/greet}
+\input{Data/abstract_es}
+\input{Data/abstract_en}
+\indiceTFG
+
+\indiceFiguras
+\indiceTablas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 2
+\pagenumbering{arabic}
+
+\parte{A}{Contenido de la memoria}
+\input{Chapters/Capitulo1/es/base}
+\input{Chapters/Capitulo1/en/base}
+\input{Chapters/Capitulo2/base}
+\input{Chapters/Capitulo3/base}
+\input{Chapters/Capitulo4/base}
+\input{Chapters/Capitulo6/base}
+\input{Chapters/Capitulo5/base}
+\input{Chapters/Capitulo7/base}
+\input{Chapters/Capitulo8/base}
+\input{Chapters/Capitulo9/base_es}
+\input{Chapters/Capitulo9/base_en}
+\input{Chapters/Capitulo10/base}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 3 - BIB y licencia
+\biblioTFG{11}
+\printglossaries
+
+\parte{B}{Anexos}
+% \input{Annexes/01-Installation}
+\input{Annexes/02-Userguide}
+\input{Annexes/03-Questions}
+
+\licenciaTFG{\hill{``\textit{Todo lo que tenemos que decidir es qué hacer con el tiempo que se nos da}``}{Gandalf}
+David Fernández Alejo, Vitaliy Savchenko, Carlos Segundo Nieto, Víctor Velasco Arjona}{Lunes 30 de mayo de 2022}{CC-BY-NC-ND}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

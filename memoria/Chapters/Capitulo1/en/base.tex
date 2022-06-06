@@ -1,0 +1,16 @@
+\parindent=0em
+% El comando "\chp" es como el "\chapter" pero mete "Chapter" en vez de "Capitulo"
+\chp{1}{Introduction}
+
+% addtocounter: necesario para tener el mismo número de \section que el de español ==> -2 porque hay 2 secciones en el capitulo 9
+\addtocounter{section}{-4}
+
+\pagenumbering{arabic}
+\noindent
+% \texttt{Lorem ipsum dolor sit amet, consectetuer ad}\\
+This chapter will explain the motivation, objectives, work structure and work planning for this project.
+
+\input{Chapters/Capitulo1/en/1.1}
+\input{Chapters/Capitulo1/en/1.2}
+\input{Chapters/Capitulo1/en/1.3}
+\input{Chapters/Capitulo1/en/1.4}

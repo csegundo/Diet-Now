@@ -1,0 +1,79 @@
+\section{Herramientas utilizadas en la parte del servidor}
+\subsection{Google Firebase} \label{google_firebase_tools}
+Firebase \cite{firebase} es una plataforma para el desarrollo de aplicaciones web y aplicaciones móviles adquirida por Google en 2014.
+Es una plataforma ubicada en la nube, integrada con Google Cloud Platform, que usa un conjunto de herramientas para la creación y sincronización de proyectos.
+
+Algunas ventajas de usar esta plataforma son las siguientes:
+\begin{itemize}
+    \item Sincroniza los datos de los proyectos fácilmente sin necesidad de administrar conexiones o escribir lógica de sincronización.
+    \item Utiliza un conjunto de herramientas multiplataforma: se puede integrar tanto en plataformas web como en aplicaciones móviles. A su vez, es compatible con grandes plataformas, entre las que destacan iOS y Android.
+    \item Utiliza la infraestructura de Google y permite escalar cualquier tipo de aplicación, desde la más pequeña hasta la más potente.
+    \item No es necesaria la creación de un servidor ya que las herramientas se incluyen en los SDK para los dispositivos móviles y web.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% GOOGLE FIREBASE
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Authentication} \label{google_firebase_tools_auth}
+La mayoría de las aplicaciones necesitan identificar a los usuarios. Para ello, se necesita poder guardar los datos en la nube de forma segura, proporcionando una misma experiencia en todos los dispositivos del usuario. Google Firebase proporciona las herramientas necesarias para ello.
+
+Algunas ventajas de usar esta plataforma son las siguientes:
+
+\begin{itemize}
+    \item  Firebase Authentication \cite{firebase_auth} proporciona servicios de \textit{backend} y bibliotecas de IU para hacer posible la autenticación de los usuarios. Además admite la autenticación por diversos medios, entre los que pueden destacar los proveedores de identidad federadas más populares, como Google o Twitter.
+    \item Firebase aplica la misma administración de las contraseñas que utilizan otros servicios conocidos como Smart Lock o el administrador de contraseñas de Google.
+    \item Firebase Authentication se integra con otros servicios de Firebase, y se aprovecha de estándares de la industria para poder integrar de forma sencilla dichos métodos con un backend personalizado.
+\end{itemize}
+
+% donde hemos usado Authentication y para que
+En DietNow este servicio se ha utilizado para el registro de usuarios y para el sistema de gestión de permisos y seguridad.
+
+
+\subsubsection{Realtime Database}
+Firebase Realtime Database \cite{firebase_realtime_database} es una base de datos NoSQL alojada en la nube que permite almacenar y sincronizar datos entre tus usuarios en tiempo real.
+
+Firebase proporciona una base de datos en tiempo real, organizada en forma de árbol JSON. El servicio proporciona una API que garantiza la sincronización y almacenamiento de la información en la nube. Además, habilita la integración de dicho servicio con distintas aplicaciones realizadas en diferentes entornos, entre los que pueden destacar Android o iOS.
+
+A su vez, gracias a la sincronización en tiempo real de la base de datos, permite a los usuarios acceder a ella desde cualquier dispositivo en tiempo real, obteniendo los datos actualizados.
+
+Además Realtime Database cuenta con una funcionalidad interesante, si un usuario realiza cambios y pierde la conexión a Internet, el SDK de la plataforma usa una caché local en el dispositivo donde guarda dichos cambios. Una vez restablecida la conexión a Internet, se sincronizan los datos locales de forma automática.
+
+% donde hemos usado Realtime Database y para que
+En DietNow este servicio se ha utilizado para el almacenamiento de la información generada en la aplicación.
+
+
+\subsubsection{Storage}
+Cloud Storage \cite{firebase_realtime_storage} se diseñó para ayudar a almacenar y procesar con rapidez y facilidad el contenido generado por usuarios, como fotos y documentos.
+
+El SDK de Firebase para Cloud Storage se integra en Firebase Authentication para proporcionar un control de acceso intuitivo y sencillo. Cuenta además con un modelo de seguridad declarativa, con el fin de permitir el acceso a los distintos archivos, dependiendo de la identidad del usuario o de las distintas propiedades del archivo, como el nombre, el tamaño, tipo de contenido y otros meta datos.
+
+Firebase Storage proporciona cargas y descargas seguras de archivos para aplicaciones Firebase, sin importar la calidad de la red. Se puede utilizar para almacenar imágenes, audio, vídeo, o cualquier otro contenido generado por el usuario. Firebase Storage se basa en el almacenamiento de Google Cloud Storage.
+
+En DietNow este servicio se ha utilizado para la carga, descarga y almacenamiento de archivos con extensión \texttt{.pdf} que se utilizan en la aplicación, así como las fotos de perfil de los usuarios.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% SPRING
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Spring Boot} \label{spring_boot_tool}
+Spring Boot \cite{spring_boot} es un \textit{framework} para el desarrollo de aplicaciones y contenedor de inversión de control, de código abierto para la plataforma Java. Está dividido en múltiples módulos los cuales se pueden combinar para crear un proyecto de varios módulos. Entre todos los módulos disponibles se pueden destacar \textit{Spring Web} o \textit{Spring Security}, básicos y esenciales para la creación y desarrollo de aplicaciones web.
+
+Durante el desarrollo de esta aplicación, se ha utilizado Spring Boot para crear una API a la cual los administradores hacen peticiones para crear nuevos usuarios y modificar tanto su correo electrónico o contraseña en el módulo de Google Firebase Authentication, como se ha explicado anteriormente en la sección \ref{google_firebase_tools_auth}. Para evitar que cualquier persona pueda realizar peticiones para crear o alterar información de los usuarios, se han empleado una serie de \textit{tokens} -válidos durante el día- únicos para el administrador que realiza la petición con el objetivo de garantizar la legitimidad de la acción.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% NODEJS
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Node.js}
+Ideado como un entorno de ejecución de JavaScript orientado a eventos asíncronos, Node.js \cite{nodejs} está diseñado para crear aplicaciones \textit{network} escalables. Está pensado para ser más liviano y eficiente que las aplicaciones en tiempo real de uso de datos que se ejecutan en los dispositivos.
+
+La motivación de usar Node.js en la aplicación ha sido la de realizar una API propia que formatease la respuesta de la llamada a la API de Open Food Facts, debido a que la implementación de esta última en un entorno Android \cite{open_food_facts_android} suponía añadir un número elevado de clases a las ya existentes, lo cuál dificultaba la comprensión y el desarrollo del resto de código de la aplicación.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% RETROFIT
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Retrofit}
+Retrofit \cite{retrofit} es un cliente o librería de Android que facilita la incorporación de las peticiones REST a las diferentes APIs expuestas en internet. Permite realizar todos los tipos de peticiones existentes \texttt{GET}, \texttt{PUT}, \texttt{POST}, \texttt{DELETE}, \texttt{PATH} y \texttt{HEAD}.
+
+Además, se encarga de serializar los objetos automáticamente, de modo que solo es necesario utilizar el objeto porque Retrofit lo transforma, obteniéndolo de la API REST. Los manejadores de peticiones son almacenados en interfaces Java a los que solo se les debe indicar el tipo de petición, endpoint de acceso y el objeto POJO de respuesta.
+
+En la implementación de la aplicación, se ha utilizado Retrofit para llamar a la API en Spring para gestionar los usuarios con la API de Admin Firebase Authentication y para llamar a la API de Node.js para obtener información nutricional de los productos a través de Open Food Facts.
